@@ -1,0 +1,46 @@
+{% load i18n %}
+<h3>{% blocktrans with title as filter_title %} By {{ filter_title }}{% endblocktrans %}</h3>
+<div id="field-{{ spec.field.name }}">
+    {% for choice in choices %}
+        <input type="checkbox"{% if choice.selected %} checked="checked"{% endif %}
+            value="{{ choice.query_string }}"/> {{ choice.display }}<br/>
+    {% endfor %}
+</div>
+<script type="text/javascript">
+    Array.prototype.unique = function(){
+       var u = {}, a = [];
+       for(var i = 0, l = this.length; i < l; ++i){
+          if(this[i] in u)
+             continue;
+          a.push(this[i]);
+          u[this[i]] = 1;
+       }
+       return a;
+    };
+    (function($){
+        $('#field-{{ spec.field.name }} input[type=checkbox]').change(function(){
+            var rex = /(.*)\?(.*)/gi;
+            var m = rex.exec(location.href);
+            if (m){
+                var base = m[1];
+                var params = m[2].split("&");
+            }else{
+                var base = location.href;
+                var params = [];
+            }
+            var filter = $(this).val().replace("?", "");
+            if ( filter == "" ){
+                location.href = base;
+                return;
+            }
+            if ($(this).is(':checked')){
+                params.push( filter );
+            }else{
+                params.splice(params.indexOf(filter), 1);
+            }
+            var loc =  base + "?" + params.unique().join("&");
+            console.log( loc );
+            location.href = loc;
+        });
+    })(django.jQuery);
+</script>

@@ -1,0 +1,10 @@
+include README.rst
+include MANIFEST.in
+include AUTHORS
+include CHANGES
+include LICENSE
+include requirements.txt
+include setup.py
+recursive-include adminfilters *.*
+recursive-exclude adminfilters *.pyc
+
