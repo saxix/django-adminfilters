@@ -1,4 +1,4 @@
-from django.contrib.admin.filters import RelatedFieldListFilter, AllValuesFieldListFilter
+from django.contrib.admin.filters import RelatedFieldListFilter, AllValuesFieldListFilter, ListFilter, SimpleListFilter
 from django.db import models
 from django.db.models.query_utils import Q
 from django.utils.translation import ugettext as _
@@ -97,6 +97,7 @@ class RelatedFieldCellFilter(RelatedFieldListFilter, CellFilter):
 class AllValuesComboFilter(AllValuesFieldListFilter):
     template = 'adminfilters/combobox.html'
 
+
 class AllValuesRadioFilter(AllValuesFieldListFilter):
     template = 'adminfilters/fieldradio.html'
 
@@ -138,28 +139,54 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
             'query_string': cl.get_query_string({},
                 [self.lookup_kwarg, self.lookup_kwarg_isnull]),
             'display': _('All'),
-            }
+        }
         yield {
             'selected': self.lookup_val_isnull,
             'query_string': cl.get_query_string({self.lookup_kwarg_isnull: 1},
-                [self.lookup_kwarg, self.lookup_kwarg_isnull]),
+                                                [self.lookup_kwarg, self.lookup_kwarg_isnull]),
             'display': _('None'),
-            }
+        }
         for pk_val, val in self.lookup_choices:
             yield {
                 'selected': smart_unicode(pk_val) in self.lookup_val,
                 'query_string': cl.get_query_string({
-                    self.lookup_kwarg: pk_val,
-                    }, [self.lookup_kwarg_isnull]),
+                                                        self.lookup_kwarg: pk_val,
+                                                    }, [self.lookup_kwarg_isnull]),
                 'display': val,
-                }
+            }
         if (isinstance(self.field, models.related.RelatedObject)
             and self.field.field.null or hasattr(self.field, 'rel')
         and self.field.null):
             yield {
                 'selected': bool(self.lookup_val_isnull),
                 'query_string': cl.get_query_string({
-                    self.lookup_kwarg_isnull: 'True',
-                    }, [self.lookup_kwarg]),
+                                                        self.lookup_kwarg_isnull: 'True',
+                                                    }, [self.lookup_kwarg]),
                 'display': EMPTY_CHANGELIST_VALUE,
-                }
+            }
+
+
+class StartWithFilter(SimpleListFilter):
+    prefixes = None
+    lookup_val = None
+
+    def lookups(self, request, model_admin):
+        return self.prefixes
+
+    def queryset(self, request, queryset):
+        if not self.value():
+            return queryset
+        if self.value() == '--':
+            k = [prefix for prefix, label in self.prefixes]
+            query = Q()
+            for el in k:
+                query |= Q(codename__startswith=el)
+            return queryset.exclude(query)
+        else:
+            return queryset.filter(codename__startswith=self.value())
+
+
+class PermissionPrefixFilter(StartWithFilter):
+    title = 'Permission'
+    parameter_name = 'perm'
+    prefixes = (('add', 'Add'), ('change', 'Change'), ('delete', 'Delete'), ('--', 'Others'))
