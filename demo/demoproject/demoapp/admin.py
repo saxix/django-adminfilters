@@ -1,3 +1,4 @@
+from adminfilters.cell import BooleanCellFilter
 from django.contrib.admin import ModelAdmin
 from ichangelist.changelist import IChangeList
 from .models import DemoModel
@@ -10,7 +11,8 @@ class DemoModelAdmin(ModelAdmin):
 
 
 class IUserAdmin(UserAdmin):
-    cell_filter = ['email']
+    list_display = ('username', 'email', 'first_name', 'last_name',
+                    BooleanCellFilter('is_staff'))
 
     def get_changelist(self, request, **kwargs):
         """
