@@ -14,7 +14,9 @@ Filters
 * IntegerRangeFilter
 * CheckBoxFilter
 * MultiValuesFilter
-
+* MultipleSelectFieldListFilter
+* IntersectionFieldListFilter
+* UnionFieldListFilter
 
 
 Project links
