@@ -3,6 +3,10 @@ from django.db import models
 from django.db.models.query_utils import Q
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
+try:
+    from django.db.models.fields.related import ForeignObjectRel
+except ImportError:
+    from django.db.models.related import RelatedObject as ForeignObjectRel
 
 
 class AllValuesComboFilter(AllValuesFieldListFilter):
@@ -65,7 +69,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
                                                     }, [self.lookup_kwarg_isnull]),
                 'display': val,
             }
-        if (isinstance(self.field, models.related.RelatedObject)
+        if (isinstance(self.field, ForeignObjectRel)
             and self.field.field.null or hasattr(self.field, 'rel')
         and self.field.null):
             yield {
