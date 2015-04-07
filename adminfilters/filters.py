@@ -2,7 +2,10 @@ from django.contrib.admin.filters import RelatedFieldListFilter, AllValuesFieldL
 from django.db import models
 from django.db.models.query_utils import Q
 from django.utils.translation import ugettext as _
-from django.utils.encoding import smart_unicode
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
 
 
 class AllValuesComboFilter(AllValuesFieldListFilter):
