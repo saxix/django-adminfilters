@@ -29,6 +29,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
     template = 'adminfilters/fieldcheckbox.html'
 
     def __init__(self, field, request, params, model, model_admin, field_path):
+        self.model_admin = model_admin
         super(RelatedFieldCheckBoxFilter, self).__init__(field, request, params, model, model_admin, field_path)
         self.lookup_val = request.GET.getlist(self.lookup_kwarg, [])
 
@@ -47,7 +48,10 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
         return queryset.filter(query)
 
     def choices(self, cl):
-        from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+        try:
+            from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+        except ImportError:
+            EMPTY_CHANGELIST_VALUE = self.model_admin.get_empty_value_display()
 
         yield {
             'selected': not len(self.lookup_val) and not self.lookup_val_isnull,
