@@ -3,6 +3,10 @@ from django.db import models
 from django.db.models.query_utils import Q
 from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
+try:
+    from django.db.models.fields.related import ForeignObjectRel
+except ImportError:
+    from django.db.models.related import RelatedObject as ForeignObjectRel
 
 
 class AllValuesComboFilter(AllValuesFieldListFilter):
@@ -25,6 +29,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
     template = 'adminfilters/fieldcheckbox.html'
 
     def __init__(self, field, request, params, model, model_admin, field_path):
+        self.model_admin = model_admin
         super(RelatedFieldCheckBoxFilter, self).__init__(field, request, params, model, model_admin, field_path)
         self.lookup_val = request.GET.getlist(self.lookup_kwarg, [])
 
@@ -43,7 +48,10 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
         return queryset.filter(query)
 
     def choices(self, cl):
-        from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+        try:
+            from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+        except ImportError:
+            EMPTY_CHANGELIST_VALUE = self.model_admin.get_empty_value_display()
 
         yield {
             'selected': not len(self.lookup_val) and not self.lookup_val_isnull,
@@ -65,7 +73,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
                                                     }, [self.lookup_kwarg_isnull]),
                 'display': val,
             }
-        if (isinstance(self.field, models.related.RelatedObject)
+        if (isinstance(self.field, ForeignObjectRel)
             and self.field.field.null or hasattr(self.field, 'rel')
         and self.field.null):
             yield {
