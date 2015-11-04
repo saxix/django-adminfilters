@@ -6,16 +6,25 @@ python:
 script: nosetests
 env:
   - DJANGO_VERSION="Django==1.4.3"
-  - DJANGO_VERSION="Django>=1.5, <1.6"
-  - DJANGO_VERSION="Django>=1.6, <1.7"
-  - DJANGO_VERSION="Django>=1.7, <1.8"
-  - DJANGO_VERSION="Django>=1.8, <1.9"
+  - DJANGO_VERSION="Django>=1.5,<1.6"
+  - DJANGO_VERSION="Django>=1.6,<1.7"
+  - DJANGO_VERSION="Django>=1.7,<1.8"
+  - DJANGO_VERSION="Django>=1.8,<1.9"
+matrix:
+  exclude:
+     - env: DJANGO_VERSION="Django>=1.7,<1.8"
+       python: "2.6"
+     - env: DJANGO_VERSION="Django>=1.8,<1.9"
+       python: "2.6"
 install:
-#  - pip install pep8 --use-mirrors
-  - pip install -q $DJANGO_VERSION
+  - pip install pep8
+  - pip install -q "$DJANGO_VERSION"
   - python setup.py -q install
-  - pip install -r requirements.txt --use-mirrors
+  - pip install -r requirements.pip
+  - pip install coverage
 
-script: django-admin.py test adminfilters --settings=adminfilters.tests.settings
+script: 
+  - cd demo
+  - coverage run manage.py test
 before_script:
-#   - "pep8 --exclude=migrations --ignore=E501,E225 src"
+   # - "pep8 --exclude=migrations --ignore=E501,E225 adminfilters"
