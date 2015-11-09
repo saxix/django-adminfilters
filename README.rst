@@ -1,3 +1,8 @@
+.. image:: https://travis-ci.org/PetrDlouhy/django-adminfilters.svg
+    :target: https://travis-ci.org/PetrDlouhy/django-adminfilters
+.. image:: https://coveralls.io/repos/PetrDlouhy/django-adminfilters/badge.svg?branch=develop&service=github
+    :target: https://coveralls.io/github/PetrDlouhy/django-adminfilters?branch=develop
+
 ===================
 django-adminfilters
 ===================
@@ -8,12 +13,13 @@ Collection of extra filters for the django admin site
 Filters
 =======
 
-* ForeignKeyComboFilter
-* FlatComboFilter
-* DateRangeFilter
-* IntegerRangeFilter
-* CheckBoxFilter
-* MultiValuesFilter
+* AllValuesComboFilter
+* AllValuesRadioFilter
+* RelatedFieldComboFilter
+* RelatedFieldRadioFilter
+* RelatedFieldCheckBoxFilter
+* StartWithFilter
+* PermissionPrefixFilter
 * MultipleSelectFieldListFilter
 * IntersectionFieldListFilter
 * UnionFieldListFilter
