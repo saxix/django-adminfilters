@@ -21,10 +21,11 @@ install:
   - pip install -q "$DJANGO_VERSION"
   - python setup.py -q install
   - pip install -r requirements.pip
-  - pip install coverage
 
 script: 
   - cd demo
   - coverage run manage.py test
 before_script:
    # - "pep8 --exclude=migrations --ignore=E501,E225 adminfilters"
+after_script:
+  - coveralls
