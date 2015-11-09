@@ -55,7 +55,8 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
 
         yield {
             'selected': not len(self.lookup_val) and not self.lookup_val_isnull,
-            'query_string': cl.get_query_string({},
+            'query_string': cl.get_query_string(
+                {},
                 [self.lookup_kwarg, self.lookup_kwarg_isnull]),
             'display': _('All'),
         }
@@ -68,19 +69,24 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
         for pk_val, val in self.lookup_choices:
             yield {
                 'selected': smart_text(pk_val) in self.lookup_val,
-                'query_string': cl.get_query_string({
-                                                        self.lookup_kwarg: pk_val,
-                                                    }, [self.lookup_kwarg_isnull]),
+                'query_string': cl.get_query_string(
+                    {
+                        self.lookup_kwarg: pk_val,
+                    },
+                    [self.lookup_kwarg_isnull]),
                 'display': val,
             }
-        if (isinstance(self.field, ForeignObjectRel)
-            and self.field.field.null or hasattr(self.field, 'rel')
-        and self.field.null):
+        if (isinstance(self.field, ForeignObjectRel) and
+                self.field.field.null or
+                hasattr(self.field, 'rel') and
+                self.field.null):
             yield {
                 'selected': bool(self.lookup_val_isnull),
-                'query_string': cl.get_query_string({
-                                                        self.lookup_kwarg_isnull: 'True',
-                                                    }, [self.lookup_kwarg]),
+                'query_string': cl.get_query_string(
+                    {
+                        self.lookup_kwarg_isnull: 'True',
+                    },
+                    [self.lookup_kwarg]),
                 'display': EMPTY_CHANGELIST_VALUE,
             }
 
