@@ -2,7 +2,7 @@ from django.contrib.admin.filters import RelatedFieldListFilter, AllValuesFieldL
 from django.db import models
 from django.db.models.query_utils import Q
 from django.utils.translation import ugettext as _
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 try:
     from django.db.models.fields.related import ForeignObjectRel
 except ImportError:
@@ -67,7 +67,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
         }
         for pk_val, val in self.lookup_choices:
             yield {
-                'selected': smart_unicode(pk_val) in self.lookup_val,
+                'selected': smart_text(pk_val) in self.lookup_val,
                 'query_string': cl.get_query_string({
                                                         self.lookup_kwarg: pk_val,
                                                     }, [self.lookup_kwarg_isnull]),
