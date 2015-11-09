@@ -16,7 +16,9 @@ class DemoModel(models.Model):
 class DemoModel_RelatedFieldCheckBoxFilter(DemoModel):
     class Meta:
         proxy = True
+        verbose_name = "RelatedFieldCheckBoxFilter"
 
 class DemoModel_RelatedFieldRadioFilter(DemoModel):
     class Meta:
         proxy = True
+        verbose_name = "RelatedFieldRadioFilter"
