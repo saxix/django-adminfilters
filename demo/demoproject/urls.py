@@ -2,9 +2,7 @@ import django.contrib.admin
 import django.contrib.admin.sites
 from django.contrib.auth.models import User
 from django.conf.urls import patterns, include, url
-from .demoapp.admin import DemoModelAdmin, IUserAdmin
-from .demoapp.models import DemoModel
-
+from .demoapp import admin, models
 
 class PublicAdminSite(django.contrib.admin.sites.AdminSite):
 
@@ -14,8 +12,10 @@ class PublicAdminSite(django.contrib.admin.sites.AdminSite):
 
 public_site = PublicAdminSite()
 django.contrib.admin.autodiscover()
-public_site.register(DemoModel, DemoModelAdmin)
-public_site.register(User, IUserAdmin)
+public_site.register(models.DemoModel_RelatedFieldCheckBoxFilter, admin.DemoModelAdmin_RelatedFieldCheckBoxFilter)
+public_site.register(models.DemoModel_RelatedFieldRadioFilter, admin.DemoModelAdmin_RelatedFieldRadioFilter)
+public_site.register(models.DemoRelated, admin.DemoRelatedModelAdmin)
+public_site.register(User, admin.IUserAdmin)
 
 urlpatterns = patterns('',
     (r'', include(include(public_site.urls))),

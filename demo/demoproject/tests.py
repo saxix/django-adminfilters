@@ -13,10 +13,18 @@ class AdminFilterTests(TestCase):
         self.user.save()
 
 
-    def test_admin_filter_load(self):
+    def test_admin_filter_relatedfieldradiofilter(self):
         """
         test if the admin page with filters loads succesfully
         """
         self.assertTrue(self.client.login(username='sax', password='top_secret'))
-        response = self.client.get(reverse('admin:demoapp_demomodel_changelist'))
+        response = self.client.get(reverse('admin:demoapp_demomodel_relatedfieldradiofilter_changelist'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_relatedfieldcheckboxfilter(self):
+        """
+        test if the admin page with filters loads succesfully
+        """
+        self.assertTrue(self.client.login(username='sax', password='top_secret'))
+        response = self.client.get(reverse('admin:demoapp_demomodel_relatedfieldcheckboxfilter_changelist'))
         self.assertEqual(response.status_code, 200)

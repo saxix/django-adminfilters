@@ -12,3 +12,11 @@ class DemoModel(models.Model):
 
     class Meta:
         app_label = 'demoapp'
+
+class DemoModel_RelatedFieldCheckBoxFilter(DemoModel):
+    class Meta:
+        proxy = True
+
+class DemoModel_RelatedFieldRadioFilter(DemoModel):
+    class Meta:
+        proxy = True
