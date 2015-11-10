@@ -26,8 +26,7 @@ install:
   - pip install -r requirements.pip
 
 script: 
-  - cd demo
-  - coverage run --rcfile=../.coveragerc manage.py test
+  - coverage run demo/runtests.py
 before_script:
   - "pep8 --exclude=migrations --ignore=E501,E225 adminfilters"
 after_script:

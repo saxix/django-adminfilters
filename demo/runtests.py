@@ -11,6 +11,7 @@ import sys
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'demoproject.settings'
 test_dir = os.path.dirname(__file__)
+os.chdir(test_dir)
 sys.path.insert(0, test_dir)
 
 from django.conf import settings
