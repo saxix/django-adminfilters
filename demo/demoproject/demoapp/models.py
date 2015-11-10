@@ -22,3 +22,13 @@ class DemoModel_RelatedFieldRadioFilter(DemoModel):
     class Meta:
         proxy = True
         verbose_name = "RelatedFieldRadioFilter"
+
+class DemoModel_UnionFieldListFilter(DemoModel):
+    class Meta:
+        proxy = True
+        verbose_name = "UnionFieldListFilter"
+
+class DemoModel_IntersectionFieldListFilter(DemoModel):
+    class Meta:
+        proxy = True
+        verbose_name = "IntersectionFieldListFilter"

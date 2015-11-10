@@ -14,6 +14,8 @@ public_site = PublicAdminSite()
 django.contrib.admin.autodiscover()
 public_site.register(models.DemoModel_RelatedFieldCheckBoxFilter, admin.DemoModelAdmin_RelatedFieldCheckBoxFilter)
 public_site.register(models.DemoModel_RelatedFieldRadioFilter, admin.DemoModelAdmin_RelatedFieldRadioFilter)
+public_site.register(models.DemoModel_UnionFieldListFilter, admin.DemoModelAdmin_UnionFieldListFilter)
+public_site.register(models.DemoModel_IntersectionFieldListFilter, admin.DemoModelAdmin_IntersectionFieldListFilter)
 public_site.register(models.DemoRelated, admin.DemoRelatedModelAdmin)
 public_site.register(User, admin.IUserAdmin)
 
