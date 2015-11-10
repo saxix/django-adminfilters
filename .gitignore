@@ -8,4 +8,5 @@
 *.egg-info
 /MANIFEST
 *.sqlite
-
+*.swp
+*~
