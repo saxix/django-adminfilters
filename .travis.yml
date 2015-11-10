@@ -27,7 +27,7 @@ install:
 
 script: 
   - cd demo
-  - coverage run manage.py test
+  - coverage run --rcfile=../.coveragerc manage.py test
 before_script:
   - "pep8 --exclude=migrations --ignore=E501,E225 adminfilters"
 after_script:

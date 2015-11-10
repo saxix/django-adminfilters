@@ -1,2 +1,2 @@
 [run]
-include = adminfilters*
+include = */adminfilters*
