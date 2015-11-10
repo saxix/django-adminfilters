@@ -22,7 +22,6 @@ matrix:
 install:
   - pip install pep8
   - pip install -q "$DJANGO_VERSION"
-  - python setup.py -q install
   - pip install -r requirements.pip
 
 script: 
