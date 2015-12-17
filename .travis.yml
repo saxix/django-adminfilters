@@ -4,7 +4,6 @@ env:
  - TOXENV=py26-d14
  - TOXENV=py26-d15
  - TOXENV=py26-d16
- - TOXENV=py26-d17
 
  - TOXENV=py27-d14
  - TOXENV=py27-d15

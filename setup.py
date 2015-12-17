@@ -16,11 +16,11 @@ RELEASE = app.get_version()
 
 
 def fread(fname):
-    return codecs.open(os.path.join(os.path.dirname(__file__),
-                                    'requirements', fname)).read()
+    return open(os.path.join(os.path.dirname(__file__),
+                             'requirements', fname)).read()
 
-tests_require = fread('testing.pip')
-dev_require = fread('develop.pip')
+tests_require = fread('testing.pip').split()
+dev_require = fread('develop.pip').split()
 
 setup(
     name=app.NAME,
@@ -52,5 +52,5 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Intended Audience :: Developers'],
-    long_description=open('README.rst').read()
+    long_description=codecs.open('README.rst').read()
 )
