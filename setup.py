@@ -1,68 +1,45 @@
 #!/usr/bin/env python
-from distutils.core import setup
-from distutils.command.install import INSTALL_SCHEMES
-import os
-import adminfilters as app
+from __future__ import absolute_import
 
+import os
+import sys
+import codecs
+
+from setuptools import find_packages, setup
+
+ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
+sys.path.insert(0, os.path.join(ROOT, 'src'))
+
+app = __import__('adminfilters')
 NAME = app.NAME
 RELEASE = app.get_version()
 
-VERSIONMAP = {'final': (app.VERSION, 'Development Status :: 5 - Production/Stable'),
-              'rc': (app.VERSION, 'Development Status :: 4 - Beta'),
-              'beta': (app.VERSION, 'Development Status :: 4 - Beta'),
-              'alpha': ('master', 'Development Status :: 3 - Alpha'),
-              }
-download_tag, development_status = VERSIONMAP[app.VERSION[3]]
 
-for scheme in INSTALL_SCHEMES.values():
-    scheme['data'] = scheme['purelib']
+def fread(fname):
+    return codecs.open(os.path.join(os.path.dirname(__file__),
+                                    'requirements', fname)).read()
 
-packages, data_files = [], []
-root_dir = os.path.dirname(__file__)
-if root_dir != '':
-    os.chdir(root_dir)
-
-
-def fullsplit(path, result=None):
-    """
-    Split a pathname into components (the opposite of os.path.join) in a
-    platform-neutral way.
-    """
-    if result is None:
-        result = []
-    head, tail = os.path.split(path)
-    if head == '':
-        return [tail] + result
-    if head == path:
-        return result
-    return fullsplit(head, [tail] + result)
-
-
-def scan_dir(target, packages=[], data_files=[]):
-    for dirpath, dirnames, filenames in os.walk(target):
-        # Ignore dirnames that start with '.'
-        for i, dirname in enumerate(dirnames):
-            if dirname.startswith('.'):
-                del dirnames[i]
-        if '__init__.py' in filenames:
-            packages.append('.'.join(fullsplit(dirpath)))
-        elif filenames:
-            data_files.append([dirpath, [os.path.join(dirpath, f) for f in filenames]])
-    return packages, data_files
-
-packages, data_files = scan_dir('adminfilters')
+tests_require = fread('testing.pip')
+dev_require = fread('develop.pip')
 
 setup(
-    name=NAME,
-    version=RELEASE,
+    name=app.NAME,
+    version=app.get_version(),
     url='https://github.com/saxix/django-adminfilters',
     download_url='https://github.com/saxix/django-adminfilters',
     author='sax',
     author_email='sax@os4d.org',
     description="Extra filters for django admin site",
-    license='BSD',
-    packages=packages,
-    data_files=data_files,
+    license='MIT',
+    package_dir={'': 'src'},
+    packages=find_packages('src'),
+    include_package_data=True,
+    # install_requires=fread(reqs),
+    # tests_require=tests_require,
+    extras_require={
+        'test': tests_require,
+        'dev': dev_require + tests_require,
+    },
     platforms=['any'],
     command_options={
         'build_sphinx': {
@@ -70,7 +47,6 @@ setup(
             'release': ('setup.py', app.VERSION)}
     },
     classifiers=[
-        development_status,
         'Environment :: Web Environment',
         'Framework :: Django',
         'Operating System :: OS Independent',

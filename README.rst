@@ -1,13 +1,16 @@
-.. image:: https://travis-ci.org/PetrDlouhy/django-adminfilters.svg
-    :target: https://travis-ci.org/PetrDlouhy/django-adminfilters
-.. image:: https://coveralls.io/repos/PetrDlouhy/django-adminfilters/badge.svg?branch=develop&service=github
-    :target: https://coveralls.io/github/PetrDlouhy/django-adminfilters?branch=develop
-
 ===================
 django-adminfilters
 ===================
 
-Collection of extra filters for the django admin site
+Collection of extra filters for the Django admin site
+
+
+.. image:: https://travis-ci.org/saxix/django-adminfilters.svg?branch=develop
+    :target: https://travis-ci.org/saxix/django-adminfilters
+
+.. image:: https://coveralls.io/repos/saxix/django-adminfilters/badge.svg?branch=develop&service=github
+  :target: https://coveralls.io/github/saxix/django-adminfilters?branch=develop
+
 
 
 Filters
@@ -23,6 +26,14 @@ Filters
 * MultipleSelectFieldListFilter
 * IntersectionFieldListFilter
 * UnionFieldListFilter
+
+
+Run demo app
+============
+
+  $ git checkout https://github.com/saxix/django-adminfilters.git
+  $ cd django-adminfilters
+  $ make demo
 
 
 Project links

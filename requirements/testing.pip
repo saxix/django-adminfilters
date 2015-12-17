@@ -1,0 +1,9 @@
+check-manifest
+coverage
+coveralls
+pytest
+pytest-cov
+pytest-django
+pytest-echo
+pytest-pythonpath
+tox

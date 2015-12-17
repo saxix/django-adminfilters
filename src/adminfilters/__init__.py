@@ -1,9 +1,9 @@
-NAME = 'django-adminfilters'
-VERSION = __version__ = (0, 3, 0, 'final', 0)
-
-import subprocess
 import datetime
 import os
+import subprocess
+
+NAME = 'django-adminfilters'
+VERSION = __version__ = (0, 3, 0, 'alpha', 0)
 
 
 def get_version(version=None):
@@ -38,14 +38,11 @@ so it's sufficient for generating the development version numbers.
 """
     repo_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     git_log = subprocess.Popen('git log --pretty=format:%ct --quiet -1 HEAD',
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        shell=True, cwd=repo_dir, universal_newlines=True)
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               shell=True, cwd=repo_dir, universal_newlines=True)
     timestamp = git_log.communicate()[0]
     try:
         timestamp = datetime.datetime.utcfromtimestamp(int(timestamp))
     except ValueError:
         return None
     return timestamp.strftime('%Y%m%d%H%M%S')
-
-
-

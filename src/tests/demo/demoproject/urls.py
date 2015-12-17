@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.conf.urls import include, url
 from .demoapp import admin, models
 
+
 class PublicAdminSite(django.contrib.admin.sites.AdminSite):
 
     def has_permission(self, request):
@@ -12,10 +13,14 @@ class PublicAdminSite(django.contrib.admin.sites.AdminSite):
 
 public_site = PublicAdminSite()
 django.contrib.admin.autodiscover()
-public_site.register(models.DemoModel_RelatedFieldCheckBoxFilter, admin.DemoModelAdmin_RelatedFieldCheckBoxFilter)
-public_site.register(models.DemoModel_RelatedFieldRadioFilter, admin.DemoModelAdmin_RelatedFieldRadioFilter)
-public_site.register(models.DemoModel_UnionFieldListFilter, admin.DemoModelAdmin_UnionFieldListFilter)
-public_site.register(models.DemoModel_IntersectionFieldListFilter, admin.DemoModelAdmin_IntersectionFieldListFilter)
+public_site.register(models.DemoModel_RelatedFieldCheckBoxFilter,
+                     admin.DemoModelAdmin_RelatedFieldCheckBoxFilter)
+public_site.register(models.DemoModel_RelatedFieldRadioFilter,
+                     admin.DemoModelAdmin_RelatedFieldRadioFilter)
+public_site.register(models.DemoModel_UnionFieldListFilter,
+                     admin.DemoModelAdmin_UnionFieldListFilter)
+public_site.register(models.DemoModel_IntersectionFieldListFilter,
+                     admin.DemoModelAdmin_IntersectionFieldListFilter)
 public_site.register(models.DemoRelated, admin.DemoRelatedModelAdmin)
 public_site.register(User, admin.IUserAdmin)
 

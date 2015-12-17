@@ -1,32 +1,40 @@
 sudo: false
 language: python
-python:
-  - "2.6"
-  - "2.7"
-  - "3.4"
-script: nosetests
 env:
-  - DJANGO_VERSION="Django>=1.4,<1.5"
-  - DJANGO_VERSION="Django>=1.5,<1.6"
-  - DJANGO_VERSION="Django>=1.6,<1.7"
-  - DJANGO_VERSION="Django>=1.7,<1.8"
-  - DJANGO_VERSION="Django>=1.8,<1.9"
-matrix:
-  exclude:
-     - env: DJANGO_VERSION="Django>=1.7,<1.8"
-       python: "2.6"
-     - env: DJANGO_VERSION="Django>=1.8,<1.9"
-       python: "2.6"
-     - env: DJANGO_VERSION="Django>=1.4,<1.5"
-       python: "3.4"
-install:
-  - pip install pep8
-  - pip install -q "$DJANGO_VERSION"
-  - pip install -r requirements.pip
+ - TOXENV=py26-d14
+ - TOXENV=py26-d15
+ - TOXENV=py26-d16
+ - TOXENV=py26-d17
 
-script: 
-  - coverage run demo/runtests.py
-before_script:
-  - "pep8 --exclude=migrations --ignore=E501,E225 adminfilters"
-after_script:
+ - TOXENV=py27-d14
+ - TOXENV=py27-d15
+ - TOXENV=py27-d16
+ - TOXENV=py27-d17
+ - TOXENV=py27-d18
+ - TOXENV=py27-d19
+
+ - TOXENV=py34-d17
+ - TOXENV=py34-d18
+
+
+install:
+  - pip install tox "coverage<4.0" python-coveralls>=2.5 coveralls>=0.5 codecov
+
+script:
+  - tox -e $TOXENV -- py.test src/tests -vv --capture=no --cov=adminfilters --cov-report=xml --cov-config=src/tests/.coveragerc
+
+before_success:
+  - coverage erase
+
+after_success:
+  - coverage combine
   - coveralls
+  - codecov
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/9336d6d53ccbb62b2cd8
+    on_success: change  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: never     # options: [always|never|change] default: always
