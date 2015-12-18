@@ -8,8 +8,8 @@ Collection of extra filters for the Django admin site
 .. image:: https://travis-ci.org/saxix/django-adminfilters.svg?branch=develop
     :target: https://travis-ci.org/saxix/django-adminfilters
 
-.. image:: https://coveralls.io/repos/saxix/django-adminfilters/badge.svg?branch=develop&service=github
-    :target: https://coveralls.io/github/saxix/django-adminfilters?branch=develop
+.. image:: https://codecov.io/github/saxix/django-adminfilters/coverage.svg?branch=develop
+    :target: https://codecov.io/github/saxix/django-adminfilters?branch=develop
 
 .. image:: https://badges.gitter.im/saxix/django-adminfilters.svg
     :target: https://gitter.im/saxix/django-adminfilters?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
@@ -33,9 +33,9 @@ Filters
 Run demo app
 ============
 
-  $ git checkout https://github.com/saxix/django-adminfilters.git
-  $ cd django-adminfilters
-  $ make demo
+    $ git checkout https://github.com/saxix/django-adminfilters.git
+    $ cd django-adminfilters
+    $ make demo
 
 
 Project links
