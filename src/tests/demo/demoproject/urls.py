@@ -1,7 +1,8 @@
 import django.contrib.admin
 import django.contrib.admin.sites
-from django.contrib.auth.models import User
 from django.conf.urls import include, url
+from django.contrib.auth.models import User
+
 from .demoapp import admin, models
 
 

@@ -1,7 +1,6 @@
 # Django settings for demoproject project.
-import sys
 import os
-
+import sys
 
 here = os.path.dirname(__file__)
 sys.path.append(os.path.abspath(os.path.join(here, '..', '..')))
