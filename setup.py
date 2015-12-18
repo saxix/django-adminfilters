@@ -16,10 +16,12 @@ RELEASE = app.get_version()
 
 
 def read(*path):
-    return codecs.open(os.path.join(ROOT, *path)).read()
+    return codecs.open(os.path.join(ROOT, *path), encoding='utf_8').read()
 
-tests_require = read('requirements', 'testing.pip')
-dev_require = read('requirements', 'develop.pip')
+tests_require = read('requirements', 'testing.pip').split()
+dev_require = read('requirements', 'develop.pip').split()
+
+print(tests_require)
 
 setup(
     name=app.NAME,
