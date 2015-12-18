@@ -1,5 +1,8 @@
 sudo: false
 language: python
+python:
+  - 3.5
+
 env:
  - TOXENV=py26-d14
  - TOXENV=py26-d15
@@ -15,6 +18,9 @@ env:
  - TOXENV=py34-d17
  - TOXENV=py34-d18
 
+ - TOXENV=py35-d17
+ - TOXENV=py35-d18
+ - TOXENV=py35-d19
 
 install:
   - pip install tox "coverage<4.0" python-coveralls>=2.5 coveralls>=0.5 codecov
