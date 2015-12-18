@@ -7,7 +7,7 @@ import codecs
 
 from setuptools import find_packages, setup
 
-ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
+ROOT = os.path.realpath(os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(ROOT, 'src'))
 
 app = __import__('adminfilters')
@@ -15,12 +15,11 @@ NAME = app.NAME
 RELEASE = app.get_version()
 
 
-def fread(fname):
-    return open(os.path.join(os.path.dirname(__file__),
-                             'requirements', fname)).read()
+def read(*path):
+    return codecs.open(os.path.join(ROOT, *path)).read()
 
-tests_require = fread('testing.pip').split()
-dev_require = fread('develop.pip').split()
+tests_require = read('requirements', 'testing.pip')
+dev_require = read('requirements', 'develop.pip')
 
 setup(
     name=app.NAME,
@@ -52,5 +51,5 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Intended Audience :: Developers'],
-    long_description=codecs.open('README.rst').read()
+    long_description=read('README.rst')
 )
