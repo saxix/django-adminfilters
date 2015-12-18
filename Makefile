@@ -8,8 +8,9 @@ DJANGO?='1.7.x'
 	mkdir -p ${BUILDDIR}
 
 develop:
-	pip install -e .[dev]
-
+	# pip install -e .[dev]
+	pip install -r requirements/testing.pip
+	pip install -r requirements/develop.pip
 
 demo:
 	cd src/tests/demo && python manage.py migrate

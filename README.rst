@@ -9,8 +9,10 @@ Collection of extra filters for the Django admin site
     :target: https://travis-ci.org/saxix/django-adminfilters
 
 .. image:: https://coveralls.io/repos/saxix/django-adminfilters/badge.svg?branch=develop&service=github
-  :target: https://coveralls.io/github/saxix/django-adminfilters?branch=develop
+    :target: https://coveralls.io/github/saxix/django-adminfilters?branch=develop
 
+.. image:: https://badges.gitter.im/saxix/django-adminfilters.svg
+    :target: https://gitter.im/saxix/django-adminfilters?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
 
 
 Filters
