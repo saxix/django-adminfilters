@@ -1,12 +1,7 @@
-Release 0.4
-===========
-* dropped support for python 2.6
-
-
 Release 0.3
 ===========
 * django versions 1.4 to 1.9
-* python 2.6, 2.7, 3.4, 3.5
+* python 2.7, 3.4, 3.5
 * broaden tests - test UnionFieldListFilter and IntersectionFieldListFilter (thanks PetrDlouhy)
 * Demoproject made working and transformed to testing application (thanks PetrDlouhy)
 * Various filters are included in demoproject (thanks PetrDlouhy)
