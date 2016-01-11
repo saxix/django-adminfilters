@@ -1,6 +1,6 @@
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin.filters import FieldListFilter
-from django.db.models.fields import IntegerField, AutoField
+from django.db.models.fields import AutoField, IntegerField
+from django.utils.translation import ugettext_lazy as _
 
 
 class MultipleSelectFieldListFilter(FieldListFilter):
@@ -33,10 +33,11 @@ class MultipleSelectFieldListFilter(FieldListFilter):
         raise NotImplementedError
 
     def choices(self, cl):
-        from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+        # from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
         yield {
             'selected': self.lookup_val is None,
-            'query_string': cl.get_query_string({},
+            'query_string': cl.get_query_string(
+                {},
                 [self.lookup_kwarg]),
             'display': _('All')
         }
@@ -49,8 +50,9 @@ class MultipleSelectFieldListFilter(FieldListFilter):
                 pk_list.add(pk_val)
             queryset_value = ','.join([str(x) for x in pk_list])
             if pk_list:
-                query_string = cl.get_query_string({
-                    self.lookup_kwarg: queryset_value,
+                query_string = cl.get_query_string(
+                    {
+                        self.lookup_kwarg: queryset_value,
                     })
             else:
                 query_string = cl.get_query_string({}, [self.lookup_kwarg])

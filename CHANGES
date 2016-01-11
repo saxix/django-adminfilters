@@ -1,9 +1,19 @@
+Release 0.3
+===========
+* django versions 1.4 to 1.9
+* python 2.7, 3.4, 3.5
+* broaden tests - test UnionFieldListFilter and IntersectionFieldListFilter (thanks PetrDlouhy)
+* Demoproject made working and transformed to testing application (thanks PetrDlouhy)
+* Various filters are included in demoproject (thanks PetrDlouhy)
+* Coverage with coveralls.org  (thanks PetrDlouhy)
+* Readme update with actual filters  (thanks PetrDlouhy)
+
+
 Release 0.2
 ===========
-
 * added MultipleSelectFieldListFilter, IntersectionFieldListFilter, UnionFieldListFilter
+
 
 Release 0.1
 ===========
-
 * initial relaase

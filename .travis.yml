@@ -1,17 +1,37 @@
+sudo: false
 language: python
 python:
-  - "2.6"
-  - "2.7"
-script: nosetests
-env:
-  - DJANGO_VERSION="Django==1.4.3"
-  - DJANGO_VERSION=https://www.djangoproject.com/download/1.5c1/tarball/
-install:
-#  - pip install pep8 --use-mirrors
-  - pip install -q $DJANGO_VERSION
-  - python setup.py -q install
-  - pip install -r requirements.txt --use-mirrors
+  - 3.5
 
-script: django-admin.py test adminfilters --settings=adminfilters.tests.settings
-before_script:
-#   - "pep8 --exclude=migrations --ignore=E501,E225 src"
+env:
+ - TOXENV=py26-d14
+ - TOXENV=py26-d15
+ - TOXENV=py26-d16
+
+ - TOXENV=py27-d14
+ - TOXENV=py27-d15
+ - TOXENV=py27-d16
+ - TOXENV=py27-d17
+ - TOXENV=py27-d18
+ - TOXENV=py27-d19
+
+ - TOXENV=py34-d17
+ - TOXENV=py34-d18
+
+ - TOXENV=py35-d18
+ - TOXENV=py35-d19
+
+install:
+  - pip install tox "coverage<4.0" python-coveralls>=2.5 coveralls>=0.5 codecov
+
+script:
+  - tox -e $TOXENV -- py.test tests -v --capture=no \
+      --cov=adminfilters --cov-report=xml --cov-config=tests/.coveragerc
+
+before_success:
+  - coverage erase
+
+after_success:
+  - coverage combine
+  - coveralls
+  - codecov

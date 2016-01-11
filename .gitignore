@@ -1,4 +1,5 @@
-/.idea
+.cache
+.idea
 /dist
 /build
 /docs/build
@@ -8,4 +9,6 @@
 *.egg-info
 /MANIFEST
 *.sqlite
-
+*.swp
+*~
+.tox
