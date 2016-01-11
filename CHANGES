@@ -1,3 +1,8 @@
+Release 0.4
+===========
+* dropped support for python 2.6
+
+
 Release 0.3
 ===========
 * django versions 1.4 to 1.9
@@ -7,6 +12,7 @@ Release 0.3
 * Various filters are included in demoproject (thanks PetrDlouhy)
 * Coverage with coveralls.org  (thanks PetrDlouhy)
 * Readme update with actual filters  (thanks PetrDlouhy)
+
 
 Release 0.2
 ===========

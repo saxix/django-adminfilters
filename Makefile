@@ -23,6 +23,11 @@ clean:
 	find . -name "*.py?" -o -name "*.orig" -prune | xargs rm -rf
 	find adminactions/locale -name django.mo | xargs rm -f
 
+qa:
+	flake8 src tests
+	isort -rc src tests --check-only
+	check-manifest
+
 
 fullclean:
 	rm -fr .tox .cache

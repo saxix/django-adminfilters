@@ -1,4 +1,4 @@
 pdbpp
-isort
+django
 autopep8
 check-manifest
