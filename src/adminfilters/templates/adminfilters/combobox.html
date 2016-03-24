@@ -1,6 +1,6 @@
 {% load i18n %}
 <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
-<select id="filter-{{ filter_title }}" onchange="location.href=this.options[selectedIndex].value">
+<select id="filter-{{ spec.field.name }}" onchange="location.href=this.options[selectedIndex].value">
     {% for choice in choices %}
         <option{% if choice.selected %} selected="selected"{% endif %}
                                         value="{{ choice.query_string|iriencode }}">{{ choice.display }}</option>
