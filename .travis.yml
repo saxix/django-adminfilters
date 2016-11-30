@@ -14,12 +14,21 @@ env:
  - TOXENV=py27-d17
  - TOXENV=py27-d18
  - TOXENV=py27-d19
+ - TOXENV=py27-d110
+ - TOXENV=py27-dtrunk
 
  - TOXENV=py34-d17
  - TOXENV=py34-d18
 
  - TOXENV=py35-d18
  - TOXENV=py35-d19
+ - TOXENV=py35-d110
+ - TOXENV=py35-dtrunk
+
+matrix:
+  allow_failures:
+    - env: TOXENV=py35-dtrunk
+    - env: TOXENV=py27-dtrunk
 
 install:
   - pip install tox "coverage<4.0" python-coveralls>=2.5 coveralls>=0.5 codecov
