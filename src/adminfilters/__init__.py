@@ -3,7 +3,7 @@ import os
 import subprocess
 
 NAME = 'django-adminfilters'
-VERSION = __version__ = (0, 3, 0, 'final', 0)
+VERSION = __version__ = (0, 3, 1, 'final', 0)
 
 
 def get_version(version=None):
