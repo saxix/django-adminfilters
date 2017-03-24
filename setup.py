@@ -54,5 +54,5 @@ setup(name=app.NAME,
           'Operating System :: OS Independent',
           'Programming Language :: Python',
           'Intended Audience :: Developers'],
-      long_description=codecs.open('README.rst').read()
+      long_description=codecs.open('README.rst', 'r').read()
       )
