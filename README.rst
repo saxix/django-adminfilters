@@ -30,6 +30,14 @@ Filters
 * UnionFieldListFilter
 
 
+Install requirements
+====================
+
+.. code-block:: bash
+
+    $ make develop
+
+
 Run demo app
 ============
 

@@ -1,7 +1,7 @@
 VERSION=2.0.0
 BUILDDIR=${PWD}/~build
 BINDIR=${PWD}/~build/bin
-PYTHONPATH:=${PWD}/tests/:${PWD}
+export PYTHONPATH:=${PWD}/tests/:${PWD}/src
 DJANGO?='1.7.x'
 
 .mkbuilddir:
@@ -9,13 +9,13 @@ DJANGO?='1.7.x'
 
 develop:
 	# pip install -e .[dev]
-	pip install -r requirements/testing.pip
-	pip install -r requirements/develop.pip
+	pip install -r src/requirements/testing.pip
+	pip install -r src/requirements/develop.pip
 
 demo:
-	cd src/tests/demo && python manage.py migrate
-	cd src/tests/demo && python manage.py loaddata demoproject
-	cd src/tests/demo && python manage.py runserver
+	cd tests/demo && python manage.py migrate
+	cd tests/demo && python manage.py loaddata demoproject
+	cd tests/demo && python manage.py runserver
 
 clean:
 	rm -fr ${BUILDDIR} dist *.egg-info .coverage coverage.xml pytest.xml .cache MANIFEST tests/demo/DEMODB.sqlite
