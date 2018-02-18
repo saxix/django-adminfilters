@@ -1,10 +1,15 @@
 {% load i18n %}
 <h3>{% blocktrans with title as filter_title %} By {{ filter_title }}{% endblocktrans %}</h3>
 <div id="field-{{ spec.field.name }}">
+    <ul>
     {% for choice in choices %}
+        <li><label>
         <input type="checkbox"{% if choice.selected %} checked="checked"{% endif %}
-            value="{{ choice.query_string }}"/> {{ choice.display }}<br/>
+            value="{{ choice.query_string }}"/> {{ choice.display }}
+        </label>
+        </li>
     {% endfor %}
+    </ul>
 </div>
 <script type="text/javascript">
     Array.prototype.unique = function(){
