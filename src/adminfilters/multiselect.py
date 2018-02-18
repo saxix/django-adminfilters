@@ -7,7 +7,7 @@ class MultipleSelectFieldListFilter(FieldListFilter):
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_kwarg = '%s_filter' % field_path
-        self.filter_statement = '%s__id' % field_path
+        self.filter_statement = '%s' % field_path
         self.lookup_val = request.GET.get(self.lookup_kwarg, None)
         self.lookup_choices = field.get_choices(include_blank=False)
         super(MultipleSelectFieldListFilter, self).__init__(
@@ -25,7 +25,7 @@ class MultipleSelectFieldListFilter(FieldListFilter):
         if value:
             values = value.split(',')
         # convert to integers if IntegerField
-        if type(self.field.rel.to._meta.pk) in [IntegerField, AutoField]:
+        if self.field.rel and type(self.field.rel.to._meta.pk) in [IntegerField, AutoField]:
             values = [int(x) for x in values]
         return values
 
