@@ -10,7 +10,7 @@ env:
  - TOXENV=py36-d20
 
 install:
-  - pip install tox "coverage<4.0" python-coveralls>=2.5 coveralls>=0.5 codecov
+  - pip install tox codecov
 
 script:
   - tox -e $TOXENV -- py.test tests -v --capture=no
