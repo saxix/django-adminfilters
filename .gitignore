@@ -1,3 +1,6 @@
+.coverage
+.tox
+build
 .cache
 .idea
 /dist

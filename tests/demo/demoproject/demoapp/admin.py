@@ -1,7 +1,8 @@
 from django.contrib.admin import ModelAdmin
 from django.contrib.auth.admin import UserAdmin
 
-from adminfilters.filters import (RelatedFieldCheckBoxFilter,
+from adminfilters.filters import (ForeignKeyFieldFilter,
+                                  RelatedFieldCheckBoxFilter,
                                   RelatedFieldRadioFilter,)
 from adminfilters.multiselect import (IntersectionFieldListFilter,
                                       UnionFieldListFilter,)
@@ -11,7 +12,9 @@ from .models import DemoModel, DemoRelated
 
 class DemoModelAdmin_RelatedFieldCheckBoxFilter(ModelAdmin):
     list_display = [f.name for f in DemoModel._meta.fields]
-    list_filter = (('demo_related', RelatedFieldCheckBoxFilter),)
+    list_filter = (('demo_related', RelatedFieldCheckBoxFilter),
+                   ForeignKeyFieldFilter.factory('demo_related|name|icontains'),
+                   )
 
 
 class DemoModelAdmin_RelatedFieldRadioFilter(ModelAdmin):

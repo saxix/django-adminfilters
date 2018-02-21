@@ -1,6 +1,6 @@
 import django.contrib.admin
 import django.contrib.admin.sites
-from django.conf.urls import include, url
+from django.conf.urls import url
 from django.contrib.auth.models import User
 
 from .demoapp import admin, models
@@ -11,6 +11,7 @@ class PublicAdminSite(django.contrib.admin.sites.AdminSite):
     def has_permission(self, request):
         request.user = User.objects.get_or_create(username='sax')[0]
         return True
+
 
 public_site = PublicAdminSite()
 django.contrib.admin.autodiscover()
@@ -26,6 +27,6 @@ public_site.register(models.DemoRelated, admin.DemoRelatedModelAdmin)
 public_site.register(User, admin.IUserAdmin)
 
 urlpatterns = (
-    url(r'', include(include(public_site.urls))),
-    url(r'^admin/', include(include(public_site.urls))),
+    url(r'', public_site.urls),
+    # url(r'^admin/', include(public_site.urls)),
 )

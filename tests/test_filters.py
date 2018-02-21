@@ -1,6 +1,10 @@
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
+
+try:
+    from django.urls import reverse
+except ImportError:  # django < 2.0
+    from django.core.urlresolvers import reverse
 
 
 class AdminFilterTests(TestCase):
