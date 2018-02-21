@@ -4,9 +4,9 @@ python:
   - 3.6
 
 env:
- - TOXENV=py27-d110
  - TOXENV=py27-d111
 
+ - TOXENV=py36-d111
  - TOXENV=py36-d20
 
 install:
