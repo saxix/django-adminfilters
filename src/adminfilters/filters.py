@@ -117,3 +117,54 @@ class PermissionPrefixFilter(StartWithFilter):
     title = 'Permission'
     parameter_name = 'perm'
     prefixes = (('add', 'Add'), ('change', 'Change'), ('delete', 'Delete'), ('--', 'Others'))
+
+
+class ForeignKeyFieldFilter(SimpleListFilter):
+    """
+    A FieldListFilter which allows to filter using a foreignkey field.
+    Field need to be defined using his factory and lookup must use
+    `|` instead of `__`
+    es.
+
+    ForeignKeyFieldFilter.factory('user|username|icontains')
+
+    """
+
+    template = 'adminfilters/text.html'
+
+    prefixes = None
+    lookup_val = 'subscriber|username|icontains'
+    parameter_name = None
+
+    @classmethod
+    def factory(cls, lookup):
+        return type('ForeignKeyFieldFilter',
+                    (cls,), {'parameter_name': lookup,
+                             'title': 'aaa'})
+
+    def has_output(self):
+        return True
+
+    def value(self):
+        return self.used_parameters.get(self.parameter_name, '')
+
+    def queryset(self, request, queryset):
+        if self.value():
+            field = self.parameter_name.replace('|', '__')
+            return queryset.filter(**{field: self.value()})
+        return queryset
+
+    def lookups(self, request, model_admin):
+        return []
+
+    def choices(self, changelist):
+        yield {
+            'selected': False,
+            'query_string': changelist.get_query_string(
+                {},
+                [self.parameter_name, ]
+            ),
+            'lookup_kwarg': self.parameter_name,
+            'display': _('All'),
+            'value': self.value(),
+        }

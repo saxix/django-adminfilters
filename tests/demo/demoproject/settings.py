@@ -12,7 +12,7 @@ DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'DEMODB.sqlite',  # Not used with sqlite3.
+        # 'NAME': 'DEMODB.sqlite',  # Not used with sqlite3.
         # Set to empty string for localhost. Not used with sqlite3.
         'HOST': '',
         'PORT': '',  # Set to empty string for default. Not used with sqlite3.

@@ -1,0 +1,9 @@
+{% load i18n %}
+<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
+<ul>
+    <input type="text"
+           onblur="location.href='{{ choices.0.query_string }}{{ choices.0.lookup_kwarg }}='+this.value"
+           onchange="location.href='{{ choices.0.query_string }}{{ choices.0.lookup_kwarg }}='+this.value"
+{#           onchange="location.href={{ choice.query_string|iriencode }}this.value"#}
+           value="{{ choices.0.value }}">
+</ul>

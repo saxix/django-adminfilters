@@ -18,10 +18,9 @@ demo:
 	cd tests/demo && python manage.py runserver
 
 clean:
-	rm -fr ${BUILDDIR} dist *.egg-info .coverage coverage.xml pytest.xml .cache MANIFEST tests/demo/DEMODB.sqlite
+	rm -fr ${BUILDDIR} dist *.egg-info .coverage coverage.xml pytest.xml .cache MANIFEST build .pytest_cache
 	find . -name __pycache__ | xargs rm -rf
 	find . -name "*.py?" -o -name "*.orig" -prune | xargs rm -rf
-	find adminactions/locale -name django.mo | xargs rm -f
 
 qa:
 	flake8 src tests
@@ -33,10 +32,6 @@ fullclean:
 	rm -fr .tox .cache
 	rm -fr *.sqlite
 	$(MAKE) clean
-	mysql -e 'DROP DATABASE IF EXISTS adminactions;';
-	psql -c 'DROP DATABASE IF EXISTS adminactions;' -U postgres;
-	mysql -e 'DROP DATABASE IF EXISTS test_adminactions;';
-	psql -c 'DROP DATABASE IF EXISTS test_adminactions;' -U postgres;
 
 
 docs: mkbuilddir

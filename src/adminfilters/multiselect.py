@@ -25,7 +25,12 @@ class MultipleSelectFieldListFilter(FieldListFilter):
         if value:
             values = value.split(',')
         # convert to integers if IntegerField
-        if self.field.rel and type(self.field.rel.to._meta.pk) in [IntegerField, AutoField]:
+        try:
+            pk = self.field.remote_field.model._meta.pk
+        except AttributeError:  # django < 2.0
+            pk = self.field.rel.to._meta.pk
+
+        if type(pk) in [IntegerField, AutoField]:
             values = [int(x) for x in values]
         return values
 

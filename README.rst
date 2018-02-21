@@ -28,7 +28,7 @@ Filters
 * MultipleSelectFieldListFilter
 * IntersectionFieldListFilter
 * UnionFieldListFilter
-
+* ForeignKeyFieldFilter
 
 Install requirements
 ====================

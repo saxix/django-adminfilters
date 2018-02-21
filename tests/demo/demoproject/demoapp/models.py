@@ -40,7 +40,8 @@ class DemoRelated(models.Model):
 
 class DemoModel(models.Model):
     name = models.CharField(max_length=255)
-    demo_related = models.ForeignKey('DemoRelated')
+    demo_related = models.ForeignKey('DemoRelated',
+                                     on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'demoapp'
