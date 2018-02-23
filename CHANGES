@@ -1,6 +1,6 @@
 Release 1.0
 ===========
-* add support for django 2.
+* add support for django 2.0
 * new `ForeignKeyFieldFilter`
 * drop support Django < 1.11
 
