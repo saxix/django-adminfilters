@@ -1,3 +1,4 @@
+.pytest_cache
 .coverage
 .tox
 build

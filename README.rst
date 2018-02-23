@@ -30,6 +30,8 @@ Filters
 * UnionFieldListFilter
 * ForeignKeyFieldFilter
 
+
+
 Run demo app
 ============
 
@@ -37,6 +39,7 @@ Run demo app
 
     $ git checkout https://github.com/saxix/django-adminfilters.git
     $ cd django-adminfilters
+    $ make develop
     $ make demo
 
 
