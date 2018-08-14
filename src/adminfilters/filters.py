@@ -35,19 +35,18 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
         super(RelatedFieldCheckBoxFilter, self).__init__(field, request, params, model, model_admin, field_path)
         self.lookup_val = request.GET.getlist(self.lookup_kwarg, [])
 
+
     def queryset(self, request, queryset):
-        if not len(self.lookup_val):
-            return queryset
+        filters = Q()
 
-        filters = []
         for val in self.lookup_val:
-            filters.append(Q(**{self.lookup_kwarg: val}))
+            filters.add(Q(**{self.lookup_kwarg: val}), Q.OR)
 
-        query = filters.pop()
-        for item in filters:
-            query |= item
+        if(self.lookup_val_isnull):
+            filters.add(Q(**{self.lookup_kwarg_isnull: self.lookup_val_isnull}), Q.OR)
 
-        return queryset.filter(query)
+        return queryset.filter(filters)
+
 
     def choices(self, cl):
         try:
@@ -67,6 +66,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
             'query_string': cl.get_query_string({self.lookup_kwarg_isnull: 1},
                                                 [self.lookup_kwarg, self.lookup_kwarg_isnull]),
             'display': _('None'),
+            'uncheck_to_remove': "{}=1".format(self.lookup_kwarg_isnull)
         }
         for pk_val, val in self.lookup_choices:
             yield {
@@ -77,6 +77,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
                     },
                     [self.lookup_kwarg_isnull]),
                 'display': val,
+                'uncheck_to_remove': "{}={}".format(self.lookup_kwarg, pk_val) if pk_val else ""
             }
         if (isinstance(self.field, ForeignObjectRel) and
                 self.field.field.null or
@@ -89,6 +90,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
                         self.lookup_kwarg_isnull: 'True',
                     },
                     [self.lookup_kwarg]),
+                'uncheck_to_remove': "{}=1".format(self.lookup_kwarg_isnull),
                 'display': EMPTY_CHANGELIST_VALUE,
             }
 
