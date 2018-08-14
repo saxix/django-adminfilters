@@ -48,7 +48,6 @@
                 Array.prototype.push.apply(params, filter);
             }else {
                 params.splice(params.indexOf(uncheckbox_to_remove), 1);
-
             }
 
             var loc =  base + "?" + params.unique().join("&");
@@ -56,7 +55,7 @@
             if(uncheckbox_to_remove == '') {
                 location.href = current_checkbox.val();
             } else
-               location.href = loc;
+                location.href = loc;
         });
     })(django.jQuery);
 </script>
