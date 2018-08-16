@@ -16,6 +16,13 @@ class MultipleSelectFieldListFilter(FieldListFilter):
     def expected_parameters(self):
         return [self.lookup_kwarg]
 
+    def get_field(self):
+        try:
+            field = self.field.remote_field.model._meta.pk
+        except AttributeError:  # django < 2.0
+            field = self.field.rel.to._meta.pk
+        return field
+
     def values(self):
         """
         Returns a list of values to filter on.
@@ -24,13 +31,10 @@ class MultipleSelectFieldListFilter(FieldListFilter):
         value = self.used_parameters.get(self.lookup_kwarg, None)
         if value:
             values = value.split(',')
-        # convert to integers if IntegerField
-        try:
-            pk = self.field.remote_field.model._meta.pk
-        except AttributeError:  # django < 2.0
-            pk = self.field.rel.to._meta.pk
 
-        if type(pk) in [IntegerField, AutoField]:
+        field = self.get_field()
+        # convert to integers if IntegerField
+        if type(field) in [IntegerField, AutoField]:
             values = [int(x) for x in values]
         return values
 
@@ -87,9 +91,21 @@ class IntersectionFieldListFilter(MultipleSelectFieldListFilter):
 class UnionFieldListFilter(MultipleSelectFieldListFilter):
     """
     A FieldListFilter which allows multiple selection of
-    filters for many-to-many type fields. A list of objects will be
-    returned whose m2m contains all the selected filters.
+    filters for many-to-many type fields, or any type with choices.
+    A list of objects will be returned whose m2m or value set
+    contains one of the selected filters.
     """
+
+    def get_field(self):
+        try:
+            field = super(UnionFieldListFilter, self).get_field()
+        except AttributeError:
+            if hasattr(self.field, "choices") and self.field.choices:
+                field = self.field  # It's a *Field with choises
+            else:
+                raise AttributeError(
+                    'Multiselect field must be a FK or any type with choices')
+        return field
 
     def queryset(self, request, queryset):
         filter_statement = "%s__in" % self.filter_statement
