@@ -1,9 +1,14 @@
 {% load i18n %}
 <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
-<div>
+<ul>
     {% for choice in choices %}
-        <input type="radio"{% if choice.selected %} checked="checked"{% endif %}
-               onchange="location.href=this.value"
-               value="{{ choice.query_string|iriencode }}"><a href="#" onclick="">{{ choice.display }}</a> <br/>
+        <li{% if choice.selected %} class="selected"{% endif %}>
+            <a href="#" onclick="">
+                <input type="radio"{% if choice.selected %} checked="checked"{% endif %}
+               onchange="location.href=this.value" value="{{ choice.query_string|iriencode }}">
+                            {{ choice.display }}
+
+            </a>
+        </li>
     {% endfor %}
-</div>
+</ul>
