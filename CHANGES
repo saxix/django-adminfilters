@@ -1,3 +1,9 @@
+Release 1.1
+===========
+* add support for django 2.1
+* updates filters templates
+
+
 Release 1.0
 ===========
 * add support for django 2.0

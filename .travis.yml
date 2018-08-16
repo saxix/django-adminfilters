@@ -8,6 +8,7 @@ env:
 
  - TOXENV=py36-d111
  - TOXENV=py36-d20
+ - TOXENV=py36-d21
 
 install:
   - pip install tox codecov

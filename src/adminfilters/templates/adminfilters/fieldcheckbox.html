@@ -5,7 +5,7 @@
     {% for choice in choices %}
         <li><label>
         <input type="checkbox"{% if choice.selected %} checked="checked"{% endif %}
-            value="{{ choice.query_string }}"/> {{ choice.display }}
+        data-uncheck-to-remove="{{ choice.uncheck_to_remove }}" value="{{ choice.query_string }}"/> {{ choice.display }}
         </label>
         </li>
     {% endfor %}
@@ -26,26 +26,36 @@
         $('#field-{{ spec.field.name }} input[type=checkbox]').change(function(){
             var rex = /(.*)\?(.*)/gi;
             var m = rex.exec(location.href);
-            if (m){
+            var current_checkbox = $(this);
+            var uncheckbox_to_remove = current_checkbox.data('uncheck-to-remove');
+
+            if(m) {
                 var base = m[1];
                 var params = m[2].split("&");
-            }else{
+            }else {
                 var base = location.href;
                 var params = [];
             }
-            var filter = $(this).val().replace("?", "");
+            var filter = current_checkbox.val().replace("?", "").split('&');
+
             if ( filter == "" ){
                 location.href = base;
                 return;
             }
-            if ($(this).is(':checked')){
-                params.push( filter );
-            }else{
-                params.splice(params.indexOf(filter), 1);
+
+
+            if (current_checkbox.is(':checked')){
+                Array.prototype.push.apply(params, filter);
+            }else {
+                params.splice(params.indexOf(uncheckbox_to_remove), 1);
             }
+
             var loc =  base + "?" + params.unique().join("&");
-            console.log( loc );
-            location.href = loc;
+
+            if(uncheckbox_to_remove == '') {
+                location.href = current_checkbox.val();
+            } else
+                location.href = loc;
         });
     })(django.jQuery);
 </script>
