@@ -30,12 +30,6 @@ Filters
 * UnionFieldListFilter
 * ForeignKeyFieldFilter
 
-Install requirements
-====================
-
-.. code-block:: bash
-
-    $ make develop
 
 
 Run demo app
@@ -45,6 +39,7 @@ Run demo app
 
     $ git checkout https://github.com/saxix/django-adminfilters.git
     $ cd django-adminfilters
+    $ make develop
     $ make demo
 
 
