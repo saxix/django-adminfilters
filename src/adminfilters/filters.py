@@ -54,12 +54,17 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
         except ImportError:
             EMPTY_CHANGELIST_VALUE = self.model_admin.get_empty_value_display()
 
+        uncheck_all = []
+        uncheck_all.append("{}={}".format(self.lookup_kwarg_isnull, 1))
+        for i in self.lookup_choices:
+            uncheck_all.append("{}={}".format(self.lookup_kwarg, i[0]))
+
         yield {
             'selected': not len(self.lookup_val) and not self.lookup_val_isnull,
-            'query_string': cl.get_query_string(
-                {},
-                [self.lookup_kwarg, self.lookup_kwarg_isnull]),
+            'query_string': cl.get_query_string({}, [self.lookup_kwarg, self.lookup_kwarg_isnull]),
             'display': _('All'),
+            'check_to_remove': "&".join(uncheck_all)
+
         }
         yield {
             'selected': self.lookup_val_isnull,
