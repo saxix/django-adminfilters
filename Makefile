@@ -1,4 +1,4 @@
-VERSION=2.0.0
+maVERSION=2.0.0
 BUILDDIR=${PWD}/~build
 BINDIR=${PWD}/~build/bin
 export PYTHONPATH:=${PWD}/tests/:${PWD}/src
