@@ -1,3 +1,9 @@
+Release 1.3
+===========
+* add TextFieldFilter
+* drop support for python < 3.x
+
+
 Release 1.2
 ===========
 * drop support for django < 2.1

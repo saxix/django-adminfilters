@@ -31,6 +31,15 @@ Filters
 * ForeignKeyFieldFilter
 
 
+Usage examples
+==============
+
+.. code-block:: python
+
+    class UserAdmin(ModelAdmin):
+        list_filter = (TextFieldFilter.factory('name__istartswith'),)
+
+
 
 Run demo app
 ============

@@ -2,13 +2,13 @@
     "pk": 1,
     "model": "demoapp.demorelated",
     "fields": {
-        "name": "model 1"
+        "name": "related model 1"
     }
 }, {
     "pk": 2,
     "model": "demoapp.demorelated",
     "fields": {
-        "name": "model 2"
+        "name": "related model 2"
     }
 }, {
     "pk": 1,

@@ -1,4 +1,5 @@
 pdbpp
 django
-autopep8
 check-manifest
+pytest
+flake8
