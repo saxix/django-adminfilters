@@ -37,10 +37,7 @@ Usage examples
 .. code-block:: python
 
     class UserAdmin(ModelAdmin):
-        list_filter = (('demo_related', RelatedFieldCheckBoxFilter),
-                   ForeignKeyFieldFilter.factory('demo_related|name|icontains'),
-                   TextFieldFilter.factory('name__istartswith'),
-                   )
+        list_filter = (TextFieldFilter.factory('name__istartswith'),)
 
 
 
