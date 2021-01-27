@@ -4,11 +4,9 @@ python:
   - 3.6
 
 env:
- - TOXENV=py27-d111
-
- - TOXENV=py36-d111
- - TOXENV=py36-d20
  - TOXENV=py36-d21
+ - TOXENV=py36-d22
+ - TOXENV=py36-d31
 
 install:
   - pip install tox codecov
