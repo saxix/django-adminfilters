@@ -3,3 +3,6 @@
 *.egg-info
 !.gitignore
 .travis.yml
+dist/
+coverage.xml
+pytest.xml

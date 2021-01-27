@@ -31,6 +31,18 @@ Filters
 * ForeignKeyFieldFilter
 
 
+Usage examples
+==============
+
+.. code-block:: python
+
+    class UserAdmin(ModelAdmin):
+        list_filter = (('demo_related', RelatedFieldCheckBoxFilter),
+                   ForeignKeyFieldFilter.factory('demo_related|name|icontains'),
+                   TextFieldFilter.factory('name__istartswith'),
+                   )
+
+
 
 Run demo app
 ============

@@ -2,13 +2,10 @@ from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           RelatedFieldListFilter,
                                           SimpleListFilter, )
 from django.db.models.query_utils import Q
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
 
-# try:
 from django.db.models.fields.related import ForeignObjectRel
-# except ImportError:
-# from django.db.models.related import RelatedObject as ForeignObjectRel
 
 
 def get_attr(obj, attr, default=None):
@@ -84,7 +81,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
         }
         for pk_val, val in self.lookup_choices:
             yield {
-                'selected': smart_text(pk_val) in self.lookup_val,
+                'selected': smart_str(pk_val) in self.lookup_val,
                 'query_string': cl.get_query_string(
                     {
                         self.lookup_kwarg: pk_val,
@@ -93,10 +90,9 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
                 'display': val,
                 'uncheck_to_remove': "{}={}".format(self.lookup_kwarg, pk_val) if pk_val else ""
             }
-        if (isinstance(self.field, ForeignObjectRel) and
-                self.field.field.null or
-                hasattr(self.field, 'rel') and
-                self.field.null):
+        if (isinstance(self.field, ForeignObjectRel)
+                and self.field.field.null
+                or hasattr(self.field, 'rel') and self.field.null):
             yield {
                 'selected': bool(self.lookup_val_isnull),
                 'query_string': cl.get_query_string(
@@ -109,59 +105,26 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
             }
 
 
-class StartWithFilter(SimpleListFilter):
-    prefixes = None
-    lookup_val = None
-
-    def lookups(self, request, model_admin):
-        return self.prefixes
-
-    def queryset(self, request, queryset):
-        if not self.value():
-            return queryset
-        if self.value() == '--':
-            k = [prefix for prefix, label in self.prefixes]
-            query = Q()
-            for el in k:
-                query |= Q(codename__startswith=el)
-            return queryset.exclude(query)
-        else:
-            return queryset.filter(codename__startswith=self.value())
-
-
-class PermissionPrefixFilter(StartWithFilter):
-    title = 'Permission'
-    parameter_name = 'perm'
-    prefixes = (('add', 'Add'), ('change', 'Change'), ('delete', 'Delete'), ('--', 'Others'))
-
-
-class ForeignKeyFieldFilter(SimpleListFilter):
-    """
-    A FieldListFilter which allows to filter using a foreignkey field.
-    Field need to be defined using his factory and lookup must use
-    `|` instead of `__`
-    es.
-
-    ForeignKeyFieldFilter.factory('user|username|icontains')
-
-    """
-
+class TextFieldFilter(SimpleListFilter):
     template = 'adminfilters/text.html'
 
     prefixes = None
-    lookup_val = 'fk_name|field|filter'
+    # lookup_val = 'field|filter'
     parameter_name = None
 
     @classmethod
-    def factory(cls, lookup, title=""):
+    def factory(cls, lookup, title=None):
         if title is None:
-            title = lookup.replace('|', ',')
-        parts = lookup.split('|')
-        if len(parts) < 3:
-            raise Exception("lookup must contains at least three parts. ForeignKey|Field|Filter (groups|name|istartswith)")
+            title = lookup.replace('__', ', ')
+        parts = lookup.split('__')
+        if len(parts) == 1:
+            lookup = '%s__iexact' % parts[0]
+        # elif len(parts) > 2:
+        #     raise Exception(
+        #         "lookup must contains at least two parts. ForeignKey|Field|Filter (groups|name|istartswith)")
 
-        return type('ForeignKeyFieldFilter',
-                    (cls,), {'parameter_name': lookup,
+        return type('TextFieldFilter',
+                    (cls,), {'parameter_name': lookup.replace('__', '|'),
                              'title': title})
 
     @property
@@ -195,3 +158,28 @@ class ForeignKeyFieldFilter(SimpleListFilter):
             'display': _('All'),
             'value': self.value(),
         }
+
+
+class PermissionPrefixFilter(SimpleListFilter):
+    title = 'Permission'
+    parameter_name = 'perm'
+    prefixes = (('add', 'Add'), ('change', 'Change'), ('delete', 'Delete'), ('--', 'Others'))
+    lookup_val = None
+
+    def lookups(self, request, model_admin):
+        return self.prefixes
+
+    def queryset(self, request, queryset):
+        if not self.value():
+            return queryset
+        if self.value() == '--':
+            k = [prefix for prefix, label in self.prefixes]
+            query = Q()
+            for el in k:
+                query |= Q(codename__startswith=el)
+            return queryset.exclude(query)
+        else:
+            return queryset.filter(codename__startswith=self.value())
+
+
+ForeignKeyFieldFilter = TextFieldFilter
