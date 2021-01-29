@@ -1,6 +1,8 @@
+import re
+
 from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           RelatedFieldListFilter,
-                                          SimpleListFilter, ChoicesFieldListFilter, )
+                                          SimpleListFilter, ChoicesFieldListFilter, FieldListFilter, )
 from django.db.models.query_utils import Q
 from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
@@ -127,9 +129,9 @@ class TextFieldFilter(SimpleListFilter):
         parts = lookup.split('__')
         if len(parts) == 1:
             lookup = '%s__iexact' % parts[0]
-        # elif len(parts) > 2:
-        #     raise Exception(
-        #         "lookup must contains at least two parts. ForeignKey|Field|Filter (groups|name|istartswith)")
+        elif len(parts) < 2:
+            raise Exception(
+                "lookup must contains at least two parts. ForeignKey|Field|Filter (groups|name|istartswith)")
 
         return type('TextFieldFilter',
                     (cls,), {'parameter_name': lookup.replace('__', '|'),
@@ -191,3 +193,38 @@ class PermissionPrefixFilter(SimpleListFilter):
 
 
 ForeignKeyFieldFilter = TextFieldFilter
+
+
+class MaxMinFilter(FieldListFilter):
+    template = 'adminfilters/text.html'
+
+    rex = re.compile('([<>=])?([-+]?[0-9]*)')
+    map = {">": "gt",
+           "<": "lt",
+           "=": "exact"}
+
+    def choices(self, changelist):
+        yield {
+            'selected': False,
+            'query_string': changelist.get_query_string(
+                {},
+                [self.field.name, ]
+            ),
+            'lookup_kwarg': self.field.name,
+            'display': _('All'),
+            'value': self.value(),
+        }
+
+    def value(self):
+        return self.used_parameters.get(self.field.name, '')
+
+    def expected_parameters(self):
+        return [self.field.name]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            raw = self.value()
+            op, value = self.rex.match(raw).groups()
+            match = "%s__%s" % (self.field.name, self.map[op or '='])
+            queryset = queryset.filter(**{match: value})
+        return queryset

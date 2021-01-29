@@ -1,3 +1,8 @@
+Release 1.3.2
+=============
+* add MaxMinFilter
+
+
 Release 1.3.1
 =============
 * add ChoicesFieldComboFilter, ChoicesFieldRadioFilter
