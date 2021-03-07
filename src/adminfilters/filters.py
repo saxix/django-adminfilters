@@ -1,13 +1,13 @@
 import re
-
 from django.contrib.admin.filters import (AllValuesFieldListFilter,
+                                          ChoicesFieldListFilter,
+                                          FieldListFilter,
                                           RelatedFieldListFilter,
-                                          SimpleListFilter, ChoicesFieldListFilter, FieldListFilter, )
+                                          SimpleListFilter,)
+from django.db.models.fields.related import ForeignObjectRel
 from django.db.models.query_utils import Q
 from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
-
-from django.db.models.fields.related import ForeignObjectRel
 
 
 def get_attr(obj, attr, default=None):
@@ -100,8 +100,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
                 'display': val,
                 'uncheck_to_remove': "{}={}".format(self.lookup_kwarg, pk_val) if pk_val else ""
             }
-        if (isinstance(self.field, ForeignObjectRel)
-                and self.field.field.null
+        if (isinstance(self.field, ForeignObjectRel) and self.field.field.null
                 or hasattr(self.field, 'rel') and self.field.null):
             yield {
                 'selected': bool(self.lookup_val_isnull),

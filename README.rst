@@ -18,6 +18,7 @@ Collection of extra filters for the Django admin site
 Filters
 =======
 
+* AutocompleteFilter
 * AllValuesComboFilter
 * AllValuesRadioFilter
 * RelatedFieldComboFilter

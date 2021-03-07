@@ -1,8 +1,7 @@
 from django import forms
 from django.conf import settings
-from django.contrib.admin import register, RelatedFieldListFilter, FieldListFilter
+from django.contrib.admin import FieldListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
-from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import get_language
 
@@ -26,9 +25,9 @@ class AutoCompleteFilter(FieldListFilter):
         return [self.lookup_kwarg, self.lookup_kwarg_isnull]
 
     def get_url(self):
-        return reverse(self.url_name % (self.admin_site.name, self.
-                                        model._meta.app_label, self.
-                                        model._meta.model_name))
+        return reverse(self.url_name % (self.admin_site.name,
+                                        self.model._meta.app_label,
+                                        self.model._meta.model_name))
 
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=[self.lookup_kwarg, self.lookup_kwarg_isnull])
@@ -42,13 +41,12 @@ class AutoCompleteFilter(FieldListFilter):
         i18n_name = SELECT2_TRANSLATIONS.get(get_language())
         i18n_file = ('admin/js/vendor/select2/i18n/%s.js' % i18n_name,) if i18n_name else ()
         return forms.Media(
-            js=(
-                   'admin/js/vendor/jquery/jquery%s.js' % extra,
-                   'admin/js/vendor/select2/select2.full%s.js' % extra,
-               ) + i18n_file + (
-                   'admin/js/jquery.init.js',
-                   'admin/js/autocomplete.js',
-               ),
+            js=('admin/js/vendor/jquery/jquery%s.js' % extra,
+                'admin/js/vendor/select2/select2.full%s.js' % extra,
+                ) + i18n_file + ('admin/js/jquery.init.js',
+                                 'admin/js/autocomplete.js',
+                                 'adminfilters/adminfilters.js',
+                                 ),
             css={
                 'screen': (
                     'admin/css/vendor/select2/select2%s.css' % extra,

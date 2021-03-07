@@ -10,23 +10,9 @@
                 data-theme="admin-autocomplete"
                 data-allow-clear="true"
                 data-placeholder=""
-                class="admin-autocomplete">
+                class="filter-autocomplete admin-autocomplete">
     {% for c in choices %}<option selected="selected">{{ c }}</option>{% endfor %}
 </select>
     </li>
 </ul>
 {{ spec.media }}
-<script>
-    ;
-    (function ($) {
-        $('#ac_{{ spec.field.name }}').change(function (e) {
-            var sel = django.jQuery(e.target).find(':selected').val();
-            var qs = $(e.target).data('ajax--qs');
-            var param = $(e.target).data('ajax--param');
-            var url = `${qs}&${param}=${sel}`;
-            location.href = url;
-        });
-
-    })(django.jQuery);
-
-</script>
