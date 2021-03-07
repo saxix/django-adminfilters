@@ -1,0 +1,18 @@
+{% load i18n %}
+<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
+<ul><li><select style="max-width: 95%" id="ac_{{ spec.field.name }}"
+                data-ajax--cache="true"
+                data-ajax--delay="250"
+                data-ajax--qs="{{ spec.query_string }}"
+                data-ajax--param="{{ spec.lookup_kwarg }}"
+                data-ajax--type="GET"
+                data-ajax--url="{{ spec.url }}"
+                data-theme="admin-autocomplete"
+                data-allow-clear="true"
+                data-placeholder=""
+                class="filter-autocomplete admin-autocomplete">
+    {% for c in choices %}<option selected="selected">{{ c }}</option>{% endfor %}
+</select>
+    </li>
+</ul>
+{{ spec.media }}

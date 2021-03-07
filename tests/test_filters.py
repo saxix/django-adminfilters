@@ -1,7 +1,4 @@
 import pytest
-from django.contrib.auth.models import User
-from django.test import RequestFactory, TestCase
-from django.urls import reverse
 
 from adminfilters.filters import TextFieldFilter, ForeignKeyFieldFilter
 from demoproject.demoapp.models import DemoModelField, DemoRelated, DemoModel
@@ -29,7 +26,7 @@ DATA = {
 
 @pytest.fixture
 def fixtures(db):
-    obj1 = DemoModelField.objects.create(char="a1", unique=1, **DATA)
+    DemoModelField.objects.create(char="a1", unique=1, **DATA)
     related = DemoRelated.objects.create(name='related1')
     DemoModel.objects.create(demo_related=related, name='name1')
     return DemoModelField.objects.create(char="a2", unique=2, **DATA)

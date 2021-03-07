@@ -7,6 +7,12 @@ DJANGO?='1.7.x'
 .mkbuilddir:
 	mkdir -p ${BUILDDIR}
 
+lint:
+	flake8 src tests
+	isort -rc src tests --check-only
+	check-manifest
+
+
 develop:
 	# pip install -e .[dev]
 	pip install -r src/requirements/testing.pip
@@ -21,12 +27,6 @@ clean:
 	rm -fr ${BUILDDIR} dist *.egg-info .coverage coverage.xml pytest.xml .cache MANIFEST build .pytest_cache
 	find . -name __pycache__ | xargs rm -rf
 	find . -name "*.py?" -o -name "*.orig" -prune | xargs rm -rf
-
-qa:
-	flake8 src tests
-	isort -rc src tests --check-only
-	check-manifest
-
 
 fullclean:
 	rm -fr .tox .cache
