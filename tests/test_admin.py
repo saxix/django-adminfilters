@@ -7,7 +7,7 @@ class AdminFilterTests(TestCase):
     fixtures = ['demoproject']
 
     def setUp(self):
-                # Every test needs access to the request factory.
+        # Every test needs access to the request factory.
         self.factory = RequestFactory()
         self.user = User.objects.create_user(
             username='sax', email='sax@sax.com', password='top_secret')
@@ -68,7 +68,6 @@ class AdminFilterTests(TestCase):
         response = self.client.get(reverse(
             'admin:demoapp_demomodel_intersectionfieldlistfilter_changelist') + "?demo_related_filter=1%2C2")
         self.assertEqual(response.status_code, 200)
-
 
     def test_admin_TextFieldFilter(self):
         """
