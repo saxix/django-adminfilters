@@ -32,7 +32,7 @@ class AutoCompleteFilter(FieldListFilter):
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=[self.lookup_kwarg, self.lookup_kwarg_isnull])
         if self.lookup_val:
-            return [str(self.model.objects.get(pk=self.lookup_val))]
+            return [str(self.model.objects.get(pk=self.lookup_val)) or ""]
         return []
 
     @property
