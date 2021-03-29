@@ -47,8 +47,10 @@ Run demo app
 
 .. code-block:: bash
 
-    $ git checkout https://github.com/saxix/django-adminfilters.git
+    $ git clone https://github.com/saxix/django-adminfilters.git
     $ cd django-adminfilters
+    $ python3 -m venv .venv
+    $ source .venv/bin/activate
     $ make develop
     $ make demo
 
