@@ -1,4 +1,5 @@
 import re
+from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           ChoicesFieldListFilter,
                                           FieldListFilter,
@@ -197,8 +198,10 @@ ForeignKeyFieldFilter = TextFieldFilter
 class MaxMinFilter(FieldListFilter):
     template = 'adminfilters/text.html'
 
-    rex = re.compile('([<>=])?([-+]?[0-9]*)')
-    map = {">": "gt",
+    rex = re.compile('(>=|<=|>|<|=)?([-+]?[0-9]+)')
+    map = {">=": "gte",
+           "<=": "lte",
+           ">": "gt",
            "<": "lt",
            "=": "exact"}
 
@@ -223,7 +226,11 @@ class MaxMinFilter(FieldListFilter):
     def queryset(self, request, queryset):
         if self.value():
             raw = self.value()
-            op, value = self.rex.match(raw).groups()
-            match = "%s__%s" % (self.field.name, self.map[op or '='])
-            queryset = queryset.filter(**{match: value})
+            m = self.rex.match(raw)
+            if m and m.groups():
+                op, value = self.rex.match(raw).groups()
+                match = "%s__%s" % (self.field.name, self.map[op or '='])
+                queryset = queryset.filter(**{match: value})
+            else:
+                raise IncorrectLookupParameters()
         return queryset
