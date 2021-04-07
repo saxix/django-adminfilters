@@ -18,6 +18,9 @@ class AutoCompleteFilter(FieldListFilter):
         self.admin_site = model_admin.admin_site
         self.query_string = ""
         self.model = self.field.related_model
+        self.model_name = model._meta.model_name
+        self.app_label = model._meta.app_label
+        self.field_name = field.name
 
         self.url = self.get_url()
 
@@ -25,6 +28,8 @@ class AutoCompleteFilter(FieldListFilter):
         return [self.lookup_kwarg, self.lookup_kwarg_isnull]
 
     def get_url(self):
+        if django.VERSION[:2] >= (3,2):
+            return reverse("admin:autocomplete")
         return reverse(self.url_name % (self.admin_site.name,
                                         self.model._meta.app_label,
                                         self.model._meta.model_name))
