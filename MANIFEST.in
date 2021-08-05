@@ -12,6 +12,7 @@ recursive-include src *.html
 recursive-include src *.json
 recursive-include src *.py
 recursive-include src *.js
+recursive-include src *.css
 recursive-include src *.coveragerc
 recursive-include src *.pip
 
