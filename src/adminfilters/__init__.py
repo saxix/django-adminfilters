@@ -1,3 +1,3 @@
 NAME = "django-adminfilters"
-VERSION = __version__ = "1.5.0"
+VERSION = __version__ = "1.5.1"
 __author__ = 'sax'
