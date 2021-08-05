@@ -2,6 +2,7 @@
 ~*
 *.egg-info
 !.gitignore
+!.bumpversion.cfg
 .travis.yml
 dist/
 coverage.xml

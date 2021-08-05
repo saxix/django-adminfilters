@@ -1,6 +1,6 @@
 from django.contrib.admin.filters import FieldListFilter
 from django.db.models.fields import AutoField, IntegerField
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class MultipleSelectFieldListFilter(FieldListFilter):
