@@ -1,4 +1,4 @@
-{% load i18n adminfilters %}
+{% load i18n  %}
 <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
 <ul><li><select style="max-width: 95%" id="ac_{{ spec.field.name }}"
                 data-ajax--cache="true"
