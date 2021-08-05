@@ -56,7 +56,7 @@ class AutoCompleteFilter(FieldListFilter):
             css={
                 'screen': (
                     'admin/css/vendor/select2/select2%s.css' % extra,
-                    'admin/css/autocomplete.css',
+                    'adminfilters/adminfilters.css',
                 ),
             },
         )

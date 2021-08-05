@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n adminfilters %}
 <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
 <ul><li><select style="max-width: 95%" id="ac_{{ spec.field.name }}"
                 data-ajax--cache="true"
@@ -7,15 +7,20 @@
                 data-ajax--param="{{ spec.lookup_kwarg }}"
                 data-ajax--type="GET"
                 data-ajax--url="{{ spec.url }}"
-                data-theme="admin-autocomplete"
+                data-theme="filter-autocomplete"
                 data-app-label="{{ spec.app_label }}"
                 data-model-name="{{ spec.model_name }}"
                 data-field-name="{{ spec.field_name }}"
                 data-allow-clear="true"
                 data-placeholder=""
-                class="filter-autocomplete admin-autocomplete">
+                class="filter-autocomplete ">
     {% for c in choices %}<option selected="selected">{{ c }}</option>{% endfor %}
 </select>
     </li>
 </ul>
 {{ spec.media }}
+<script>
+    ;(function ($) {
+        $('#ac_{{ spec.field.name }}').djangoAdminSelect2();
+    })(django.jQuery);
+</script>
