@@ -1,6 +1,7 @@
 import re
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.filters import (AllValuesFieldListFilter,
+                                          BooleanFieldListFilter,
                                           ChoicesFieldListFilter,
                                           FieldListFilter,
                                           RelatedFieldListFilter,
@@ -43,6 +44,10 @@ class ChoicesFieldComboFilter(ChoicesFieldListFilter):
 
 
 class ChoicesFieldRadioFilter(ChoicesFieldListFilter):
+    template = 'adminfilters/fieldradio.html'
+
+
+class BooleanRadioFilter(BooleanFieldListFilter):
     template = 'adminfilters/fieldradio.html'
 
 
@@ -198,12 +203,17 @@ ForeignKeyFieldFilter = TextFieldFilter
 class MaxMinFilter(FieldListFilter):
     template = 'adminfilters/text.html'
 
-    rex = re.compile('(>=|<=|>|<|=)?([-+]?[0-9]+)')
+    rex1 = re.compile(r'^(>=|<=|>|<|=)?([-+]?[0-9]+)$')
+    rex2 = re.compile(r'(\d+),?')
+    rex3 = re.compile(r'(\d+)')
+    rex4 = re.compile(r'^(<>)?([-+]?[0-9]+)$')
     map = {">=": "gte",
            "<=": "lte",
            ">": "gt",
            "<": "lt",
-           "=": "exact"}
+           "=": "exact",
+           "<>": "not",
+           }
 
     def choices(self, changelist):
         yield {
@@ -226,11 +236,24 @@ class MaxMinFilter(FieldListFilter):
     def queryset(self, request, queryset):
         if self.value():
             raw = self.value()
-            m = self.rex.match(raw)
-            if m and m.groups():
-                op, value = self.rex.match(raw).groups()
+            m1 = self.rex1.match(raw)
+            m2 = self.rex2.match(raw)
+            m3 = self.rex3.match(raw)
+            m4 = self.rex4.match(raw)
+            if m1 and m1.groups():
+                op, value = self.rex1.match(raw).groups()
                 match = "%s__%s" % (self.field.name, self.map[op or '='])
                 queryset = queryset.filter(**{match: value})
+            elif m2 and m2.groups():
+                value = raw.split(',')
+                match = "%s__in" % self.field.name
+                queryset = queryset.filter(**{match: value})
+            elif m3 and m3.groups():
+                match = "%s__exact" % self.field.name
+                queryset = queryset.filter(**{match: raw})
+            elif m4 and m3.groups():
+                match = "%s__exact" % self.field.name
+                queryset = queryset.exclude(**{match: value})
             else:
                 raise IncorrectLookupParameters()
         return queryset
