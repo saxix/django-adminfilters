@@ -29,7 +29,7 @@ class AutoCompleteFilter(FieldListFilter):
         return [self.lookup_kwarg, self.lookup_kwarg_isnull]
 
     def get_url(self):
-        if django.VERSION[:2] >= (3,2):
+        if django.VERSION[:2] >= (3, 2):
             return reverse("admin:autocomplete")
         return reverse(self.url_name % (self.admin_site.name,
                                         self.model._meta.app_label,

@@ -3,12 +3,11 @@
 <ul>
     {% for choice in choices %}
         <li{% if choice.selected %} class="selected"{% endif %}>
-            <a href="#" onclick="">
+            <label>
                 <input type="radio"{% if choice.selected %} checked="checked"{% endif %}
                onchange="location.href=this.value" value="{{ choice.query_string|iriencode }}">
                             {{ choice.display }}
-
-            </a>
+            </label>
         </li>
     {% endfor %}
 </ul>

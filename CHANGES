@@ -1,3 +1,8 @@
+Release 1.6
+=============
+* new `BooleanRadioFilter`
+* new operators for `MaxMinFilter`. Now supports (=1; >1; >=1; <1; <=1; <>1; 1,2,3;)
+
 Release 1.5.1
 =============
 * bug fixes
