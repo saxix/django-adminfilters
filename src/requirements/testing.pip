@@ -6,3 +6,5 @@ pytest-django
 pytest-echo
 pytest-pythonpath
 tox
+flake8
+isort
