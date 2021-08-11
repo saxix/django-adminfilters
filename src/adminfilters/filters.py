@@ -1,11 +1,12 @@
 import re
-from django.contrib.admin.options import IncorrectLookupParameters
+
 from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           BooleanFieldListFilter,
                                           ChoicesFieldListFilter,
                                           FieldListFilter,
                                           RelatedFieldListFilter,
                                           SimpleListFilter,)
+from django.contrib.admin.options import IncorrectLookupParameters
 from django.db.models.fields.related import ForeignObjectRel
 from django.db.models.query_utils import Q
 from django.utils.encoding import smart_str
@@ -106,8 +107,8 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
                 'display': val,
                 'uncheck_to_remove': "{}={}".format(self.lookup_kwarg, pk_val) if pk_val else ""
             }
-        if (isinstance(self.field, ForeignObjectRel) and self.field.field.null
-                or hasattr(self.field, 'rel') and self.field.null):
+        if ((isinstance(self.field, ForeignObjectRel) and self.field.field.null or
+             hasattr(self.field, 'rel') and self.field.null)):
             yield {
                 'selected': bool(self.lookup_val_isnull),
                 'query_string': cl.get_query_string(
