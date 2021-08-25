@@ -21,6 +21,8 @@ Filters
 * AutocompleteFilter
 * AllValuesComboFilter
 * AllValuesRadioFilter
+* BooleanRadioFilter
+* NumberFilter
 * RelatedFieldComboFilter
 * RelatedFieldRadioFilter
 * RelatedFieldCheckBoxFilter
@@ -44,6 +46,10 @@ Usage examples
 
 Run demo app
 ============
+
+Note: django-adminfilters is also included in django-smart-admin, there is a running demo at https://django-smart-admin.herokuapp.com/
+
+
 
 .. code-block:: bash
 

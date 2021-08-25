@@ -5,11 +5,12 @@ from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           ChoicesFieldListFilter,
                                           FieldListFilter,
                                           RelatedFieldListFilter,
-                                          SimpleListFilter,)
+                                          SimpleListFilter, )
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.db.models.fields.related import ForeignObjectRel
 from django.db.models.query_utils import Q
 from django.utils.encoding import smart_str
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
 
@@ -131,7 +132,7 @@ class TextFieldFilter(SimpleListFilter):
     @classmethod
     def factory(cls, lookup, title=None):
         if title is None:
-            title = lookup.replace('__', ', ')
+            title = lookup.replace('__', '->')
         parts = lookup.split('__')
         if len(parts) == 1:
             lookup = '%s__iexact' % parts[0]
@@ -201,7 +202,7 @@ class PermissionPrefixFilter(SimpleListFilter):
 ForeignKeyFieldFilter = TextFieldFilter
 
 
-class MaxMinFilter(FieldListFilter):
+class NumberFilter(FieldListFilter):
     template = 'adminfilters/text.html'
 
     rex1 = re.compile(r'^(>=|<=|>|<|=)?([-+]?[0-9]+)$')
@@ -215,6 +216,10 @@ class MaxMinFilter(FieldListFilter):
            "=": "exact",
            "<>": "not",
            }
+
+    def __init__(self, field, request, params, model, model_admin, field_path):
+        super().__init__(field, request, params, model, model_admin, field_path)
+        self.title = mark_safe(f'{self.title} <small>(use >,>=,<,<=, fixed, list)</small>')
 
     def choices(self, changelist):
         yield {
@@ -258,3 +263,7 @@ class MaxMinFilter(FieldListFilter):
             else:
                 raise IncorrectLookupParameters()
         return queryset
+
+
+# backward compatibility
+MaxMinFilter = NumberFilter
