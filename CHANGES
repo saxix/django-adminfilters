@@ -1,3 +1,9 @@
+Release 1.6.1
+=============
+* renamed MAxMiFilter as NumberFilter
+* minor improvements
+
+
 Release 1.6
 =============
 * new `BooleanRadioFilter`
