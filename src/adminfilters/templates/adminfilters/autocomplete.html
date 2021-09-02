@@ -8,9 +8,9 @@
                 data-ajax--type="GET"
                 data-ajax--url="{{ spec.url }}"
                 data-theme="filter-autocomplete"
-                data-app-label="{{ spec.app_label }}"
-                data-model-name="{{ spec.model_name }}"
-                data-field-name="{{ spec.field_name }}"
+                data-app-label="{{ spec.target_opts.app_label }}"
+                data-model-name="{{ spec.target_opts.model_name }}"
+                data-field-name="{{ spec.target_field.name }}"
                 data-allow-clear="true"
                 data-placeholder=""
                 class="filter-autocomplete ">
