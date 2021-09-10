@@ -1,6 +1,10 @@
+Release 1.7
+=============
+* Improves AutocompleteFilter to work with chained ForeignKey
+
 Release 1.6.1
 =============
-* renamed MAxMiFilter as NumberFilter
+* renamed MaxMiFilter as NumberFilter
 * minor improvements
 
 

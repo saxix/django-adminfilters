@@ -14,9 +14,9 @@ lint:
 
 
 develop:
-	# pip install -e .[dev]
-	pip install -r src/requirements/testing.pip
-	pip install -r src/requirements/develop.pip
+	python3 -m venv ./.venv
+	./.venv/bin/pip install -r src/requirements/testing.pip
+	./.venv/bin/pip install -r src/requirements/develop.pip
 
 demo:
 	cd tests/demo && python manage.py migrate

@@ -4,6 +4,8 @@ django-adminfilters
 
 Collection of extra filters for the Django admin site
 
+Demo can be found at https://django-smart-admin.herokuapp.com/
+
 
 .. image:: https://travis-ci.org/saxix/django-adminfilters.svg?branch=develop
     :target: https://travis-ci.org/saxix/django-adminfilters

@@ -267,3 +267,7 @@ class NumberFilter(FieldListFilter):
 
 # backward compatibility
 MaxMinFilter = NumberFilter
+
+class DependentFilter(RelatedFieldListFilter):
+    pass
+
