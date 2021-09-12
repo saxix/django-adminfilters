@@ -32,15 +32,15 @@ class AutoCompleteFilter(FieldListFilter):
         self.query_string = ""
         self.target_field = get_real_field(model, field_path)
         self.target_model = self.target_field.related_model
-        self.target_opts = self.target_field.model._meta
+
+        if django.VERSION[0] == 3:
+            self.target_opts = self.target_field.model._meta
+        elif django.VERSION[0] == 2:
+            self.target_opts = self.target_model._meta
+
         if not hasattr(field, 'get_limit_choices_to'):
             raise Exception(f"Filter '{field_path}' of {model_admin} is not supported by AutoCompleteFilter."
                             f" Check your {model_admin}.list_filter value")
-
-        # self.model_name = self.model._meta.model_name
-        # self.app_label = self.model._meta.app_label
-        # self.field_name = f.name
-        # self.related_model = self.related_field.related_model
 
         self.url = self.get_url()
 
