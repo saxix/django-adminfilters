@@ -124,7 +124,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
 
 class TextFieldFilter(SimpleListFilter):
     template = 'adminfilters/text.html'
-
+    lookup = None
     prefixes = None
     # lookup_val = 'field|filter'
     parameter_name = None
@@ -142,6 +142,7 @@ class TextFieldFilter(SimpleListFilter):
 
         return type('TextFieldFilter',
                     (cls,), {'parameter_name': lookup.replace('__', '|'),
+                             'lookup': lookup,
                              'title': title})
 
     @property
