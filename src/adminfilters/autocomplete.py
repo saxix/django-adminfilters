@@ -3,7 +3,6 @@ from django import forms
 from django.conf import settings
 from django.contrib.admin import FieldListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
-from django.db.models import ManyToOneRel
 from django.urls import reverse
 from django.utils.translation import get_language
 

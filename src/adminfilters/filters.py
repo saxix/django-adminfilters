@@ -5,7 +5,7 @@ from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           ChoicesFieldListFilter,
                                           FieldListFilter,
                                           RelatedFieldListFilter,
-                                          SimpleListFilter, )
+                                          SimpleListFilter,)
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.db.models.fields.related import ForeignObjectRel
 from django.db.models.query_utils import Q
@@ -58,7 +58,7 @@ class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.model_admin = model_admin
-        super(RelatedFieldCheckBoxFilter, self).__init__(field, request, params, model, model_admin, field_path)
+        super().__init__(field, request, params, model, model_admin, field_path)
         self.lookup_val = request.GET.getlist(self.lookup_kwarg, [])
 
     def queryset(self, request, queryset):
@@ -268,6 +268,7 @@ class NumberFilter(FieldListFilter):
 
 # backward compatibility
 MaxMinFilter = NumberFilter
+
 
 class DependentFilter(RelatedFieldListFilter):
     pass

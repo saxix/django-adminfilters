@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from adminfilters.autocomplete import AutoCompleteFilter
 from adminfilters.filters import (ForeignKeyFieldFilter,
                                   RelatedFieldCheckBoxFilter,
-                                  RelatedFieldRadioFilter, TextFieldFilter, )
+                                  RelatedFieldRadioFilter, TextFieldFilter,)
 from adminfilters.multiselect import (IntersectionFieldListFilter,
                                       UnionFieldListFilter,)
 

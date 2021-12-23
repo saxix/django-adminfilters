@@ -1,5 +1,6 @@
+from demoproject.demoapp.models import DemoModel2, DemoRelated
+
 from adminfilters.autocomplete import get_real_field
-from demoproject.demoapp.models import DemoModel, DemoModel2, DemoRelated
 
 
 def test_get_real_field():

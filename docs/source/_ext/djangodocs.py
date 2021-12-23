@@ -235,7 +235,7 @@ class DjangoStandaloneHTMLBuilder(StandaloneHTMLBuilder):
     name = 'djangohtml'
 
     def finish(self):
-        super(DjangoStandaloneHTMLBuilder, self).finish()
+        super().finish()
         if json is None:
             self.warn("cannot create templatebuiltins.js due to missing simplejson dependency")
             return
