@@ -1,6 +1,12 @@
+Release 1.8 (in development)
+=============
+* added support to Dj4
+
+
 Release 1.7
 =============
 * Improves AutocompleteFilter to work with chained ForeignKey
+
 
 Release 1.6.1
 =============

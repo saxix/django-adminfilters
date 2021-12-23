@@ -10,18 +10,13 @@ class MultipleSelectFieldListFilter(FieldListFilter):
         self.filter_statement = '%s' % field_path
         self.lookup_val = request.GET.get(self.lookup_kwarg, None)
         self.lookup_choices = field.get_choices(include_blank=False)
-        super(MultipleSelectFieldListFilter, self).__init__(
-            field, request, params, model, model_admin, field_path)
+        super().__init__(field, request, params, model, model_admin, field_path)
 
     def expected_parameters(self):
         return [self.lookup_kwarg]
 
     def get_field(self):
-        try:
-            field = self.field.remote_field.model._meta.pk
-        except AttributeError:  # django < 2.0
-            field = self.field.rel.to._meta.pk
-        return field
+        return self.field.remote_field.model._meta.pk
 
     def values(self):
         """
@@ -98,7 +93,7 @@ class UnionFieldListFilter(MultipleSelectFieldListFilter):
 
     def get_field(self):
         try:
-            field = super(UnionFieldListFilter, self).get_field()
+            field = super().get_field()
         except AttributeError:
             if hasattr(self.field, "choices") and self.field.choices:
                 field = self.field  # It's a *Field with choises
