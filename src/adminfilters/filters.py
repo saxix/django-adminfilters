@@ -1,5 +1,7 @@
 import re
+import string
 
+from django import forms
 from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           BooleanFieldListFilter,
                                           ChoicesFieldListFilter,
@@ -7,11 +9,15 @@ from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           RelatedFieldListFilter,
                                           SimpleListFilter,)
 from django.contrib.admin.options import IncorrectLookupParameters
+from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.db.models.fields.related import ForeignObjectRel
 from django.db.models.query_utils import Q
 from django.utils.encoding import smart_str
+from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, get_language
+
+from django.conf import settings
 
 
 def get_attr(obj, attr, default=None):
@@ -178,6 +184,77 @@ class TextFieldFilter(SimpleListFilter):
         }
 
 
+class MultiValueTextFieldFilter(TextFieldFilter):
+    template = 'adminfilters/text_multi.html'
+    separator = ","
+    toggleable = False
+
+    @classmethod
+    def factory(cls, field, title=None, allow_exclude=True):
+        if title is None:
+            title = field.replace('__', '->')
+        return type('MultiValueTextFieldFilter',
+                    (cls,), {'parameter_name': field,
+                             'allow_exclude': allow_exclude,
+                             'title': title})
+
+    def __init__(self, request, params, model, model_admin):
+        super().__init__(request, params, model, model_admin)
+        self.query_values = []
+        self.operator = '+'
+        self.parse_query_string()
+
+    def id(self):
+        return hash(f"{self.parameter_name}-{self.title}")
+
+    def value(self):
+        return self.used_parameters.get(self.parameter_name, '')
+
+    def parse_query_string(self):
+        raw_value = self.value()
+        if raw_value:
+            self.operator = raw_value[-1]
+            entries = raw_value[:-1]
+            self.query_values = [e.strip() for e in entries.split(self.separator) if e.strip()]
+
+    def queryset(self, request, queryset):
+        lookup = f"{self.parameter_name}__in"
+        if self.query_values:
+            if self.operator == '-':
+                return queryset.exclude(**{lookup: self.query_values})
+            else:
+                return queryset.filter(**{lookup: self.query_values})
+        return queryset
+
+    def choices(self, changelist):
+        values = self.separator.join(self.query_values)
+        yield {
+            'selected': False,
+            'query_string': changelist.get_query_string(
+                {},
+                [self.parameter_name, ]
+            ),
+            'lookup_kwarg': self.parameter_name,
+            'display': _('All'),
+            'values': values,
+            'operator': self.operator,
+            'is_negated': (self.operator == '-')
+
+        }
+
+    @property
+    def media(self):
+        extra = '' if settings.DEBUG else '.min'
+        i18n_name = SELECT2_TRANSLATIONS.get(get_language())
+        i18n_file = ('admin/js/vendor/select2/i18n/%s.js' % i18n_name,) if i18n_name else ()
+        return forms.Media(
+            js=('admin/js/vendor/jquery/jquery%s.js' % extra,
+                ) + i18n_file + ('admin/js/jquery.init.js',
+                                 'adminfilters/multivalue%s.js' % extra,
+                                 ),
+        )
+
+
 class PermissionPrefixFilter(SimpleListFilter):
     title = 'Permission'
     parameter_name = 'perm'
@@ -260,7 +337,7 @@ class NumberFilter(FieldListFilter):
                 queryset = queryset.filter(**{match: raw})
             elif m4 and m3.groups():
                 match = "%s__exact" % self.field.name
-                queryset = queryset.exclude(**{match: value})
+                queryset = queryset.exclude(**{match: raw})
             else:
                 raise IncorrectLookupParameters()
         return queryset
@@ -272,4 +349,3 @@ MaxMinFilter = NumberFilter
 
 class DependentFilter(RelatedFieldListFilter):
     pass
-

@@ -56,16 +56,6 @@ class AutoCompleteFilter(FieldListFilter):
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=[self.lookup_kwarg, self.lookup_kwarg_isnull])
         if self.lookup_val:
-            # dump = {'self.model': self.model,
-            #         'self.lookup_val': self.lookup_val,
-            #         'self.model_name': self.model_name,
-            #         'self.field_name': self.field_name,
-            #         'self.lookup_kwarg': self.lookup_kwarg,
-            #         'self.query_string': self.query_string,
-            #         'self.related_field': self.related_field,
-            #         'self.related_model': self.related_field.related_model,
-            #         }
-            # return [str(self.model.objects.get(**{self.field_name:self.lookup_val})) or ""]
             return [str(self.target_model.objects.get(pk=self.lookup_val)) or ""]
         return []
 

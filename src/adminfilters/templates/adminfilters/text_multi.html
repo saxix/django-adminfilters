@@ -1,0 +1,36 @@
+{% load i18n %}
+<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}
+    <small>(<input type="checkbox" id="{{ spec.id }}_negated" class="filter-multivalue negate"
+                   {% if choices.0.is_negated %}checked="checked"{% endif %}">
+        {% trans "Exclude" %})</small>
+</h3>
+<ul>
+    <li><textarea id="{{ spec.id }}" class="filter-multivalue"
+                  data-qs="{{ choices.0.query_string }}"
+                  data-lk="{{ choices.0.lookup_kwarg }}"
+                  data-op="{{ choices.0.operator }}"
+                  style="width: 90%">{{ choices.0.values }}</textarea>
+    </li>
+    <small><a id="{{ spec.id }}_button"
+       data-textarea="#{{ spec.id }}"
+       data-negate="#{{ spec.id }}_negated"
+       data-action="{% if spec.query_values %}clear{% else %}filter{% endif %}"
+       class="filter-multivalue" href="#">{% if spec.query_values %}clear{% else %}filter{% endif %}</a></small>
+</ul>
+{{ spec.media }}
+<script type="text/javascript">
+    (function ($) {
+        $(document).ready(function () {
+            $('#{{ spec.id }}_negated').on('change', function(){
+                $('#{{ spec.id }}_button').data("action", "filter");
+                $('#{{ spec.id }}_button').attr('data-action', 'filter');
+
+                $('#{{ spec.id }}_button').html("filter");
+            });
+            $('#{{ spec.id }}').on('change', function(){
+                $('#{{ spec.id }}_button').html("filter");
+            });
+            $('#{{ spec.id }}_button').click(multivalueFilter);
+        });
+    })(django.jQuery);
+</script>
