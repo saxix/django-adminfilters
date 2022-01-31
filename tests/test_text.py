@@ -1,4 +1,6 @@
 import pytest
+
+from adminfilters.lookup import GenericLookupFieldFilter
 from demoproject.demoapp.models import DemoModel, DemoModelField, DemoRelated
 
 from adminfilters.filters import ForeignKeyFieldFilter, TextFieldFilter
@@ -33,7 +35,7 @@ def fixtures(db):
 
 
 def test_TextFieldFilter(fixtures, rf):
-    f = TextFieldFilter.factory('char')
+    f = GenericLookupFieldFilter.factory('char')
 
     qs = f(None, {'char|iexact': 'www'}, None, None).queryset(None, DemoModelField.objects.all())
     assert not qs.exists()
@@ -43,7 +45,7 @@ def test_TextFieldFilter(fixtures, rf):
 
 
 def test_ForeignKeyFieldFilter(fixtures, rf):
-    f = ForeignKeyFieldFilter.factory('demo_related__name__istartswith')
+    f = GenericLookupFieldFilter.factory('demo_related__name__istartswith')
 
     qs = f(None, {'demo_related|name|istartswith': 'www'}, None, None).queryset(None, DemoModel.objects.all())
     assert not qs.exists()

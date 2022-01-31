@@ -1,10 +1,35 @@
 {% load i18n %}
 <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
-<ul>
-    <li><input type="text"
-           onblur="location.href='{{ choices.0.query_string }}&{{ choices.0.lookup_kwarg }}='+this.value"
-           onchange="location.href='{{ choices.0.query_string }}&{{ choices.0.lookup_kwarg }}='+this.value"
-{#           onchange="location.href={{ choice.query_string|iriencode }}this.value"#}
-           value="{{ choices.0.value }}">
+<ul id="{{ spec.field_path }}"
+    data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
+    data-qs="{{ spec.query_string }}"
+    data-lk="{{ spec.lookup_kwarg }}"
+    data-op="{{ spec.operator }}">
+    <li><input type="checkbox"
+               class="filter-multivalue negate {{ spec.field_path }}"
+               name="{{ spec.lookup_kwarg_negated }}"
+               data-group="{{ spec.field_path }}"
+               data-lk="{{ spec.lookup_kwarg_negated }}"
+               data-original="{{ spec.value.1|lower }}"
+            {% if spec.value.1 %} checked="checked" {% endif %}>
+        <small>{% trans "Exclude" %}</small></li>
+    <li><input type="text" class="filter-multivalue {{ spec.field_path }}"
+               name="value"
+               data-lk="{{ spec.lookup_kwarg }}"
+               data-original="{{ spec.value.0 }}"
+               value="{{ spec.value.0 }}"
+               style="width: 90%">
+    </li>
+    <li>
+        <a class="filter-multivalue adminfilters button {{ spec.field_path }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"
+           href="#">{% if spec.value.0 %}clear{% else %}filter{% endif %}</a>
     </li>
 </ul>
+<script type="text/javascript">
+    ;(function ($) {
+        $(document).ready(function () {
+            $("#{{ spec.field_path }}").find("a.button").click(new textFilterHandler("{{ spec.field_path }}").click);
+        });
+    })(django.jQuery);
+
+</script>

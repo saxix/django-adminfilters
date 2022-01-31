@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import JSONField
 
 
 class DemoModelField(models.Model):
@@ -26,6 +27,7 @@ class DemoModelField(models.Model):
     choices = models.IntegerField(choices=((1, 'Choice 1'),
                                            (2, 'Choice 2'),
                                            (3, 'Choice 3')))
+    # json = JSONField(default=dict)
 
     class Meta:
         app_label = 'demoapp'
@@ -64,28 +66,24 @@ class DemoModel2(models.Model):
 
 
 class DemoModel_RelatedFieldCheckBoxFilter(DemoModel):
-
     class Meta:
         proxy = True
         verbose_name = "RelatedFieldCheckBoxFilter"
 
 
 class DemoModel_RelatedFieldRadioFilter(DemoModel):
-
     class Meta:
         proxy = True
         verbose_name = "RelatedFieldRadioFilter"
 
 
 class DemoModel_UnionFieldListFilter(DemoModel):
-
     class Meta:
         proxy = True
         verbose_name = "UnionFieldListFilter"
 
 
 class DemoModel_IntersectionFieldListFilter(DemoModel):
-
     class Meta:
         proxy = True
         verbose_name = "IntersectionFieldListFilter"

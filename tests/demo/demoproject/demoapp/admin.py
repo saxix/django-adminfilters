@@ -5,6 +5,7 @@ from adminfilters.autocomplete import AutoCompleteFilter
 from adminfilters.filters import (ForeignKeyFieldFilter,
                                   RelatedFieldCheckBoxFilter,
                                   RelatedFieldRadioFilter, TextFieldFilter,)
+from adminfilters.lookup import GenericLookupFieldFilter
 from adminfilters.multiselect import (IntersectionFieldListFilter,
                                       UnionFieldListFilter,)
 
@@ -14,7 +15,7 @@ from .models import DemoModel, DemoRelated
 class DemoModelAdmin_RelatedFieldCheckBoxFilter(ModelAdmin):
     list_display = [f.name for f in DemoModel._meta.fields]
     list_filter = (('demo_related', RelatedFieldCheckBoxFilter),
-                   ForeignKeyFieldFilter.factory('demo_related__name__icontains'),
+                   GenericLookupFieldFilter.factory('demo_related__name__icontains'),
                    TextFieldFilter.factory('name'),
                    )
     search_fields = ('name',)
@@ -41,7 +42,7 @@ class DemoModelAdmin_IntersectionFieldListFilter(ModelAdmin):
 class DemoModelModelAdmin(ModelAdmin):
     list_display = [f.name for f in DemoModel._meta.fields]
     list_filter = (
-        ForeignKeyFieldFilter.factory('demo_related__name__istartswith'),
+        GenericLookupFieldFilter.factory('demo_related__name__istartswith'),
         TextFieldFilter.factory('name'),
         ('demo_related', AutoCompleteFilter)
     )
@@ -56,4 +57,4 @@ class DemoRelatedModelAdmin(ModelAdmin):
 class IUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name',
                     'is_staff')
-    list_filter = TextFieldFilter.factory('username__istartswith'),
+    list_filter = GenericLookupFieldFilter.factory('username__istartswith'),
