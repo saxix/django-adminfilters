@@ -1,4 +1,11 @@
-Release 1.8 (in development)
+Release 1.8
+=============
+* new JsonFieldFilter
+* MultiValueTextFilter/TextFilter refactoring
+* AdminFiltersMixin to easily add media files
+
+
+Release 1.8
 =============
 * added support to Dj4
 * add MultiValueTextFilter

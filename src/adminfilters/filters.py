@@ -1,7 +1,7 @@
 import re
-import string
 
 from django import forms
+from django.conf import settings
 from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           BooleanFieldListFilter,
                                           ChoicesFieldListFilter,
@@ -13,11 +13,8 @@ from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.db.models.fields.related import ForeignObjectRel
 from django.db.models.query_utils import Q
 from django.utils.encoding import smart_str
-from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext as _, get_language
-
-from django.conf import settings
+from django.utils.translation import get_language, gettext as _
 
 
 def get_attr(obj, attr, default=None):
@@ -184,63 +181,69 @@ class TextFieldFilter(SimpleListFilter):
         }
 
 
-class MultiValueTextFieldFilter(TextFieldFilter):
+class MultiValueTextFieldFilter(FieldListFilter):
     template = 'adminfilters/text_multi.html'
     separator = ","
     toggleable = False
+    filter_title = None
 
-    @classmethod
-    def factory(cls, field, title=None, allow_exclude=True):
-        if title is None:
-            title = field.replace('__', '->')
-        return type('MultiValueTextFieldFilter',
-                    (cls,), {'parameter_name': field,
-                             'allow_exclude': allow_exclude,
-                             'title': title})
+    def __init__(self, field, request, params, model, model_admin, field_path):
+        if field_path.endswith('__in'):
+            self.lookup_kwarg = field_path
+        else:
+            self.lookup_kwarg = f"{field_path}__in"
 
-    def __init__(self, request, params, model, model_admin):
-        super().__init__(request, params, model, model_admin)
+        self.lookup_kwarg_negated = "%s__negate" % field_path
+        self.parse_query_string(params)
+        super().__init__(field, request, params, model, model_admin, field_path)
+        self.title = self.get_title()
+        self.params = params
         self.query_values = []
         self.operator = '+'
-        self.parse_query_string()
+        # self.parse_query_string()
 
-    def id(self):
-        return hash(f"{self.parameter_name}-{self.title}")
+    def get_title(self):
+        if self.filter_title:
+            return self.filter_title
+        elif '__' in self.field_path:
+            return self.field_path.replace('__', '->')
+        return getattr(self.field, 'verbose_name', self.field_path)
+
+    @classmethod
+    def factory(cls, field, title=None, **kwargs):
+        kwargs['filter_title'] = kwargs.pop('title', None)
+        return field, type('MultiValueTextFieldFilter22', (cls,), kwargs)
+
+    def expected_parameters(self):
+        return [self.lookup_kwarg, self.lookup_kwarg_negated]
 
     def value(self):
-        return self.used_parameters.get(self.parameter_name, '')
+        return [
+            self.lookup_val,
+            self.lookup_negated_val == "true"
+        ]
 
-    def parse_query_string(self):
-        raw_value = self.value()
-        if raw_value:
-            self.operator = raw_value[-1]
-            entries = raw_value[:-1]
-            self.query_values = [e.strip() for e in entries.split(self.separator) if e.strip()]
+    def parse_query_string(self, params):
+        raw_values = params.get(self.lookup_kwarg, "").split(self.separator)
+        self.lookup_negated_val = params.get(self.lookup_kwarg_negated)
+        self.lookup_val = [e.strip() for e in raw_values if e.strip()]
 
     def queryset(self, request, queryset):
-        lookup = f"{self.parameter_name}__in"
-        if self.query_values:
-            if self.operator == '-':
-                return queryset.exclude(**{lookup: self.query_values})
+        target, exclude = self.value()
+        if target:
+            self.filters = {self.lookup_kwarg: target}
+            if exclude:
+                return queryset.exclude(**self.filters)
             else:
-                return queryset.filter(**{lookup: self.query_values})
+                return queryset.filter(**self.filters)
         return queryset
 
-    def choices(self, changelist):
-        values = self.separator.join(self.query_values)
-        yield {
-            'selected': False,
-            'query_string': changelist.get_query_string(
-                {},
-                [self.parameter_name, ]
-            ),
-            'lookup_kwarg': self.parameter_name,
-            'display': _('All'),
-            'values': values,
-            'operator': self.operator,
-            'is_negated': (self.operator == '-')
+    def lookups(self, request, model_admin):
+        return ["", ""]
 
-        }
+    def choices(self, changelist):
+        self.query_string = changelist.get_query_string(remove=self.expected_parameters())
+        return []
 
     @property
     def media(self):

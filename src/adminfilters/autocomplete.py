@@ -69,7 +69,7 @@ class AutoCompleteFilter(FieldListFilter):
                 'admin/js/vendor/select2/select2.full%s.js' % extra,
                 ) + i18n_file + ('admin/js/jquery.init.js',
                                  'admin/js/autocomplete.js',
-                                 'adminfilters/adminfilters%s.js' % extra,
+                                 'adminfilters/autocomplete%s.js' % extra,
                                  ),
             css={
                 'screen': (

@@ -1,24 +1,103 @@
-var multivalueFilter = function (e) {
-    var url;
-    var $button = $(e.target);
-    var action = $button.data("action");
-    var $area = $($button.data("textarea"));
-    var $negate = $($button.data("negate"));
-    var qs = $area.data("qs");
-    var negated = $negate.prop("checked");
-    var sel = $area.val();
-    if (action === "clear") {
-        url = qs;
-    } else if (sel) {
-        var lk = $area.data("lk");
-        url = qs + "&" + lk + "=" + sel;
-        if (negated) {
-            url = url + "-";
+var multiValueFilterHandler = function (e) {
+    var self = this;
+    var $container = django.jQuery("#" + e);
+    var $button = $container.find("a.button");
+    var $negate = $container.find("input[type=checkbox]").first();
+    var $value = $container.find("textarea");
+    var $targets = $container.find("input,select,textarea");
+    var qs = $container.data("qs");
+    var timer = null;
+    var updateStatus = function () {
+        var newAction;
+        var changed = ($value.val() != $value.data("original"))
+            || ($negate.is(":checked") != $negate.data("original"));
+        if (changed) {
+            newAction = "filter";
+            console.log("DEBUG", "$value", $value, $value.val() == $value.data("original"), $value.val(), $value.data("original"));
+            console.log("DEBUG", "$negate", $negate, $negate.is(":checked") == $negate.data("original"), $negate.is(":checked"), $negate.data("original"));
         } else {
-            url = url + "+";
+            newAction = "clear";
         }
-    }
-    if (url) {
-        location.href = url;
-    }
+        console.log("DEBUG", "newAction", newAction, getUrl());
+        $button.html(newAction);
+        $container.data("action", newAction);
+        $container.attr("data-action", newAction);
+        $button.removeClass("filter").removeClass("clear").addClass(newAction);
+        timer = null;
+    };
+    $targets.on("keyup", function (e) {
+        if (timer === null) {
+            setTimeout(updateStatus, 500);
+        }
+    });
+    $targets.on("change", function (e) {
+        updateStatus();
+    });
+    var getUrl = function () {
+        var url;
+        var action = $container.data("action");
+        if (action === "clear") {
+            url = qs;
+        } else if ($value.val()) {
+            url = qs + "&" + $value.data("lk") + "=" + $value.val();
+            url = url + "&" + $negate.data("lk") + "=" + $negate.is(":checked");
+        }
+        return url;
+    };
+    self.click = function () {
+        var url = getUrl();
+        if (url) {
+            location.href = url;
+        }
+    };
 };
+
+// var multivalueFilter = function (e) {
+//     var url;
+//     var group = $(e.target).data("group");
+//     var $container = $("#" + group);
+//     var $button = $container.find("a.button");
+//     var action = $button.data("action");
+//     var $area = $container.find("textarea").first();
+//     var $negate = $container.find("input[type=checkbox]").first();
+//     var qs = $area.data("qs");
+//     var sel = $area.val();
+//     if (action === "clear") {
+//         url = qs;
+//     } else if (sel) {
+//         var lk = $area.data("lk");
+//         url = qs + "&" + lk + "=" + sel;
+//         url = url + "&" + $negate.prop("name") + "=" + $negate.is(":checked");
+//     }
+//     if (url) {
+//         location.href = url;
+//     }
+// };
+// var initMultiFilter = function (id) {
+//     var $container = $("#" + id);
+//     var $button = $container.find("a.button");
+//     var $negate = $container.find("input[type=checkbox]").first();
+//     var $area = $container.find("textarea").first();
+//     var $targets = $container.find("." + id);
+//     var timer = null;
+//     var updateStatus = function(){
+//         var action = "filter"
+//         if (($area.val() === $area.data('original')) && ($negate.is(":checked") === $negate.data('original'))){
+//             action = "clear"
+//         };
+//         $button.html(action);
+//         $button.data("action", action);
+//         $button.attr("data-action", action);
+//         $button.removeClass("filter").removeClass("clear").addClass(action);
+//         timer = null;
+//     }
+//     $targets.on("keyup", function (e) {
+//         if (timer === null){
+//             setTimeout(updateStatus, 500);
+//         }
+//     });
+//     $targets.on("change", function (e) {
+//         updateStatus();
+//     });
+//     $button.click(multivalueFilter);
+// };
