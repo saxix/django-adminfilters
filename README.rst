@@ -41,7 +41,7 @@ Usage examples
 
 .. code-block:: python
 
-    class DemoModelField(models.Model):
+    class MyModel(models.Model):
         index = models.CharField(max_length=255)
         name = models.CharField(max_length=255)
         age = models.IntegerField()
@@ -49,7 +49,7 @@ Usage examples
         household = models.ForeignKey('Household')
         custom = JSONField(default=dict, blank=True)
 
-    class UserAdmin(ModelAdmin):
+    class MyModelAdmin(ModelAdmin):
         list_filter = (
             ("custom", JsonFieldFilter.factory(can_negate=False, options=True)),
             ("flag", ChoicesFieldComboFilter),
