@@ -33,6 +33,8 @@ fullclean:
 	rm -fr *.sqlite
 	$(MAKE) clean
 
+coverage:
+	 py.test src tests -vv --capture=no --doctest-modules --cov=adminfilters --cov-report=html --cov-config=tests/.coveragerc
 
 docs: mkbuilddir
 	mkdir -p ${BUILDDIR}/docs

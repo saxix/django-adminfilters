@@ -6,6 +6,8 @@ from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.urls import reverse
 from django.utils.translation import get_language
 
+from adminfilters.mixin import MediaDefinitionFilter
+
 
 def get_real_field(model, path):
     parts = path.split('__')
@@ -17,14 +19,13 @@ def get_real_field(model, path):
     return f
 
 
-class AutoCompleteFilter(FieldListFilter):
+class AutoCompleteFilter(MediaDefinitionFilter, FieldListFilter):
     template = 'adminfilters/autocomplete.html'
     url_name = '%s:%s_%s_autocomplete'
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_kwarg = '%s__exact' % field_path
         self.lookup_kwarg_isnull = '%s__isnull' % field_path
-
         self.lookup_val = params.get(self.lookup_kwarg)
         super().__init__(field, request, params, model, model_admin, field_path)
         self.admin_site = model_admin.admin_site
@@ -32,11 +33,8 @@ class AutoCompleteFilter(FieldListFilter):
         self.target_field = get_real_field(model, field_path)
         self.target_model = self.target_field.related_model
 
-        if django.VERSION[0] == 3:
-            self.target_opts = self.target_field.model._meta
-        elif django.VERSION[0] == 2:
-            self.target_opts = self.target_model._meta
-
+        self.target_opts = self.target_field.model._meta
+    
         if not hasattr(field, 'get_limit_choices_to'):
             raise Exception(f"Filter '{field_path}' of {model_admin} is not supported by AutoCompleteFilter."
                             f" Check your {model_admin}.list_filter value")

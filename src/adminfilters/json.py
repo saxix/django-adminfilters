@@ -11,11 +11,14 @@ class JsonFieldFilter(FieldListFilter):
     parameter_name = None
     title = None
     template = "adminfilters/jsonfieldfilter.html"
+    can_negate = True
+    negated = False
+    options = True
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_kwarg_key = "%s__key" % field_path
         self.lookup_kwarg_value = "%s__value" % field_path
-        self.lookup_kwarg_negated = "%s__negated" % field_path
+        self.lookup_kwarg_negated = "%s__negate" % field_path
         self.lookup_kwarg_options = "%s__options" % field_path
         self.lookup_kwarg_type = "%s__type" % field_path
         self.lookup_key_val = params.get(self.lookup_kwarg_key, "")
@@ -29,10 +32,10 @@ class JsonFieldFilter(FieldListFilter):
         self.field_path = field_path
         self.title = getattr(field, "verbose_name", field_path)
         super().__init__(field, request, params, model, model_admin, field_path)
-        for p in self.expected_parameters():
-            if p in params:
-                value = params.pop(p)
-                self.used_parameters[p] = prepare_lookup_value(p, value)
+
+    @classmethod
+    def factory(cls, **kwargs):
+        return type('JsonFieldFilter', (cls,), kwargs)
 
     def expected_parameters(self):
         return [self.lookup_kwarg_key,
@@ -44,12 +47,9 @@ class JsonFieldFilter(FieldListFilter):
             self.lookup_key_val,
             self.lookup_value_val,
             self.lookup_options_val,
-            self.lookup_negated_val == "true",
+            (self.can_negate and self.lookup_negated_val == "true") or self.negated,
             self.lookup_type_val,
         ]
-
-    def lookups(self, request, model_admin):
-        return ["", ""]
 
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=self.expected_parameters())
@@ -66,21 +66,16 @@ class JsonFieldFilter(FieldListFilter):
                 filters = Q(**{f"{self.field_path}__{key}": str(value)})
 
             if negated:
-                if options == 'i':
-                    filters = Q(**{f"{self.field_path}__{key}__isnull": True}) | ~filters
-                else:
+                if self.options and options == 'e':
                     filters = ~filters
+                else:
+                    filters = Q(**{f"{self.field_path}__{key}__isnull": True}) | ~filters
             else:
                 if options == 'i':
                     filters = filters | Q(**{f"{self.field_path}__{key}__isnull": True})
 
             queryset = queryset.filter(filters)
 
-            self.debug = {"filters": filters,
-                          "sql": str(queryset.query),
-                          "type": type_,
-                          "values": [key, value, options, negated, type_],
-                          }
         return queryset
 
     @property

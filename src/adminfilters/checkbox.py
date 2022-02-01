@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 
 
 class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
-    template = 'adminfilters/fieldcheckbox.html'
+    template = 'adminfilters/checkbox.html'
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.model_admin = model_admin

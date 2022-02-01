@@ -24,6 +24,7 @@ public_site.register(models.DemoModel_IntersectionFieldListFilter,
                      admin.DemoModelAdmin_IntersectionFieldListFilter)
 public_site.register(models.DemoRelated, admin.DemoRelatedModelAdmin)
 public_site.register(models.DemoModel, admin.DemoModelModelAdmin)
+public_site.register(models.DemoModelField, admin.DemoModelFieldAdmin)
 public_site.register(User, admin.IUserAdmin)
 
 urlpatterns = (

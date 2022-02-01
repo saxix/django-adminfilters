@@ -1,12 +1,13 @@
 from django import forms
 from django.conf import settings
-from django.contrib.admin import FieldListFilter, SimpleListFilter
+from django.contrib.admin import FieldListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.utils.translation import get_language
-from django.utils.translation import gettext as _
+
+from adminfilters.mixin import MediaDefinitionFilter
 
 
-class TextFieldFilter(FieldListFilter):
+class TextFieldFilter(MediaDefinitionFilter, FieldListFilter):
     template = 'adminfilters/text.html'
     separator = ","
     toggleable = False
@@ -21,7 +22,6 @@ class TextFieldFilter(FieldListFilter):
         self.params = params
         self.query_values = []
         self.operator = '+'
-        # self.parse_query_string()
 
     def get_title(self):
         if self.filter_title:
@@ -31,7 +31,7 @@ class TextFieldFilter(FieldListFilter):
         return getattr(self.field, 'verbose_name', self.field_path)
 
     @classmethod
-    def factory(cls, field, title=None, **kwargs):
+    def factory(cls, field, **kwargs):
         kwargs['filter_title'] = kwargs.pop('title', None)
         return field, type('TextFieldFilter', (cls,), kwargs)
 
@@ -51,11 +51,11 @@ class TextFieldFilter(FieldListFilter):
     def queryset(self, request, queryset):
         target, exclude = self.value()
         if target:
-            self.filters = {self.lookup_kwarg: target}
+            filters = {self.lookup_kwarg: target}
             if exclude:
-                return queryset.exclude(**self.filters)
+                return queryset.exclude(**filters)
             else:
-                return queryset.filter(**self.filters)
+                return queryset.filter(**filters)
         return queryset
 
     def lookups(self, request, model_admin):
@@ -86,22 +86,7 @@ class MultiValueTextFieldFilter(TextFieldFilter):
     def __init__(self, field, request, params, model, model_admin, field_path):
         if not field_path.endswith('__in'):
             field_path = f"{field_path}__in"
-
-        self.lookup_kwarg_negated = "%s__negate" % field_path
-        # self.parse_query_string(params)
         super().__init__(field, request, params, model, model_admin, field_path)
-
-    @property
-    def media(self):
-        extra = '' if settings.DEBUG else '.min'
-        i18n_name = SELECT2_TRANSLATIONS.get(get_language())
-        i18n_file = ('admin/js/vendor/select2/i18n/%s.js' % i18n_name,) if i18n_name else ()
-        return forms.Media(
-            js=('admin/js/vendor/jquery/jquery%s.js' % extra,
-                ) + i18n_file + ('admin/js/jquery.init.js',
-                                 'adminfilters/text%s.js' % extra,
-                                 ),
-        )
 
     def parse_query_string(self, params):
         raw_values = params.get(self.lookup_kwarg, "").split(self.separator)

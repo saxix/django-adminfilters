@@ -5,16 +5,16 @@ from django.contrib.admin.filters import (AllValuesFieldListFilter,
 
 
 class AllValuesRadioFilter(AllValuesFieldListFilter):
-    template = 'adminfilters/fieldradio.html'
+    template = 'adminfilters/radio.html'
 
 
 class RelatedFieldRadioFilter(RelatedFieldListFilter):
-    template = 'adminfilters/fieldradio.html'
+    template = 'adminfilters/radio.html'
 
 
 class ChoicesFieldRadioFilter(ChoicesFieldListFilter):
-    template = 'adminfilters/fieldradio.html'
+    template = 'adminfilters/radio.html'
 
 
 class BooleanRadioFilter(BooleanFieldListFilter):
-    template = 'adminfilters/fieldradio.html'
+    template = 'adminfilters/radio.html'

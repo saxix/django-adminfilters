@@ -5,12 +5,15 @@
     data-op="{{ spec.operator }}"
     data-qs="{{ spec.query_string }}">
     <li>
+        {% if spec.can_negate %}
         <input type="checkbox" data-group="{{ spec.field_path }}"
                data-lk="{{ spec.lookup_kwarg_negated }}"
                data-original="{{ spec.lookup_negated_val|lower }}"
                class="filter-jsonfield negate {{ spec.field_path }}"
                {% if spec.lookup_negated_val == "true" %}checked="checked"{% endif %}>
         {% trans "Exclude" %}
+        {% endif %}
+        {% if spec.options %}
         <select style="height: 20px;padding: 0"
                 name="options"
                 data-lk="{{ spec.lookup_kwarg_options }}"
@@ -21,6 +24,7 @@
             <option value="i" {% if spec.lookup_options_val == "i" %}selected="selected"{% endif %}><small>add
                 missing</small></option>
         </select>
+        {% endif %}
     </li>
     <li>
         <input type="text"
@@ -62,7 +66,8 @@
 <script type="text/javascript">
     ;(function ($) {
         $(document).ready(function () {
-            $("#{{ spec.field_path }}").find("a.button").click(new jsonFieldFilterHandler("{{ spec.field_path }}").click);
+            $("#{{ spec.field_path }}").find("a.button").click(new jsonFieldFilterHandler("{{ spec.field_path }}",
+                {negated: {{spec.negated|lower}}, can_negate:{{ spec.can_negate|lower }}, options:{{ spec.options|lower }} }).click);
         });
     })(django.jQuery);
 </script>

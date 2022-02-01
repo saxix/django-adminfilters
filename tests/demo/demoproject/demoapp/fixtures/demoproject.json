@@ -15,14 +15,16 @@
     "model": "demoapp.demomodel",
     "fields": {
         "name": "model 1",
-        "demo_related": 1
+        "demo_related": 1,
+        "flags": "{\"int\": 1}"
     }
 }, {
     "pk": 2,
     "model": "demoapp.demomodel",
     "fields": {
         "name": "model 2",
-        "demo_related": 2
+        "demo_related": 2,
+        "flags": "{\"int\": 2}"
     }
 }, {
     "pk": 1,

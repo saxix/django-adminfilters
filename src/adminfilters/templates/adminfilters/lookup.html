@@ -1,0 +1,35 @@
+{% load i18n %}
+<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
+<ul id="{{ spec.lookup }}"
+    data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
+    data-lk="{{ spec.parameter_name }}"
+    data-separator="{{ spec.arg_separator }}"
+    data-qs="{{ spec.query_string }}">
+    {% if spec.can_negate %}
+        <li><input type="checkbox"
+                   class="filter-lookup negate {{ spec.id }}"
+                   data-group="{{ spec.id }}"
+                   data-original="{{ spec.value.1|lower }}"
+                {% if spec.value.1 %} checked="checked" {% endif %}>
+            <small>{% trans "Exclude" %}</small></li>
+    {% endif %}
+    <li><input type="text" class="filter-lookup {{ spec.id }}"
+               name="value"
+               data-original="{{ spec.value.0 }}"
+               data-group="{{ spec.id }}"
+               value="{{ spec.value.0 }}"
+               style="width: 90%">
+    </li>
+    <li>
+        <a class="filter-lookup adminfilters button {{ spec.id }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"
+           href="#">{% if spec.value.0 %}clear{% else %}filter{% endif %}</a>
+    </li>
+</ul>
+<script type="text/javascript">
+    ;(function ($) {
+        $(document).ready(function () {
+            $("#{{ spec.id }}").find("a.button").click(new lookupFilterHandler("{{ spec.id }}",
+                {negated: {{spec.negated|lower}}, can_negate:{{ spec.can_negate|lower }} }).click);
+        });
+    })(django.jQuery);
+</script>

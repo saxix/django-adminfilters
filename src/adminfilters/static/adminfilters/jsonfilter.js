@@ -1,5 +1,6 @@
-var jsonFieldFilterHandler = function (e) {
+var jsonFieldFilterHandler = function (e, options) {
     var self = this;
+    const config = Object.assign({negated: false, can_negate: true, options: "i"}, options);
     var $container = django.jQuery("#" + e);
     var $button = $container.find("a.button");
     var $negate = $container.find("input[type=checkbox]").first();
@@ -14,9 +15,13 @@ var jsonFieldFilterHandler = function (e) {
         var newAction;
         var changed = ($key.val() != $key.data("original"))
             || ($value.val() != $value.data("original"))
-            || ($options.val() != $options.data("original"))
-            || ($type.val() != $type.data("original"))
-            || ($negate.is(":checked") != $negate.data("original"));
+            || ($type.val() != $type.data("original"));
+        if (config.options) {
+            changed |= $options.val() != $options.data("original");
+        }
+        if (config.can_negate) {
+            changed |= $negate.is(":checked") != $negate.data("original");
+        }
         if (changed) {
             newAction = "filter";
             console.log("DEBUG", "$negate", $negate, $negate.is(":checked") == $negate.data("original"), $negate.is(":checked"), $negate.data("original"));
@@ -50,9 +55,13 @@ var jsonFieldFilterHandler = function (e) {
         } else if ($key.val()) {
             url = qs + "&" + $key.data("lk") + "=" + $key.val();
             url = url + "&" + $value.data("lk") + "=" + $value.val();
-            url = url + "&" + $options.data("lk") + "=" + $options.val();
             url = url + "&" + $type.data("lk") + "=" + $type.val();
-            url = url + "&" + $negate.data("lk") + "=" + $negate.is(":checked");
+            if (config.options) {
+                url = url + "&" + $options.data("lk") + "=" + $options.val();
+            }
+            if (config.can_negate) {
+                url = url + "&" + $negate.data("lk") + "=" + $negate.is(":checked");
+            }
         }
         return url;
     };

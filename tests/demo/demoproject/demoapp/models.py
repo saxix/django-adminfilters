@@ -27,7 +27,7 @@ class DemoModelField(models.Model):
     choices = models.IntegerField(choices=((1, 'Choice 1'),
                                            (2, 'Choice 2'),
                                            (3, 'Choice 3')))
-    # json = JSONField(default=dict)
+    flags = JSONField(default=dict, blank=True)
 
     class Meta:
         app_label = 'demoapp'
@@ -46,6 +46,7 @@ class DemoModel(models.Model):
                                      related_name='related',
                                      verbose_name='Demo Related',
                                      on_delete=models.CASCADE)
+    flags = JSONField(default=dict)
 
     class Meta:
         app_label = 'demoapp'

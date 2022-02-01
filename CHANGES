@@ -1,5 +1,6 @@
 Release 1.8
 =============
+* Drop support Django < 3
 * new JsonFieldFilter
 * MultiValueTextFilter/TextFilter refactoring
 * AdminFiltersMixin to easily add media files
