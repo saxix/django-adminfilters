@@ -42,6 +42,7 @@ class DemoRelated(models.Model):
 
 class DemoModel(models.Model):
     name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     demo_related = models.ForeignKey('DemoRelated',
                                      related_name='related',
                                      verbose_name='Demo Related',

@@ -66,7 +66,8 @@ class DemoModelModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     list_filter = (
         GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
         GenericLookupFieldFilter.factory('demo_related__name__istartswith'),
-        TextFieldFilter.factory('name'),
+        ("name", TextFieldFilter),
+        ("last_name", TextFieldFilter.factory(title="LastName")),
         ("flags", JsonFieldFilter.factory(can_negate=False, options=False)),
         ('demo_related', AutoCompleteFilter)
     )
@@ -77,7 +78,6 @@ class DemoModelFieldAdmin(DebugMixin, ModelAdmin):
     list_filter = (
         ("integer", NumberFilter),
     )
-
 
 
 class DemoRelatedModelAdmin(DebugMixin, ModelAdmin):

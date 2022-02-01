@@ -41,8 +41,22 @@ Usage examples
 
 .. code-block:: python
 
+    class DemoModelField(models.Model):
+        index = models.CharField(max_length=255)
+        name = models.CharField(max_length=255)
+        age = models.IntegerField()
+        flag = models.CharField(default="1", choices=(("0", "Flag 1"), ("1", "Flag 2"))
+        household = models.ForeignKey('Household')
+        custom = JSONField(default=dict, blank=True)
+
     class UserAdmin(ModelAdmin):
-        list_filter = (TextFieldFilter.factory('name__istartswith'),)
+        list_filter = (
+            ("custom", JsonFieldFilter.factory(can_negate=False, options=True)),
+            ("flag", ChoicesFieldComboFilter),
+            ('household', AutoCompleteFilter)
+            GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
+            ("age", NumberFilter),
+        )
 
 
 

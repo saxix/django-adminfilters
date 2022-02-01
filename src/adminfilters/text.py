@@ -14,6 +14,8 @@ class TextFieldFilter(MediaDefinitionFilter, FieldListFilter):
     filter_title = None
 
     def __init__(self, field, request, params, model, model_admin, field_path):
+        self.lookup_negated_val = None
+        self.lookup_val = None
         self.lookup_kwarg = field_path
         self.lookup_kwarg_negated = "%s__negate" % field_path
         self.parse_query_string(params)
@@ -31,9 +33,9 @@ class TextFieldFilter(MediaDefinitionFilter, FieldListFilter):
         return getattr(self.field, 'verbose_name', self.field_path)
 
     @classmethod
-    def factory(cls, field, **kwargs):
+    def factory(cls, **kwargs):
         kwargs['filter_title'] = kwargs.pop('title', None)
-        return field, type('TextFieldFilter', (cls,), kwargs)
+        return type('TextFieldFilter', (cls,), kwargs)
 
     def expected_parameters(self):
         return [self.lookup_kwarg, self.lookup_kwarg_negated]
@@ -57,9 +59,6 @@ class TextFieldFilter(MediaDefinitionFilter, FieldListFilter):
             else:
                 return queryset.filter(**filters)
         return queryset
-
-    def lookups(self, request, model_admin):
-        return ["", ""]
 
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=self.expected_parameters())

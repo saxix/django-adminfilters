@@ -55,27 +55,3 @@ def test_JsonFieldFilter(fixtures, op, expected):
     result = f.queryset(None, DemoModelField.objects.all())
     value = list(result.values_list("unique", flat=True))
     assert value == expected.split(","), value
-    #
-    # f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {"unique": "=1"}, None, None, 'unique')
-    # result = f.queryset(None, DemoModelField.objects.all())
-    # assert list(result.values_list("unique", flat=True)) == ['1']
-    #
-    # f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {"unique": ">1"}, None, None, 'unique')
-    # result = f.queryset(None, DemoModelField.objects.all())
-    # assert list(result.values_list("unique", flat=True)) == ['2', '3', '4']
-    #
-    # f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {"unique": "<3"}, None, None, 'unique')
-    # result = f.queryset(None, DemoModelField.objects.all())
-    # assert list(result.values_list("unique", flat=True)) == ['0', '1', '2']
-    #
-    # f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {"unique": "<>3"}, None, None, 'unique')
-    # result = f.queryset(None, DemoModelField.objects.all())
-    # assert list(result.values_list("unique", flat=True)) == ['0', '1', '2']
-    #
-    # f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {"unique": ">=4"}, None, None, 'unique')
-    # result = f.queryset(None, DemoModelField.objects.all())
-    # assert list(result.values_list("unique", flat=True)) == ['0', '1', '2']
-    #
-    # f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {"unique": "<=2"}, None, None, 'unique')
-    # result = f.queryset(None, DemoModelField.objects.all())
-    # assert list(result.values_list("unique", flat=True)) == ['0', '1', '2']
