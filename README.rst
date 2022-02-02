@@ -13,7 +13,7 @@ Demo can be found at https://django-smart-admin.herokuapp.com/
     :target: https://codecov.io/github/saxix/django-adminfilters?branch=develop
 
 .. image:: https://github.com/saxix/django-adminfilters/actions/workflows/test.yml/badge.svg
-    :target: https://github.com/saxix/django-adminfilters
+    :target: https://github.com/saxix/django-adminfilters/actions/workflows/test.yml
 
 
 Filters
