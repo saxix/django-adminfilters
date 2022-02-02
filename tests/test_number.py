@@ -1,14 +1,7 @@
-import json
-
 import pytest
+from demoproject.demoapp.models import DemoModelField
 
-from adminfilters.checkbox import RelatedFieldCheckBoxFilter
-from adminfilters.json import JsonFieldFilter
-from adminfilters.lookup import GenericLookupFieldFilter
 from adminfilters.numbers import NumberFilter
-from demoproject.demoapp.models import DemoModel, DemoModelField, DemoRelated
-
-from adminfilters.filters import ForeignKeyFieldFilter, TextFieldFilter
 
 DATA = {
     "nullable": "bbbb",

@@ -1,9 +1,7 @@
 import pytest
-
-from adminfilters.lookup import GenericLookupFieldFilter
 from demoproject.demoapp.models import DemoModel, DemoModelField, DemoRelated
 
-from adminfilters.filters import ForeignKeyFieldFilter, TextFieldFilter
+from adminfilters.lookup import GenericLookupFieldFilter
 
 DATA = {
     "nullable": "bbbb",

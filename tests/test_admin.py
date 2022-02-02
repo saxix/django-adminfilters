@@ -1,8 +1,7 @@
+from demoproject.demoapp.models import DemoModel, DemoModelField, DemoRelated
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
-
-from demoproject.demoapp.models import DemoModelField, DemoRelated, DemoModel
 
 DATA = {
     "nullable": "bbbb",
@@ -100,7 +99,7 @@ class AdminFilterTests(TestCase):
         """
         base_url = reverse('admin:demoapp_demomodel_unionfieldlistfilter_changelist')
 
-        self.assertTrue(self.client.login( username='sax', password='top_secret'))
+        self.assertTrue(self.client.login(username='sax', password='top_secret'))
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
         response = self.client.get(base_url + "?demo_related_filter=1%2C2")
@@ -140,7 +139,6 @@ class AdminFilterTests(TestCase):
         self.assertEqual(response.status_code, 200)
         response = self.client.get(base_url + "?flags__key=v&flags__value=1")
         self.assertEqual(response.status_code, 200)
-
 
     def test_admin_NumberFilter(self):
         """

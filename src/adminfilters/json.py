@@ -1,7 +1,6 @@
 from django import forms
 from django.conf import settings
 from django.contrib.admin import FieldListFilter
-from django.contrib.admin.utils import prepare_lookup_value
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.db.models import Q
 from django.utils.translation import get_language

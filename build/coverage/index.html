@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Coverage report</title>
+    <link rel="icon" sizes="32x32" href="favicon_32.png">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.index_ready);
+    </script>
+</head>
+<body class="indexfile">
+<div id="header">
+    <div class="content">
+        <h1>Coverage report:
+            <span class="pc_cov">92%</span>
+        </h1>
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
+    </div>
+</div>
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        <span class="key">b</span>
+        <span class="key">p</span>
+        <span class="key">c</span> &nbsp; change column sorting
+    </p>
+    </div>
+</div>
+<div id="index">
+    <table class="index">
+        <thead>
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
+                <th class="shortkey_b">branches</th>
+                <th class="shortkey_p">partial</th>
+                <th class="right shortkey_c">coverage</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>459</td>
+                <td>22</td>
+                <td>5</td>
+                <td>94</td>
+                <td>12</td>
+                <td class="right" data-ratio="509 553">92%</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_autocomplete_py.html">src/adminfilters/autocomplete.py</a></td>
+                <td>48</td>
+                <td>2</td>
+                <td>0</td>
+                <td>10</td>
+                <td>3</td>
+                <td class="right" data-ratio="53 58">91%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_checkbox_py.html">src/adminfilters/checkbox.py</a></td>
+                <td>31</td>
+                <td>2</td>
+                <td>2</td>
+                <td>10</td>
+                <td>2</td>
+                <td class="right" data-ratio="37 41">90%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_combo_py.html">src/adminfilters/combo.py</a></td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="7 7">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_extra_py.html">src/adminfilters/extra.py</a></td>
+                <td>20</td>
+                <td>10</td>
+                <td>0</td>
+                <td>8</td>
+                <td>0</td>
+                <td class="right" data-ratio="10 28">36%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_filters_py.html">src/adminfilters/filters.py</a></td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="10 10">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_json_py.html">src/adminfilters/json.py</a></td>
+                <td>62</td>
+                <td>0</td>
+                <td>0</td>
+                <td>12</td>
+                <td>0</td>
+                <td class="right" data-ratio="74 74">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_lookup_py.html">src/adminfilters/lookup.py</a></td>
+                <td>56</td>
+                <td>0</td>
+                <td>0</td>
+                <td>6</td>
+                <td>0</td>
+                <td class="right" data-ratio="62 62">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_mixin_py.html">src/adminfilters/mixin.py</a></td>
+                <td>24</td>
+                <td>1</td>
+                <td>0</td>
+                <td>8</td>
+                <td>3</td>
+                <td class="right" data-ratio="28 32">88%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_multiselect_py.html">src/adminfilters/multiselect.py</a></td>
+                <td>59</td>
+                <td>7</td>
+                <td>1</td>
+                <td>20</td>
+                <td>3</td>
+                <td class="right" data-ratio="67 79">85%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_numbers_py.html">src/adminfilters/numbers.py</a></td>
+                <td>45</td>
+                <td>0</td>
+                <td>2</td>
+                <td>8</td>
+                <td>0</td>
+                <td class="right" data-ratio="53 53">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_radio_py.html">src/adminfilters/radio.py</a></td>
+                <td>9</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="9 9">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_smart_py.html">src/adminfilters/smart.py</a></td>
+                <td>19</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="19 19">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_adminfilters_text_py.html">src/adminfilters/text.py</a></td>
+                <td>69</td>
+                <td>0</td>
+                <td>0</td>
+                <td>12</td>
+                <td>1</td>
+                <td class="right" data-ratio="80 81">99%</td>
+            </tr>
+        </tbody>
+    </table>
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
+</div>
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.5</a>,
+            created at 2022-02-02 02:27 +0700
+        </p>
+    </div>
+</div>
+</body>
+</html>

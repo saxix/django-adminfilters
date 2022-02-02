@@ -4,14 +4,13 @@ from django.contrib.admin.views.main import ChangeList
 from django.contrib.auth.admin import UserAdmin
 
 from adminfilters.autocomplete import AutoCompleteFilter
-from adminfilters.filters import (ForeignKeyFieldFilter,
-                                  RelatedFieldCheckBoxFilter,
-                                  RelatedFieldRadioFilter, TextFieldFilter, )
+from adminfilters.filters import (RelatedFieldCheckBoxFilter,
+                                  RelatedFieldRadioFilter, TextFieldFilter,)
 from adminfilters.json import JsonFieldFilter
 from adminfilters.lookup import GenericLookupFieldFilter
 from adminfilters.mixin import AdminFiltersMixin
 from adminfilters.multiselect import (IntersectionFieldListFilter,
-                                      UnionFieldListFilter, )
+                                      UnionFieldListFilter,)
 from adminfilters.numbers import NumberFilter
 
 from .models import DemoModel, DemoRelated
