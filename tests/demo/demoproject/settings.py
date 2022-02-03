@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'adminfilters',
+    'adminfilters.depot',
     'demoproject.demoapp')
 
 # Django 1.9
