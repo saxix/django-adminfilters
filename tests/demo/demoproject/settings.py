@@ -1,4 +1,3 @@
-# Django settings for demoproject project.
 import os
 import sys
 
@@ -53,8 +52,6 @@ INSTALLED_APPS = (
     'adminfilters',
     'adminfilters.depot',
     'demoproject.demoapp')
-
-# Django 1.9
 
 TEMPLATES = [
     {'BACKEND': 'django.template.backends.django.DjangoTemplates',
