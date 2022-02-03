@@ -9,7 +9,7 @@ from django.utils.translation import get_language
 class JsonFieldFilter(FieldListFilter):
     parameter_name = None
     title = None
-    template = "adminfilters/jsonfieldfilter.html"
+    template = "adminfilters/json.html"
     can_negate = True
     negated = False
     options = True

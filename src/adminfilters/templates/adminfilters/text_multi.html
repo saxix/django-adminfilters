@@ -20,7 +20,7 @@
                   style="width: 90%">{{ spec.value.0|join:spec.separator }}</textarea>
     </li>
     <li><a class="filter-multivalue adminfilters button {{ spec.field_path }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"
-           href="#">{% if spec.value.0 %}clear{% else %}filter{% endif %}</a>
+           href="#">{% if spec.value.0 %}{% trans "clear" %}{% else %}{% trans "activate"%}{% endif %}</a>
     </li>
 </ul>
 <script type="text/javascript">

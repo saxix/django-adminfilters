@@ -259,29 +259,23 @@ select.filter-autocomplete {
     padding: 6px;
 }
 
-#changelist-filter li a.adminfilters.button{
-    border:1px solid #b8b8b8;
+#changelist-filter li a.adminfilters.button {
+    border: 1px solid #b8b8b8;
     color: white;
-    padding: 2px; border-radius: 20px;
+    padding: 2px;
+    border-radius: 20px;
     text-align: center;
 }
-#changelist-filter li a.adminfilters.button.filter{
+
+#changelist-filter li a.adminfilters.button.filter {
     background-color: #999;
-    border:1px solid #b8b8b8;
-    color: white;
-    padding: 2px; border-radius: 20px;
-    text-align: center;
 }
 
-#changelist-filter li a.adminfilters.button.clear{
+#changelist-filter li a.adminfilters.button.clear {
     background-color: #79aec8;
-    border:1px solid #b8b8b8;
-    color: white;
-    padding: 2px; border-radius: 20px;
-    text-align: center;
 }
 
-#changelist-filter li .filter-jsonfield{
+#changelist-filter li input:disabled {
+    background-color: #eae2e2;
 
 }
-

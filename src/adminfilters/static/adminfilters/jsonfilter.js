@@ -1,6 +1,6 @@
 var jsonFieldFilterHandler = function (e, options) {
     var self = this;
-    const config = Object.assign({negated: false, can_negate: true, options: "i"}, options);
+    var config = Object.assign({negated: false, can_negate: true, options: "i"}, options);
     var $container = django.jQuery("#" + e);
     var $button = $container.find("a.button");
     var $negate = $container.find("input[type=checkbox]").first();

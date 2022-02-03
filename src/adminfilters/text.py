@@ -7,7 +7,7 @@ from django.utils.translation import get_language
 from adminfilters.mixin import MediaDefinitionFilter
 
 
-class TextFieldFilter(MediaDefinitionFilter, FieldListFilter):
+class ValueFilter(MediaDefinitionFilter, FieldListFilter):
     template = 'adminfilters/text.html'
     separator = ","
     toggleable = False
@@ -77,7 +77,7 @@ class TextFieldFilter(MediaDefinitionFilter, FieldListFilter):
         )
 
 
-class MultiValueTextFieldFilter(TextFieldFilter):
+class MultiValueFilter(ValueFilter):
     template = 'adminfilters/text_multi.html'
     separator = ","
     filter_title = None
@@ -93,4 +93,6 @@ class MultiValueTextFieldFilter(TextFieldFilter):
         self.lookup_val = [e.strip() for e in raw_values if e.strip()]
 
 
+TextFieldFilter = ValueFilter
 ForeignKeyFieldFilter = TextFieldFilter
+MultiValueTextFieldFilter = MultiValueFilter

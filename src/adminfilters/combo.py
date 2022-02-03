@@ -8,7 +8,7 @@ class AllValuesComboFilter(AllValuesFieldListFilter):
 
 
 class RelatedFieldComboFilter(RelatedFieldListFilter):
-    template = 'adminfilters/fieldcombobox.html'
+    template = 'adminfilters/combobox.html'
 
 
 class ChoicesFieldComboFilter(ChoicesFieldListFilter):

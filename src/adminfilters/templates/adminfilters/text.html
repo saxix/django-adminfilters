@@ -2,9 +2,10 @@
 <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
 <ul>
     <li><input type="text"
-               onblur="location.href='{{ choices.0.query_string }}&{{ choices.0.lookup_kwarg }}='+this.value"
-               onchange="location.href='{{ choices.0.query_string }}&{{ choices.0.lookup_kwarg }}='+this.value"
+               style="width: 90%"
+               onblur="location.href='{{ spec.query_string }}&{{ spec.lookup_kwarg }}='+this.value"
+               onchange="location.href='{{ spec.query_string }}&{{ spec.lookup_kwarg }}='+this.value"
             {#           onchange="location.href={{ choice.query_string|iriencode }}this.value"#}
-               value="{{ choices.0.value }}">
+               value="{{ spec.value.0 }}">
     </li>
 </ul>

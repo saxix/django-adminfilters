@@ -1,5 +1,5 @@
-{% load i18n %}
-<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
+{% extends "adminfilters/_wrapper.html" %}{% load i18n %}
+{% block content %}
 <ul id="{{ spec.field_path }}"
     data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
     data-op="{{ spec.operator }}"
@@ -61,8 +61,10 @@
         </span>
     </li>
     <li><a class="filter-jsonfield adminfilters button {{ spec.field_path }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"
-           href="#">{% if spec.value.0 %}clear{% else %}filter{% endif %}</a></li>
+           href="#">{% if spec.value.0 %}{% trans "clear" %}{% else %}{% trans "activate"%}{% endif %}</a>
 </ul>
+{% endblock  %}
+{% block script %}
 <script type="text/javascript">
     ;(function ($) {
         $(document).ready(function () {
@@ -71,3 +73,4 @@
         });
     })(django.jQuery);
 </script>
+{% endblock  %}

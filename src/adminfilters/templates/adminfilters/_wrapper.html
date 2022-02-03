@@ -1,0 +1,16 @@
+{% load i18n static %}
+<style>
+
+    .aaa{
+        background: url({% static "admin/img/sorting-icons.svg"%}) 0 0 no-repeat;
+        width: 20px;
+        height: 20px;
+    }
+
+</style>
+<span class="aaa"></span>
+{% block title %}<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>{% endblock %}
+<div class="collapse">
+{% block content %}{% endblock %}
+{% block script %}{% endblock script %}
+</div>

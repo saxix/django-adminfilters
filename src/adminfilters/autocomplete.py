@@ -33,7 +33,10 @@ class AutoCompleteFilter(MediaDefinitionFilter, FieldListFilter):
         self.target_field = get_real_field(model, field_path)
         self.target_model = self.target_field.related_model
 
-        self.target_opts = self.target_field.model._meta
+        if django.VERSION[0] == 3:
+            self.target_opts = self.target_field.model._meta
+        elif django.VERSION[0] == 2:
+            self.target_opts = self.target_model._meta
 
         if not hasattr(field, 'get_limit_choices_to'):
             raise Exception(f"Filter '{field_path}' of {model_admin} is not supported by AutoCompleteFilter."
@@ -47,6 +50,9 @@ class AutoCompleteFilter(MediaDefinitionFilter, FieldListFilter):
     def get_url(self):
         if django.VERSION[:2] >= (3, 2):
             return reverse("admin:autocomplete")
+        return reverse(self.url_name % (self.admin_site.name,
+                                        self.target_opts.app_label,
+                                        self.target_opts.model_name))
 
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=[self.lookup_kwarg, self.lookup_kwarg_isnull])
