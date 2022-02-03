@@ -4,13 +4,14 @@ from django.contrib.admin.views.main import ChangeList
 from django.contrib.auth.admin import UserAdmin
 
 from adminfilters.autocomplete import AutoCompleteFilter
+from adminfilters.depot.selector import FilterDepotManager
 from adminfilters.filters import (RelatedFieldCheckBoxFilter,
-                                  RelatedFieldRadioFilter, TextFieldFilter,)
+                                  RelatedFieldRadioFilter, TextFieldFilter, )
 from adminfilters.json import JsonFieldFilter
 from adminfilters.lookup import GenericLookupFieldFilter
 from adminfilters.mixin import AdminFiltersMixin
 from adminfilters.multiselect import (IntersectionFieldListFilter,
-                                      UnionFieldListFilter,)
+                                      UnionFieldListFilter, )
 from adminfilters.numbers import NumberFilter
 
 from .models import DemoModel, DemoRelated
@@ -63,6 +64,7 @@ class DemoModelAdmin_IntersectionFieldListFilter(DebugMixin, ModelAdmin):
 class DemoModelModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     list_display = [f.name for f in DemoModel._meta.fields]
     list_filter = (
+        FilterDepotManager,
         GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
         GenericLookupFieldFilter.factory('demo_related__name__istartswith'),
         ("name", TextFieldFilter),

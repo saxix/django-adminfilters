@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from urllib.parse import urlencode
 
 from django.contrib.admin import ListFilter
@@ -38,6 +39,7 @@ class FilterDepotManager(ListFilter):
         self.selected_filter = params.pop(self.parameter_selection, None)
         self.save_as = params.pop(self.parameter_newname, None)
         self.can_add_filter = request.user.has_perm('depot.add_storefilter')
+        self.content_type = ContentType.objects.get_for_model(model_admin.model)
 
     def has_output(self):
         return True
@@ -51,9 +53,9 @@ class FilterDepotManager(ListFilter):
         if self.save_as:
             qs = get_query_string(request, {}, [self.parameter_newname,
                                                 self.parameter_selection])
-            StoredFilter.objects.update_or_create(owner=request.user,
+            StoredFilter.objects.update_or_create(content_type=self.content_type,
+                                                  name=self.save_as,
                                                   defaults={
-                                                      'name': self.save_as,
                                                       'query_string': qs
                                                   })
             self.model_admin.message_user(self.request, f"Filter '{self.save_as}' successfully saved")
@@ -63,7 +65,7 @@ class FilterDepotManager(ListFilter):
         self.query_string = get_query_string(self.request, {}, [self.parameter_newname,
                                                                 self.parameter_selection])
         self.selected = False
-        for f in StoredFilter.objects.all():
+        for f in StoredFilter.objects.filter(content_type=self.content_type):
             self.selected = self.selected or str(self.query_string) == str(f.query_string)
             yield {
                 'selected': str(self.query_string) == str(f.query_string),
