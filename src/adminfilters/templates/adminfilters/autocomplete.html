@@ -1,7 +1,9 @@
-{% load i18n  %}
-<span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span>
-<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
-<ul><li><select style="max-width: 95%" id="ac_{{ spec.field.name }}"
+{% extends "adminfilters/_wrapper.html" %}{% load i18n %}
+{#<span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span>#}
+{#<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>#}
+{% block content %}
+<ul>
+    <li><select style="max-width: 95%" id="ac_{{ spec.field.name }}"
                 data-ajax--cache="true"
                 data-ajax--delay="250"
                 data-ajax--qs="{{ spec.query_string }}"
@@ -15,12 +17,16 @@
                 data-allow-clear="true"
                 data-placeholder=""
                 class="filter-autocomplete ">
-    {% for c in choices %}<option selected="selected">{{ c }}</option>{% endfor %}
-</select>
+        {% for c in choices %}
+            <option selected="selected">{{ c }}</option>{% endfor %}
+    </select>
     </li>
 </ul>
+{% endblock  %}
+{% block script %}
 <script>
     ;(function ($) {
         $('#ac_{{ spec.field.name }}').djangoAdminSelect2();
     })(django.jQuery);
 </script>
+{% endblock %}

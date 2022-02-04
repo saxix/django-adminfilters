@@ -37,7 +37,7 @@
                value="{{ spec.lookup_key_val }}"
                style="width: 90%">
 
-        <span style="display: inline">
+        <span style="display: inline; width: 90%">
             <input type="text"
                    name="value"
                    data-group="{{ spec.field_path }}"
@@ -47,17 +47,17 @@
                    value="{{ spec.lookup_value_val }}"
                    data-original="{{ spec.lookup_value_val }}"
                    style="width: 70%">
-            <select style="height: 26px;padding: 0"
+            <select style="height: 26px;padding: 0;width: 20%"
                     name="type"
                     data-lk="{{ spec.lookup_kwarg_type }}"
                     data-original="{{ spec.lookup_type_val }}">
-            <option value="any" {% if spec.lookup_type_val == "any" %}selected="selected"{% endif %}>
-                <small>any</small></option>
-            <option value="str" {% if spec.lookup_type_val == "str" %}selected="selected"{% endif %}>
-                <small>str</small></option>
-            <option value="num" {% if spec.lookup_type_val == "num" %}selected="selected"{% endif %}>
-                <small>num</small></option>
-        </select>
+                <option value="any" {% if spec.lookup_type_val == "any" %}selected="selected"{% endif %}>
+                    <small>any</small></option>
+                <option value="str" {% if spec.lookup_type_val == "str" %}selected="selected"{% endif %}>
+                    <small>str</small></option>
+                <option value="num" {% if spec.lookup_type_val == "num" %}selected="selected"{% endif %}>
+                    <small>num</small></option>
+            </select>
         </span>
     </li>
     <li><a class="filter-jsonfield adminfilters button {{ spec.field_path }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"

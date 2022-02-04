@@ -14,13 +14,14 @@
     }
 
 </style>
-{#<img src="{% static "admin/img/sorting-icons.svg"%}">#}
-
-<div class="adminfilters box {% if spec.error_message %} error {% endif %} collapse">
+<div class="adminfilters box {{ spec.identity }} {% if spec.error_message %} error {% endif %}">
     {% block title %}
-        <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}<span class="opener"></span></h3>{% endblock %}
+        <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}
+{#            <span class="opener"></span>#}
+        </h3>
+    {% endblock %}
     <div class="filter-content">
         {% block content %}{% endblock %}
-        {% block script %}{% endblock script %}
+        {% block script %}{% endblock  %}
     </div>
 </div>

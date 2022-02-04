@@ -1,5 +1,5 @@
-{% load i18n %}
-<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>
+{% extends "adminfilters/_wrapper.html" %}{% load i18n %}
+{% block content %}
 <ul id="{{ spec.lookup }}"
     data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
     data-lk="{{ spec.parameter_name }}"
@@ -25,6 +25,9 @@
            href="#">{% if spec.value.0 %}clear{% else %}filter{% endif %}</a>
     </li>
 </ul>
+{% endblock  %}
+{% block script %}
+
 <script type="text/javascript">
     ;(function ($) {
         $(document).ready(function () {
@@ -33,3 +36,4 @@
         });
     })(django.jQuery);
 </script>
+{% endblock  %}

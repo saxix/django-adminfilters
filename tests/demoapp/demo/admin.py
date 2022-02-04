@@ -4,6 +4,7 @@ from django.contrib.admin.views.main import ChangeList
 from django.contrib.auth.admin import UserAdmin
 
 from adminfilters.autocomplete import AutoCompleteFilter
+from adminfilters.combo import ChoicesFieldComboFilter
 from adminfilters.depot.selector import FilterDepotManager
 from adminfilters.filters import (DjangoLookupFilter, GenericLookupFieldFilter,
                                   IntersectionFieldListFilter, JsonFieldFilter,
@@ -77,7 +78,9 @@ class DemoModelModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
 
 
 class DemoModelFieldAdmin(DebugMixin, ModelAdmin):
+    list_display = ("char", "integer", "logic", "email", "choices")
     list_filter = (
+        ("choices", ChoicesFieldComboFilter),
         ("integer", NumberFilter),
     )
 

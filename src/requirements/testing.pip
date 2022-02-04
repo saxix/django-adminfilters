@@ -10,3 +10,4 @@ flake8
 isort
 psycopg2==2.8.6
 pdbpp
+factory-boy

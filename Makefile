@@ -19,9 +19,9 @@ develop:
 	./.venv/bin/pip install -r src/requirements/develop.pip
 
 demo:
-	cd tests/demo && python manage.py migrate
-	cd tests/demo && python manage.py loaddata demoproject
-	cd tests/demo && python manage.py runserver
+	cd tests/demoapp && python manage.py migrate
+	cd tests/demoapp && python manage.py loaddata demoproject
+	cd tests/demoapp && python manage.py runserver
 
 clean:
 	rm -fr ${BUILDDIR} dist *.egg-info .coverage coverage.xml pytest.xml .cache MANIFEST build .pytest_cache
