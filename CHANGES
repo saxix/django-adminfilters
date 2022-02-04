@@ -1,7 +1,9 @@
 Release 2.0
 ===========
 * add ability to save/reuse filters configurations.
-
+* new DjangoLookupFilter
+* new QueryStringFilter
+* add ability to save filter configuration and recall them. (adminfilters.depot)
 
 Release 1.9
 ===========
