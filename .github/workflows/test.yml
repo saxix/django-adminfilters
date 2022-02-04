@@ -42,7 +42,6 @@ jobs:
         env:
             PY_VER: ${{ matrix.python-version}}
             DJ_VER: ${{ matrix.django-version}}
-            PG_PORT: ${{ job.services.postgres.ports[5432] }}
             PG_USER: postgres
             PG_PASSWORD: postgres
         steps:
