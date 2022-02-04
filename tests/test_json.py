@@ -1,5 +1,5 @@
 import pytest
-from demoproject.demoapp.models import DemoModel, DemoRelated
+from demo.models import DemoModel, DemoRelated
 
 from adminfilters.json import JsonFieldFilter
 from adminfilters.lookup import GenericLookupFieldFilter
@@ -16,7 +16,6 @@ DATA = {
     "not_editable": None,
     "bigint": 333333333,
     "text": "lorem ipsum",
-    "null_logic": True,
     "logic": False,
     "date": "2013-01-29",
     "integer": 888888,
@@ -64,7 +63,7 @@ def test_JsonFieldFilter(fixtures):
                                        "flags__options": "e"}, None, None, 'flags')
     result = f.queryset(None, DemoModel.objects.all())
     # this is a Django bug. It should returns [2, "2"]
-    assert list(result.values_list("flags__v", flat=True)) == [2, 2]
+    assert list(result.values_list("flags__v", flat=True)) == [2, '2']
 
     # negate / include
     f = JsonFieldFilter('json', None, {"flags__key": "v",
@@ -73,7 +72,7 @@ def test_JsonFieldFilter(fixtures):
                                        "flags__options": "i"}, None, None, 'flags')
     result = f.queryset(None, DemoModel.objects.all())
     # this is a Django bug. It should returns [2, "2"]
-    assert list(result.values_list("flags__v", flat=True)) == [2, 2, None]
+    assert list(result.values_list("flags__v", flat=True)) == [2, '2', None]
 
     # cast to int
     f = JsonFieldFilter('json', None, {"flags__key": "v",
@@ -91,7 +90,7 @@ def test_JsonFieldFilter(fixtures):
                                        "flags__type": "str",
                                        "flags__options": "e"}, None, None, 'flags')
     result = f.queryset(None, DemoModel.objects.all())
-    assert list(result.values_list("flags__v", flat=True)) == [2]
+    assert list(result.values_list("flags__v", flat=True)) == ['2']
 
     # cast to char/include
     f = JsonFieldFilter('json', None, {"flags__key": "v",
@@ -100,4 +99,4 @@ def test_JsonFieldFilter(fixtures):
                                        "flags__type": "str",
                                        "flags__options": "i"}, None, None, 'flags')
     result = f.queryset(None, DemoModel.objects.all())
-    assert list(result.values_list("flags__v", flat=True)) == [2, None]
+    assert list(result.values_list("flags__v", flat=True)) == ['2', None]

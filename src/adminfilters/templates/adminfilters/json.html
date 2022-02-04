@@ -68,7 +68,7 @@
 <script type="text/javascript">
     ;(function ($) {
         $(document).ready(function () {
-            $("#{{ spec.field_path }}").find("a.button").click(new jsonFieldFilterHandler("{{ spec.field_path }}",
+            $("#{{ spec.field_path }}").find("a.button").click(new JsonFilterHandler("{{ spec.field_path }}",
                 {negated: {{spec.negated|lower}}, can_negate:{{ spec.can_negate|lower }}, options:{{ spec.options|lower }} }).click);
         });
     })(django.jQuery);

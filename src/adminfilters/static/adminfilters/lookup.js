@@ -1,6 +1,6 @@
-var lookupFilterHandler = function (element, options) {
+var LookupFilterHandler = function (element, options) {
     var self = this;
-    const config = Object.assign( {negated: false, can_negate: true}, options);
+    var config = Object.assign( {negated: false, can_negate: true}, options);
     var $container = django.jQuery("#" + element);
     var $button = $container.find("a.button");
     var $negate = $container.find("input[type=checkbox]").first();

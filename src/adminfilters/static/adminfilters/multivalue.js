@@ -1,4 +1,4 @@
-var multiValueFilterHandler = function (e) {
+var MultiValueFilterHandler = function (e) {
     var self = this;
     var $container = django.jQuery("#" + e);
     var $button = $container.find("a.button");

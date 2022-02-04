@@ -1,12 +1,22 @@
 from django.db import models
-from django.db.models import JSONField
+
+try:
+    from django.db.models import JSONField
+except ImportError:
+    from django.contrib.postgres.fields import JSONField
 
 
-class DemoModelField(models.Model):
+class JSONMixin(models.Model):
+    flags = JSONField(default=dict, blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class DemoModelField(JSONMixin, models.Model):
     char = models.CharField(max_length=255)
     integer = models.IntegerField()
     logic = models.BooleanField(default=False)
-    null_logic = models.NullBooleanField(default=None)
     date = models.DateField()
     datetime = models.DateTimeField()
     time = models.TimeField()
@@ -27,10 +37,9 @@ class DemoModelField(models.Model):
     choices = models.IntegerField(choices=((1, 'Choice 1'),
                                            (2, 'Choice 2'),
                                            (3, 'Choice 3')))
-    flags = JSONField(default=dict, blank=True)
 
     class Meta:
-        app_label = 'demoapp'
+        app_label = 'demo'
 
 
 class DemoRelated(models.Model):
@@ -40,17 +49,16 @@ class DemoRelated(models.Model):
         return self.name
 
 
-class DemoModel(models.Model):
+class DemoModel(JSONMixin, models.Model):
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     demo_related = models.ForeignKey('DemoRelated',
                                      related_name='related',
                                      verbose_name='Demo Related',
                                      on_delete=models.CASCADE)
-    flags = JSONField(default=dict)
 
     class Meta:
-        app_label = 'demoapp'
+        app_label = 'demo'
 
     def __str__(self):
         return self.name
@@ -64,7 +72,7 @@ class DemoModel2(models.Model):
                                    on_delete=models.CASCADE)
 
     class Meta:
-        app_label = 'demoapp'
+        app_label = 'demo'
 
 
 class DemoModel_RelatedFieldCheckBoxFilter(DemoModel):

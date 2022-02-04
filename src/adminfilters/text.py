@@ -19,6 +19,7 @@ class ValueFilter(MediaDefinitionFilter, FieldListFilter):
         self.lookup_kwarg = field_path
         self.lookup_kwarg_negated = "%s__negate" % field_path
         self.parse_query_string(params)
+        self.field_path = field_path
         super().__init__(field, request, params, model, model_admin, field_path)
         self.title = self.get_title()
         self.params = params
@@ -33,9 +34,12 @@ class ValueFilter(MediaDefinitionFilter, FieldListFilter):
         return getattr(self.field, 'verbose_name', self.field_path)
 
     @classmethod
-    def factory(cls, **kwargs):
-        kwargs['filter_title'] = kwargs.pop('title', None)
-        return type('TextFieldFilter', (cls,), kwargs)
+    def factory(cls, field_path=None, title=None, **kwargs):
+        kwargs['title'] = title
+        # backward compat
+        if field_path:
+            return field_path, type('ValueFilter', (cls,), kwargs)
+        return type('ValueFilter', (cls,), kwargs)
 
     def expected_parameters(self):
         return [self.lookup_kwarg, self.lookup_kwarg_negated]

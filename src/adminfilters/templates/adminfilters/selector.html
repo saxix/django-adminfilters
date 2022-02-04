@@ -1,6 +1,6 @@
 {% extends "adminfilters/_wrapper.html" %}{% load i18n %}
 {% block title %}
-    <h3>{% blocktrans with title as filter_title %}{{ filter_title }} {% endblocktrans %}</h3>{% endblock %}
+    <h3>{% blocktrans with title as filter_title %}{{ filter_title }} {% endblocktrans %}<span class="opener"></span></h3>{% endblock %}
 {% block content %}
     <ul id="FilterDepotManager">
         <li>
@@ -36,7 +36,6 @@
                     var qs = $option.data("qs");
                     if (qs) {
                         var url = qs + "&{{ spec.parameter_selection }}=" + $(e.target).val();
-                        console.log(11111, qs);
                         location.href = qs;
                     }
                 });
@@ -50,9 +49,6 @@
                 $("#adminfilters_saver").on("keypress", function (e) {
                     if (e.which === 13) {
                         saveAs(this.value);
-                        {#var url = "{{ spec.query_string }}&{{ spec.parameter_name }}=" + this.value;#}
-                        {#location.href = url;#}
-                        {#return false;#}
                     }
                 });
             });

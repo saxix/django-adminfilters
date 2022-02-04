@@ -1,8 +1,6 @@
 [run]
 branch = True
 source = adminfilters
-#include =
-#    adminactions/**
 
 omit = src/adminfilters/__init__.py
        src/tests/**
@@ -26,4 +24,4 @@ exclude_lines =
 ignore_errors = True
 
 [html]
-directory = build/coverage
+directory = ./~build/coverage

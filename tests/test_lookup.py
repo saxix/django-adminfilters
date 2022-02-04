@@ -1,5 +1,5 @@
 import pytest
-from demoproject.demoapp.models import DemoModel, DemoModelField, DemoRelated
+from demo.models import DemoModel, DemoModelField, DemoRelated
 
 from adminfilters.lookup import GenericLookupFieldFilter
 
@@ -15,7 +15,6 @@ DATA = {
     "not_editable": None,
     "bigint": 333333333,
     "text": "lorem ipsum",
-    "null_logic": True,
     "logic": False,
     "date": "2013-01-29",
     "integer": 888888,

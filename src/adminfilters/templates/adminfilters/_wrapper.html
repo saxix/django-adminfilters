@@ -1,16 +1,26 @@
 {% load i18n static %}
 <style>
-
-    .aaa{
-        background: url({% static "admin/img/sorting-icons.svg"%}) 0 0 no-repeat;
-        width: 20px;
-        height: 20px;
+    .opener {
+        background: url({% static "admin/img/sorting-icons.svg"%});
+        background-repeat: no-repeat;
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        background-size: 14px auto;
+        background-position: 0 -28px;
+        top: 1px;
+        cursor: pointer;
+        {#background-position: 0 -56px;#}
     }
 
 </style>
-<span class="aaa"></span>
-{% block title %}<h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}</h3>{% endblock %}
-<div class="collapse">
-{% block content %}{% endblock %}
-{% block script %}{% endblock script %}
+{#<img src="{% static "admin/img/sorting-icons.svg"%}">#}
+
+<div class="adminfilters box {% if spec.error_message %} error {% endif %} collapse">
+    {% block title %}
+        <h3>{% blocktrans with title as filter_title %} By {{ filter_title }} {% endblocktrans %}<span class="opener"></span></h3>{% endblock %}
+    <div class="filter-content">
+        {% block content %}{% endblock %}
+        {% block script %}{% endblock script %}
+    </div>
 </div>

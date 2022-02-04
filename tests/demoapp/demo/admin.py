@@ -5,14 +5,13 @@ from django.contrib.auth.admin import UserAdmin
 
 from adminfilters.autocomplete import AutoCompleteFilter
 from adminfilters.depot.selector import FilterDepotManager
-from adminfilters.filters import (RelatedFieldCheckBoxFilter,
-                                  RelatedFieldRadioFilter, TextFieldFilter, )
-from adminfilters.json import JsonFieldFilter
-from adminfilters.lookup import GenericLookupFieldFilter
+from adminfilters.filters import (DjangoLookupFilter, GenericLookupFieldFilter,
+                                  IntersectionFieldListFilter, JsonFieldFilter,
+                                  NumberFilter, QueryStringFilter,
+                                  RelatedFieldCheckBoxFilter,
+                                  RelatedFieldRadioFilter, UnionFieldListFilter,
+                                  ValueFilter,)
 from adminfilters.mixin import AdminFiltersMixin
-from adminfilters.multiselect import (IntersectionFieldListFilter,
-                                      UnionFieldListFilter, )
-from adminfilters.numbers import NumberFilter
 
 from .models import DemoModel, DemoRelated
 
@@ -65,10 +64,12 @@ class DemoModelModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     list_display = [f.name for f in DemoModel._meta.fields]
     list_filter = (
         FilterDepotManager,
+        QueryStringFilter,
+        DjangoLookupFilter,
         GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
         GenericLookupFieldFilter.factory('demo_related__name__istartswith'),
-        ("name", TextFieldFilter),
-        ("last_name", TextFieldFilter.factory(title="LastName")),
+        ("name", ValueFilter),
+        ("last_name", ValueFilter.factory(title="LastName")),
         ("flags", JsonFieldFilter.factory(can_negate=False, options=False)),
         ('demo_related', AutoCompleteFilter)
     )

@@ -28,7 +28,7 @@
 <script type="text/javascript">
     ;(function ($) {
         $(document).ready(function () {
-            $("#{{ spec.id }}").find("a.button").click(new lookupFilterHandler("{{ spec.id }}",
+            $("#{{ spec.id }}").find("a.button").click(new LookupFilterHandler("{{ spec.id }}",
                 {negated: {{spec.negated|lower}}, can_negate:{{ spec.can_negate|lower }} }).click);
         });
     })(django.jQuery);

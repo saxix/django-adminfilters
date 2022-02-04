@@ -1,9 +1,9 @@
-var TextFilterHandler = function (e) {
+var QueryStringFilterHandler = function (e) {
     var self = this;
     var $container = django.jQuery("#" + e);
     var $button = $container.find("a.button");
     var $negate = $container.find("input[type=checkbox]").first();
-    var $value = $container.find("[name=value]");
+    var $value = $container.find("textarea");
     var $targets = $container.find("input,select,textarea");
     var qs = $container.data("qs");
     var timer = null;
@@ -39,7 +39,7 @@ var TextFilterHandler = function (e) {
         if (action === "clear") {
             url = qs;
         } else if ($value.val()) {
-            url = qs + "&" + $value.data("lk") + "=" + $value.val();
+            url = qs + "&" + $value.data("lk") + "=" + encodeURI($value.val());
             url = url + "&" + $negate.data("lk") + "=" + $negate.is(":checked");
         }
         return url;

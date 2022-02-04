@@ -3,9 +3,13 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
+try:
+    from django.db.models import JSONField
+except ImportError:
+    from django.contrib.postgres.fields import JSONField
+
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -18,7 +22,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('last_name', models.CharField(max_length=255)),
-                ('flags', models.JSONField(default=dict)),
+                ('flags', JSONField(blank=True, default=dict, null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -28,7 +32,6 @@ class Migration(migrations.Migration):
                 ('char', models.CharField(max_length=255)),
                 ('integer', models.IntegerField()),
                 ('logic', models.BooleanField(default=False)),
-                ('null_logic', models.NullBooleanField(default=None)),
                 ('date', models.DateField()),
                 ('datetime', models.DateTimeField()),
                 ('time', models.TimeField()),
@@ -44,7 +47,7 @@ class Migration(migrations.Migration):
                 ('blank', models.CharField(blank=True, max_length=255, null=True)),
                 ('not_editable', models.CharField(blank=True, editable=False, max_length=255, null=True)),
                 ('choices', models.IntegerField(choices=[(1, 'Choice 1'), (2, 'Choice 2'), (3, 'Choice 3')])),
-                ('flags', models.JSONField(blank=True, default=dict)),
+                ('flags', JSONField(blank=True, default=dict, null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -59,13 +62,15 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('demo_items', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='demoapp.demomodel', verbose_name='Demo Related')),
+                ('demo_items', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items',
+                                                 to='demo.demomodel', verbose_name='Demo Related')),
             ],
         ),
         migrations.AddField(
             model_name='demomodel',
             name='demo_related',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='related', to='demoapp.demorelated', verbose_name='Demo Related'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='related',
+                                    to='demo.demorelated', verbose_name='Demo Related'),
         ),
         migrations.CreateModel(
             name='DemoModel_IntersectionFieldListFilter',
@@ -77,7 +82,7 @@ class Migration(migrations.Migration):
                 'indexes': [],
                 'constraints': [],
             },
-            bases=('demoapp.demomodel',),
+            bases=('demo.demomodel',),
         ),
         migrations.CreateModel(
             name='DemoModel_RelatedFieldCheckBoxFilter',
@@ -89,7 +94,7 @@ class Migration(migrations.Migration):
                 'indexes': [],
                 'constraints': [],
             },
-            bases=('demoapp.demomodel',),
+            bases=('demo.demomodel',),
         ),
         migrations.CreateModel(
             name='DemoModel_RelatedFieldRadioFilter',
@@ -101,7 +106,7 @@ class Migration(migrations.Migration):
                 'indexes': [],
                 'constraints': [],
             },
-            bases=('demoapp.demomodel',),
+            bases=('demo.demomodel',),
         ),
         migrations.CreateModel(
             name='DemoModel_UnionFieldListFilter',
@@ -113,6 +118,6 @@ class Migration(migrations.Migration):
                 'indexes': [],
                 'constraints': [],
             },
-            bases=('demoapp.demomodel',),
+            bases=('demo.demomodel',),
         ),
     ]

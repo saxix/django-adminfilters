@@ -1,7 +1,7 @@
 import pytest
 from demo.models import DemoModelField
 
-from adminfilters.numbers import NumberFilter
+from adminfilters.querystring import QueryStringFilter
 
 DATA = {
     "nullable": "bbbb",
@@ -32,18 +32,12 @@ def fixtures(db):
         DemoModelField.objects.create(**values)
 
 
-@pytest.mark.parametrize("op,expected", [("=1", "1"),
-                                         ("1", "1"),
-                                         (">1", "2,3,4"),
-                                         (">=1", "1,2,3,4"),
-                                         ("<>2", "1,3,4"),
-                                         ("<2", "1"),
-                                         ("<=2", "1,2"),
-                                         ("1,3", "1,3"),
-                                         ("2..4", "2,3,4"),
+@pytest.mark.parametrize("op,expected", [("unique=1", "1"),
+                                         ("unique__in=1,2,3", "1,2,3"),
+                                         ("!unique=2", "1,3,4"),
                                          ])
-def test_JsonFieldFilter(fixtures, op, expected):
-    f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {"unique": op}, None, None, 'unique')
+def test_QueryStringFilter(fixtures, op, expected):
+    f = QueryStringFilter(None, {"qs": op}, None, None)
     result = f.queryset(None, DemoModelField.objects.all())
     value = list(result.values_list("unique", flat=True))
     assert value == expected.split(","), value

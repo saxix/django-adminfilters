@@ -1,5 +1,5 @@
 """
-WSGI config for demoproject project.
+WSGI config for demo project.
 
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable
@@ -20,7 +20,7 @@ import os
 # setting points here.
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "demoproject.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "demo.settings")
 
 application = get_wsgi_application()
 

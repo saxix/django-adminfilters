@@ -1,9 +1,7 @@
 import pytest
-from demoproject.demoapp.models import DemoModel, DemoRelated
+from demo.models import DemoModel, DemoRelated
 
-from adminfilters.filters import TextFieldFilter
-from adminfilters.lookup import GenericLookupFieldFilter
-from adminfilters.text import MultiValueTextFieldFilter
+from adminfilters.filters import MultiValueFilter, ValueFilter
 
 DATA = {
     "nullable": "bbbb",
@@ -17,7 +15,6 @@ DATA = {
     "not_editable": None,
     "bigint": 333333333,
     "text": "lorem ipsum",
-    "null_logic": True,
     "logic": False,
     "date": "2013-01-29",
     "integer": 888888,
@@ -38,7 +35,7 @@ def fixtures(db):
 
 
 def test_media(fixtures, rf):
-    assert GenericLookupFieldFilter.factory('char')(None, {}, None, None).media
+    assert ValueFilter.factory(title="Title")(None, None, {}, None, None, "unique").media
 
 
 @pytest.mark.parametrize("value,negate,expected", [("n", False, []),
@@ -46,8 +43,8 @@ def test_media(fixtures, rf):
                                                    ("a1", True, ['a2', 'b1', 'c1']),
                                                    ])
 def test_TextFieldFilter(fixtures, value, negate, expected):
-    f = TextFieldFilter(DemoModel._meta.get_field('name'), None,
-                        {"name": value, "name__negate": str(negate).lower()}, None, None, 'name')
+    f = ValueFilter(DemoModel._meta.get_field('name'), None,
+                    {"name": value, "name__negate": str(negate).lower()}, None, None, 'name')
 
     result = f.queryset(None, DemoModel.objects.all())
     value = list(result.values_list("name", flat=True))
@@ -55,7 +52,7 @@ def test_TextFieldFilter(fixtures, value, negate, expected):
 
 
 def test_factory(fixtures):
-    F = TextFieldFilter.factory(title="CustomTitle")
+    F = ValueFilter.factory(title="CustomTitle")
     f = F(DemoModel._meta.get_field('name'), None,
           {"name": "a1", "name__negate": "false"}, None, None, 'name')
 
@@ -69,8 +66,8 @@ def test_factory(fixtures):
                                                    ("a1", True, ['a2', 'b1', 'c1']),
                                                    ])
 def test_MultiValueTextFieldFilter(fixtures, value, negate, expected):
-    f = MultiValueTextFieldFilter(DemoModel._meta.get_field('name'), None,
-                                  {"name__in": value, "name__in__negate": str(negate).lower()}, None, None, 'name')
+    f = MultiValueFilter(DemoModel._meta.get_field('name'), None,
+                         {"name__in": value, "name__in__negate": str(negate).lower()}, None, None, 'name')
     result = f.queryset(None, DemoModel.objects.all())
     value = list(result.values_list("name", flat=True))
     assert value == expected

@@ -55,9 +55,7 @@
             } else {
                 params.splice(params.indexOf(uncheck_to_remove), 1);
             }
-
             redirect_location =  base + "?" + params.unique().join("&");
-
             location.href = redirect_location;
         });
     })(django.jQuery);

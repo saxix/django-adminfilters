@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 
 class Config(AppConfig):
-    name = 'adminfilters.depot'
+    name = 'adminfilters'
 
     def ready(self):
-        pass
+        from . import checks  # noqa

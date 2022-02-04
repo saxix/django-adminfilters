@@ -1,4 +1,4 @@
-from demoproject.demoapp.models import DemoModel2, DemoRelated
+from demo.models import DemoModel2, DemoRelated
 
 from adminfilters.autocomplete import get_real_field
 

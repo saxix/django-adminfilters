@@ -277,5 +277,16 @@ select.filter-autocomplete {
 
 #changelist-filter li input:disabled {
     background-color: #eae2e2;
+}
 
+#changelist-filter div.adminfilters.box.error{
+    background-color: #f8bcbc;
+
+}
+#changelist-filter div.adminfilters.box.collapse div.filter-content{
+    display: none;
+}
+
+#changelist-filter ul.adminfilters textarea{
+    resize: vertical;
 }

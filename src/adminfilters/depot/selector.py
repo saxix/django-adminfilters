@@ -1,28 +1,8 @@
-from django.contrib.contenttypes.models import ContentType
-from urllib.parse import urlencode
-
 from django.contrib.admin import ListFilter
+from django.contrib.contenttypes.models import ContentType
 
 from adminfilters.depot.models import StoredFilter
-
-
-def get_query_string(request, new_params=None, remove=None):
-    if new_params is None:
-        new_params = {}
-    if remove is None:
-        remove = []
-    p = dict(request.GET.items()).copy()
-    for r in remove:
-        for k in list(p):
-            if k.startswith(r):
-                del p[k]
-    for k, v in new_params.items():
-        if v is None:
-            if k in p:
-                del p[k]
-        else:
-            p[k] = v
-    return '?%s' % urlencode(sorted(p.items()))
+from adminfilters.utils import get_query_string
 
 
 class FilterDepotManager(ListFilter):

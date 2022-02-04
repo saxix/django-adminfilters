@@ -2,7 +2,7 @@ import django.contrib.admin.sites
 from django.contrib.auth.models import User
 from django.urls import re_path
 
-from .demoapp import admin, models
+from . import admin, models
 
 
 class PublicAdminSite(django.contrib.admin.sites.AdminSite):
