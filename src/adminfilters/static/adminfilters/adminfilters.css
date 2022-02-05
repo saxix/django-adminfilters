@@ -290,3 +290,15 @@ select.filter-autocomplete {
 #changelist-filter ul.adminfilters textarea{
     resize: vertical;
 }
+#changelist .opener {
+    background: url('../admin/img/sorting-icons.svg');
+    background-repeat: no-repeat;
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    background-size: 14px auto;
+    background-position: 0 -28px;
+    top: 1px;
+    cursor: pointer;
+ /*background-position: 0 -56px;*/
+}

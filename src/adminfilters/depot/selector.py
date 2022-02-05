@@ -4,8 +4,10 @@ from django.contrib.contenttypes.models import ContentType
 from adminfilters.depot.models import StoredFilter
 from adminfilters.utils import get_query_string
 
+from ..mixin import WrappperMixin
 
-class FilterDepotManager(ListFilter):
+
+class FilterDepotManager(WrappperMixin, ListFilter):
     title = "Saved Filters"
     template = 'adminfilters/selector.html'
     parameter_newname = "adminfilters_filter_save"
@@ -23,6 +25,9 @@ class FilterDepotManager(ListFilter):
 
     def has_output(self):
         return True
+
+    def expected_parameters(self):
+        return [self.parameter_selection, self.parameter_newname]
 
     def operation(self):
         if self.selected:

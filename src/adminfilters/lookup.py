@@ -1,13 +1,12 @@
 from django import forms
 from django.conf import settings
-from django.contrib.admin import SimpleListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.utils.translation import get_language
 
-from .mixin import MediaDefinitionFilter
+from .mixin import MediaDefinitionFilter, SmartSimpleListFilter
 
 
-class GenericLookupFieldFilter(MediaDefinitionFilter, SimpleListFilter):
+class GenericLookupFieldFilter(MediaDefinitionFilter, SmartSimpleListFilter):
     template = 'adminfilters/lookup.html'
     parameter_name = None
     path_separator = '>'

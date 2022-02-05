@@ -1,12 +1,13 @@
 import re
 
-from django.contrib.admin import FieldListFilter
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
+from adminfilters.mixin import SmartFieldListFilter
 
-class NumberFilter(FieldListFilter):
+
+class NumberFilter(SmartFieldListFilter):
     template = 'adminfilters/text.html'
 
     rex1 = re.compile(r'^(>=|<=|>|<|=)?([-+]?[0-9]+)$')

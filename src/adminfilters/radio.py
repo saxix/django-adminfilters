@@ -3,18 +3,20 @@ from django.contrib.admin.filters import (AllValuesFieldListFilter,
                                           ChoicesFieldListFilter,
                                           RelatedFieldListFilter,)
 
+from .mixin import WrappperMixin
 
-class AllValuesRadioFilter(AllValuesFieldListFilter):
+
+class AllValuesRadioFilter(WrappperMixin, AllValuesFieldListFilter):
     template = 'adminfilters/radio.html'
 
 
-class RelatedFieldRadioFilter(RelatedFieldListFilter):
+class RelatedFieldRadioFilter(WrappperMixin, RelatedFieldListFilter):
     template = 'adminfilters/radio.html'
 
 
-class ChoicesFieldRadioFilter(ChoicesFieldListFilter):
+class ChoicesFieldRadioFilter(WrappperMixin, ChoicesFieldListFilter):
     template = 'adminfilters/radio.html'
 
 
-class BooleanRadioFilter(BooleanFieldListFilter):
+class BooleanRadioFilter(WrappperMixin, BooleanFieldListFilter):
     template = 'adminfilters/radio.html'

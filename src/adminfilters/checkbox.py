@@ -4,8 +4,10 @@ from django.db.models.query_utils import Q
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
+from .mixin import WrappperMixin
 
-class RelatedFieldCheckBoxFilter(RelatedFieldListFilter):
+
+class RelatedFieldCheckBoxFilter(WrappperMixin, RelatedFieldListFilter):
     template = 'adminfilters/checkbox.html'
 
     def __init__(self, field, request, params, model, model_admin, field_path):

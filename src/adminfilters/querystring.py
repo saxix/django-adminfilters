@@ -3,12 +3,11 @@ from urllib import parse
 
 from django import forms
 from django.conf import settings
-from django.contrib.admin import ListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.core.exceptions import FieldError
 from django.utils.translation import get_language, gettext as _
 
-from adminfilters.mixin import MediaDefinitionFilter
+from adminfilters.mixin import MediaDefinitionFilter, SmartListFilter
 
 rex = re.compile("'.*'")
 
@@ -24,7 +23,7 @@ def get_message_from_exception(e: FieldError):
         return message
 
 
-class QueryStringFilter(MediaDefinitionFilter, ListFilter):
+class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
     parameter_name = "qs"
     title = "QueryString"
     template = "adminfilters/querystring.html"

@@ -4,25 +4,6 @@ from demo.models import DemoModel, DemoRelated
 from adminfilters.json import JsonFieldFilter
 from adminfilters.lookup import GenericLookupFieldFilter
 
-DATA = {
-    "nullable": "bbbb",
-    "float": 10.1,
-    "generic_ip": "192.168.10.2",
-    "url": "https://github.com/saxix/django-adminfilters",
-    "decimal": "22.2",
-    "time": "19:00:35",
-    "blank": "",
-    "datetime": "2013-01-01T02:18:33Z",
-    "not_editable": None,
-    "bigint": 333333333,
-    "text": "lorem ipsum",
-    "logic": False,
-    "date": "2013-01-29",
-    "integer": 888888,
-    "email": "s.apostolico@gmail.com",
-    "choices": 2
-}
-
 
 @pytest.fixture
 def fixtures(db):

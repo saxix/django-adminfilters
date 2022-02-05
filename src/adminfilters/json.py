@@ -1,12 +1,13 @@
 from django import forms
 from django.conf import settings
-from django.contrib.admin import FieldListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.db.models import Q
 from django.utils.translation import get_language
 
+from .mixin import MediaDefinitionFilter, SmartFieldListFilter
 
-class JsonFieldFilter(FieldListFilter):
+
+class JsonFieldFilter(MediaDefinitionFilter, SmartFieldListFilter):
     parameter_name = None
     title = None
     template = "adminfilters/json.html"

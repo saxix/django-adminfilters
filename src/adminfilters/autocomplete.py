@@ -1,12 +1,11 @@
 import django
 from django import forms
 from django.conf import settings
-from django.contrib.admin import FieldListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.urls import reverse
 from django.utils.translation import get_language
 
-from adminfilters.mixin import MediaDefinitionFilter
+from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 
 def get_real_field(model, path):
@@ -19,7 +18,7 @@ def get_real_field(model, path):
     return f
 
 
-class AutoCompleteFilter(MediaDefinitionFilter, FieldListFilter):
+class AutoCompleteFilter(MediaDefinitionFilter, SmartFieldListFilter):
     template = 'adminfilters/autocomplete.html'
     url_name = '%s:%s_%s_autocomplete'
 

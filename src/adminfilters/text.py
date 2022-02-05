@@ -1,13 +1,12 @@
 from django import forms
 from django.conf import settings
-from django.contrib.admin import FieldListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.utils.translation import get_language
 
-from adminfilters.mixin import MediaDefinitionFilter
+from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 
-class ValueFilter(MediaDefinitionFilter, FieldListFilter):
+class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
     template = 'adminfilters/text.html'
     separator = ","
     toggleable = False

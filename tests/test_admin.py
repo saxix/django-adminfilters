@@ -3,29 +3,10 @@ from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 
-DATA = {
-    "date": "2013-01-29",
-    "datetime": "2013-01-01T02:18:33Z",
-    "integer": 888888,
-    "nullable": "bbbb",
-    "time": "19:00:35",
-    "bigint": 333333333,
-    # "blank": "",
-    "choices": 2,
-    "decimal": "22.2",
-    # "email": "s.apostolico@gmail.com",
-    "float": 10.1,
-    "generic_ip": "192.168.10.2",
-    # "logic": False,
-    # "not_editable": None,
-    # "text": "lorem ipsum",
-    # "url": "https://github.com/saxix/django-adminfilters",
-    # # "flags": {},
-}
-
 
 class AdminFilterTests(TestCase):
     def setUp(self):
+        from demo.utils import DATA
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
         self.user = User.objects.create_user(

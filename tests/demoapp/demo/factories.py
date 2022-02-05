@@ -24,11 +24,15 @@ class ModelFactory(factory.django.DjangoModelFactory, metaclass=AutoRegisterFact
     pass
 
 
-class DemoFactory(ModelFactory):
+class DemoRelatedFactory(ModelFactory):
+    class Meta:
+        model = models.DemoRelated
+
+
+class DemoModelFactory(ModelFactory):
     name = factory.Faker('name')
-    email = factory.Faker('email')
-    active = True
-    registration_date = factory.LazyFunction(timezone.now)
+    last_name = factory.Faker('last_name')
+    demo_related = factory.SubFactory(DemoRelatedFactory)
 
     class Meta:
         model = models.DemoModel

@@ -132,6 +132,10 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console'],
-        'level': 'DEBUG',
+        'level': 'ERROR',
+    },
+    'pytest_selenium': {
+        'handlers': ['console'],
+        'level': 'ERROR',
     },
 }

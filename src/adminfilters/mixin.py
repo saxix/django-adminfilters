@@ -1,5 +1,25 @@
 from django import forms
+from django.contrib.admin import FieldListFilter, ListFilter, SimpleListFilter
 from django.contrib.admin.options import ModelAdmin
+
+
+class WrappperMixin:
+    def html_attrs(self):
+        return {'class': f"adminfilters box {self.__class__.__name__.lower()}",
+                'id': "_".join(self.expected_parameters()),
+                }
+
+
+class SmartListFilter(WrappperMixin, ListFilter):
+    pass
+
+
+class SmartSimpleListFilter(WrappperMixin, SimpleListFilter):
+    pass
+
+
+class SmartFieldListFilter(WrappperMixin, FieldListFilter):
+    pass
 
 
 class MediaDefinitionFilter:

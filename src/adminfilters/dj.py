@@ -1,14 +1,13 @@
 from django import forms
 from django.conf import settings
-from django.contrib.admin import ListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.db.models import Q
 from django.utils.translation import get_language
 
-from adminfilters.mixin import MediaDefinitionFilter
+from .mixin import MediaDefinitionFilter, SmartListFilter
 
 
-class DjangoLookupFilter(MediaDefinitionFilter, ListFilter):
+class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
     parameter_name = "adam"
     title = "Django Lookup"
     template = "adminfilters/dj.html"

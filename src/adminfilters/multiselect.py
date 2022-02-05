@@ -1,9 +1,10 @@
-from django.contrib.admin.filters import FieldListFilter
 from django.db.models.fields import AutoField, IntegerField
 from django.utils.translation import gettext_lazy as _
 
+from adminfilters.mixin import SmartFieldListFilter
 
-class MultipleSelectFieldListFilter(FieldListFilter):
+
+class MultipleSelectFieldListFilter(SmartFieldListFilter):
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_kwarg = '%s_filter' % field_path
