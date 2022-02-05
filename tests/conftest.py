@@ -13,6 +13,7 @@ def pytest_configure(config):
     import django
     django.setup()
 
+
 def pytest_addoption(parser):
     parser.addoption('--selenium', action='store_true', dest='enable_selenium',
                      default=False, help='enable selenium tests')

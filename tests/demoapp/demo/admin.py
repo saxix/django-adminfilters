@@ -14,7 +14,7 @@ from adminfilters.filters import (DjangoLookupFilter, GenericLookupFieldFilter,
                                   ValueFilter,)
 from adminfilters.mixin import AdminFiltersMixin
 
-from .models import DemoModel, DemoRelated
+from .models import Artist, Band, Country
 
 
 class DebugChangeList(ChangeList):
@@ -37,43 +37,27 @@ class DebugMixin:
 
 
 class DemoModelAdmin_RelatedFieldCheckBoxFilter(DebugMixin, ModelAdmin):
-    list_display = [f.name for f in DemoModel._meta.fields]
+    list_display = [f.name for f in Artist._meta.fields]
     list_filter = (('demo_related', RelatedFieldCheckBoxFilter),
                    )
     search_fields = ('name',)
 
 
 class DemoModelAdmin_RelatedFieldRadioFilter(DebugMixin, ModelAdmin):
-    list_display = [f.name for f in DemoModel._meta.fields]
+    list_display = [f.name for f in Artist._meta.fields]
     list_filter = (('demo_related', RelatedFieldRadioFilter),)
     search_fields = ('name',)
 
 
 class DemoModelAdmin_UnionFieldListFilter(DebugMixin, ModelAdmin):
-    list_display = [f.name for f in DemoModel._meta.fields]
+    list_display = [f.name for f in Artist._meta.fields]
     list_filter = (('demo_related', UnionFieldListFilter),)
     search_fields = ('name',)
 
 
 class DemoModelAdmin_IntersectionFieldListFilter(DebugMixin, ModelAdmin):
-    list_display = [f.name for f in DemoModel._meta.fields]
+    list_display = [f.name for f in Artist._meta.fields]
     list_filter = (('demo_related', IntersectionFieldListFilter),)
-    search_fields = ('name',)
-
-
-class DemoModelModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
-    list_display = [f.name for f in DemoModel._meta.fields]
-    list_filter = (
-        FilterDepotManager,
-        QueryStringFilter,
-        DjangoLookupFilter,
-        GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
-        GenericLookupFieldFilter.factory('demo_related__name__istartswith'),
-        ("name", ValueFilter),
-        ("last_name", ValueFilter.factory(title="LastName")),
-        ("flags", JsonFieldFilter.factory(can_negate=False, options=False)),
-        ('demo_related', AutoCompleteFilter)
-    )
     search_fields = ('name',)
 
 
@@ -85,8 +69,29 @@ class DemoModelFieldAdmin(DebugMixin, ModelAdmin):
     )
 
 
-class DemoRelatedModelAdmin(DebugMixin, ModelAdmin):
-    list_display = [f.name for f in DemoRelated._meta.fields]
+class CountryModelAdmin(DebugMixin, ModelAdmin):
+    list_display = [f.name for f in Country._meta.fields]
+    search_fields = ('name',)
+
+
+class BandModelAdmin(DebugMixin, ModelAdmin):
+    list_display = [f.name for f in Band._meta.fields]
+    search_fields = ('name',)
+
+
+class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
+    list_display = [f.name for f in Artist._meta.fields]
+    list_filter = (
+        FilterDepotManager,
+        QueryStringFilter,
+        DjangoLookupFilter,
+        GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
+        GenericLookupFieldFilter.factory('country__name__istartswith'),
+        ("name", ValueFilter),
+        ("last_name", ValueFilter.factory(title="LastName")),
+        ("flags", JsonFieldFilter.factory(can_negate=False, options=False)),
+        ('country', AutoCompleteFilter)
+    )
     search_fields = ('name',)
 
 

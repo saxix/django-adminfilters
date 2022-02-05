@@ -20,7 +20,7 @@ develop:
 
 demo:
 	cd tests/demoapp && python manage.py migrate
-	cd tests/demoapp && python manage.py loaddata demoproject
+	cd tests/demoapp && python manage.py init_demo
 	cd tests/demoapp && python manage.py runserver
 
 clean:

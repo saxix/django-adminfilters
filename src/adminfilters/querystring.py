@@ -77,6 +77,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
         query_params = dict(parse.parse_qsl("&".join(value.splitlines())))
         exclude = {}
         filters = {}
+
         for field_name, raw_value in query_params.items():
             target = filters
             if '__' in field_name:
@@ -105,7 +106,10 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
                 if not (self.filters or self.exclude):
                     self.error_message = _("Invalid django filter")
                 else:
-                    queryset = queryset.filter(**self.filters).exclude(**self.exclude)
+                    if negated:
+                        queryset = queryset.filter(**self.exclude).exclude(**self.filters)
+                    else:
+                        queryset = queryset.filter(**self.filters).exclude(**self.exclude)
             except FieldError as e:
                 self.exception = e
                 self.error_message = get_message_from_exception(e)

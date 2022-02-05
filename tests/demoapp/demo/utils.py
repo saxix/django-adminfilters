@@ -1,8 +1,4 @@
-import contextlib
-import json
 from django.urls import reverse
-from pathlib import Path
-from urllib.parse import parse_qs
 
 DATA = {
     "date": "2013-01-29",
@@ -23,12 +19,6 @@ DATA = {
     # "url": "https://github.com/saxix/django-adminfilters",
     # # "flags": {},
 }
-
-def payload(filename, section=None):
-    data = json.load((Path(__file__).parent / filename).open())
-    if section:
-        return data[section]
-    return data
 
 
 def check_link_by_class(selenium, cls, view_name):

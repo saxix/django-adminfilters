@@ -42,20 +42,27 @@ class DemoModelField(JSONMixin, models.Model):
         app_label = 'demo'
 
 
-class DemoRelated(models.Model):
+class Band(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
 
-class DemoModel(JSONMixin, models.Model):
+class Country(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Artist(JSONMixin, models.Model):
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    demo_related = models.ForeignKey('DemoRelated',
-                                     related_name='related',
-                                     verbose_name='Demo Related',
-                                     on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    bands = models.ManyToManyField(Band,
+                                   related_name='bands',
+                                   verbose_name='Bands')
 
     class Meta:
         app_label = 'demo'
@@ -64,36 +71,37 @@ class DemoModel(JSONMixin, models.Model):
         return self.name
 
 
-class DemoModel2(models.Model):
-    name = models.CharField(max_length=255)
-    demo_items = models.ForeignKey('DemoModel',
-                                   related_name='items',
-                                   verbose_name='Demo Related',
-                                   on_delete=models.CASCADE)
+#
+# class DemoModel2(models.Model):
+#     name = models.CharField(max_length=255)
+#     demo_items = models.ForeignKey('demo.models.Artist',
+#                                    related_name='items',
+#                                    verbose_name='Demo Related',
+#                                    on_delete=models.CASCADE)
+#
+#     class Meta:
+#         app_label = 'demo'
 
-    class Meta:
-        app_label = 'demo'
 
-
-class DemoModel_RelatedFieldCheckBoxFilter(DemoModel):
+class Artist_RelatedFieldCheckBoxFilter(Artist):
     class Meta:
         proxy = True
         verbose_name = "RelatedFieldCheckBoxFilter"
 
 
-class DemoModel_RelatedFieldRadioFilter(DemoModel):
+class Artist_RelatedFieldRadioFilter(Artist):
     class Meta:
         proxy = True
         verbose_name = "RelatedFieldRadioFilter"
 
 
-class DemoModel_UnionFieldListFilter(DemoModel):
+class Artist_UnionFieldListFilter(Artist):
     class Meta:
         proxy = True
         verbose_name = "UnionFieldListFilter"
 
 
-class DemoModel_IntersectionFieldListFilter(DemoModel):
+class Artist_IntersectionFieldListFilter(Artist):
     class Meta:
         proxy = True
         verbose_name = "IntersectionFieldListFilter"
