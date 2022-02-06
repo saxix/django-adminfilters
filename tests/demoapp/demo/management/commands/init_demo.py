@@ -1,4 +1,4 @@
-from django.core.management import BaseCommand, call_command
+from django.core.management import BaseCommand
 from django.db import IntegrityError
 
 
