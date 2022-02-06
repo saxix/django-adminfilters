@@ -45,7 +45,7 @@ class GenericLookupFieldFilter(MediaDefinitionFilter, SmartSimpleListFilter):
 
     def value(self):
         return [self.lookup_val,
-                (self.can_negate and self.lookup_negated == "true") or self.negated
+                (self.can_negate and self.lookup_negated == 'true') or self.negated
                 ]
 
     def queryset(self, request, queryset):

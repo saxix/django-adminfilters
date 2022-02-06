@@ -14,30 +14,30 @@ rex = re.compile("'.*'")
 
 def get_message_from_exception(e: FieldError):
     message = str(e)
-    fieldname = rex.findall(message) or [""]
+    fieldname = rex.findall(message) or ['']
     if 'Unsupported lookup' in message:
-        return f"Unsupported lookup: {fieldname[0]}"
+        return f'Unsupported lookup: {fieldname[0]}'
     elif 'resolve keyword' in message:
-        return f"Unknown field or lookup: {fieldname[0]}"
+        return f'Unknown field or lookup: {fieldname[0]}'
     else:
         return message
 
 
 class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
-    parameter_name = "qs"
-    title = "QueryString"
-    template = "adminfilters/querystring.html"
+    parameter_name = 'qs'
+    title = 'QueryString'
+    template = 'adminfilters/querystring.html'
     can_negate = True
     negated = False
     options = True
-    separator = ","
+    separator = ','
     true_values = ['_TRUE_', '_T_']
     false_values = ['_FALSE_', '_F_']
 
     def __init__(self, request, params, model, model_admin):
-        self.parameter_name_negated = "%s__negate" % self.parameter_name
-        self.lookup_field_val = params.pop(self.parameter_name, "")
-        self.lookup_negated_val = params.pop(self.parameter_name_negated, "false")
+        self.parameter_name_negated = '%s__negate' % self.parameter_name
+        self.lookup_field_val = params.pop(self.parameter_name, '')
+        self.lookup_negated_val = params.pop(self.parameter_name_negated, 'false')
         self.query_string = None
         self.error_message = None
         self.exception = None
@@ -66,7 +66,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
     def value(self):
         return [
             self.lookup_field_val,
-            (self.can_negate and self.lookup_negated_val == "true") or self.negated,
+            (self.can_negate and self.lookup_negated_val == 'true') or self.negated,
         ]
 
     def choices(self, changelist):
@@ -74,7 +74,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
         return []
 
     def get_filters(self, value):
-        query_params = dict(parse.parse_qsl("&".join(value.splitlines())))
+        query_params = dict(parse.parse_qsl('&'.join(value.splitlines())))
         exclude = {}
         filters = {}
 
@@ -85,7 +85,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
                 op = parts[-1]
             else:
                 op = 'exact'
-            if field_name[0] == "!":
+            if field_name[0] == '!':
                 field_name = field_name[1:]
                 target = exclude
 
@@ -104,7 +104,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
             try:
                 self.filters, self.exclude = self.get_filters(value)
                 if not (self.filters or self.exclude):
-                    self.error_message = _("Invalid django filter")
+                    self.error_message = _('Invalid django filter')
                 else:
                     if negated:
                         queryset = queryset.filter(**self.exclude).exclude(**self.filters)
@@ -115,7 +115,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
                 self.error_message = get_message_from_exception(e)
             except Exception as e:
                 self.exception = e
-                self.error_message = "Invalid filter"
+                self.error_message = 'Invalid filter'
         return queryset
 
     @property

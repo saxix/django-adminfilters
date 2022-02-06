@@ -7,9 +7,9 @@ from adminfilters.lookup import GenericLookupFieldFilter
 @pytest.fixture
 def fixtures(db):
     from demo.utils import DATA
-    DemoModelField.objects.create(char="a1", unique=1, **DATA)
-    DemoModelField.objects.create(char="a2", unique=2, **DATA)
-    DemoModelField.objects.create(char="b1", unique=3, **DATA)
+    DemoModelField.objects.create(char='a1', unique=1, **DATA)
+    DemoModelField.objects.create(char='a2', unique=2, **DATA)
+    DemoModelField.objects.create(char='b1', unique=3, **DATA)
 
 
 @pytest.fixture

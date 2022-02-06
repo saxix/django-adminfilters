@@ -5,8 +5,8 @@ from django.contrib.admin.options import ModelAdmin
 
 class WrappperMixin:
     def html_attrs(self):
-        return {'class': f"adminfilters box {self.__class__.__name__.lower()}",
-                'id': "_".join(self.expected_parameters()),
+        return {'class': f'adminfilters box {self.__class__.__name__.lower()}',
+                'id': '_'.join(self.expected_parameters()),
                 }
 
 
@@ -27,8 +27,8 @@ class MediaDefinitionFilter:
         model_admin = kwargs.get('model_admin', None)
         if model_admin and not isinstance(model_admin, AdminFiltersMixin):
             raise Exception(
-                f"{self.__class__.__name__} needs that the {model_admin.__class__.__name__} "
-                f"that use it extends AdminFiltersMixin")
+                f'{self.__class__.__name__} needs that the {model_admin.__class__.__name__} '
+                f'that use it extends AdminFiltersMixin')
         super().__init__(*args, **kwargs)
 
 

@@ -28,7 +28,7 @@ class AutoCompleteFilter(MediaDefinitionFilter, SmartFieldListFilter):
         self.lookup_val = params.get(self.lookup_kwarg)
         super().__init__(field, request, params, model, model_admin, field_path)
         self.admin_site = model_admin.admin_site
-        self.query_string = ""
+        self.query_string = ''
         self.target_field = get_real_field(model, field_path)
         self.target_model = self.target_field.related_model
 
@@ -39,7 +39,7 @@ class AutoCompleteFilter(MediaDefinitionFilter, SmartFieldListFilter):
 
         if not hasattr(field, 'get_limit_choices_to'):
             raise Exception(f"Filter '{field_path}' of {model_admin} is not supported by AutoCompleteFilter."
-                            f" Check your {model_admin}.list_filter value")
+                            f' Check your {model_admin}.list_filter value')
 
         self.url = self.get_url()
 
@@ -48,7 +48,7 @@ class AutoCompleteFilter(MediaDefinitionFilter, SmartFieldListFilter):
 
     def get_url(self):
         if django.VERSION[:2] >= (3, 2):
-            return reverse("admin:autocomplete")
+            return reverse('admin:autocomplete')
         return reverse(self.url_name % (self.admin_site.name,
                                         self.target_opts.app_label,
                                         self.target_opts.model_name))
@@ -56,7 +56,7 @@ class AutoCompleteFilter(MediaDefinitionFilter, SmartFieldListFilter):
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=[self.lookup_kwarg, self.lookup_kwarg_isnull])
         if self.lookup_val:
-            return [str(self.target_model.objects.get(pk=self.lookup_val)) or ""]
+            return [str(self.target_model.objects.get(pk=self.lookup_val)) or '']
         return []
 
     @property

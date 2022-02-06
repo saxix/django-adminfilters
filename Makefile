@@ -8,10 +8,7 @@ DJANGO?='1.7.x'
 	mkdir -p ${BUILDDIR}
 
 lint:
-	flake8 src tests
-	isort -rc src tests --check-only
-	check-manifest
-
+	pre-commit run --all-files
 
 develop:
 	python3 -m venv ./.venv

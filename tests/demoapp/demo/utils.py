@@ -1,18 +1,18 @@
 from django.urls import reverse
 
 DATA = {
-    "date": "2013-01-29",
-    "datetime": "2013-01-01T02:18:33Z",
-    "integer": 888888,
-    "nullable": "bbbb",
-    "time": "19:00:35",
-    "bigint": 333333333,
+    'date': '2013-01-29',
+    'datetime': '2013-01-01T02:18:33Z',
+    'integer': 888888,
+    'nullable': 'bbbb',
+    'time': '19:00:35',
+    'bigint': 333333333,
     # "blank": "",
-    "choices": 2,
-    "decimal": "22.2",
+    'choices': 2,
+    'decimal': '22.2',
     # "email": "s.apostolico@gmail.com",
-    "float": 10.1,
-    "generic_ip": "192.168.10.2",
+    'float': 10.1,
+    'generic_ip': '192.168.10.2',
     # "logic": False,
     # "not_editable": None,
     # "text": "lorem ipsum",
@@ -67,4 +67,3 @@ def wait_for_url(driver, url):
     from selenium.webdriver.support.ui import WebDriverWait
     wait = WebDriverWait(driver, 10)
     wait.until(EC.url_contains(url))
-

@@ -8,7 +8,7 @@ from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
     template = 'adminfilters/text.html'
-    separator = ","
+    separator = ','
     toggleable = False
     filter_title = None
 
@@ -16,7 +16,7 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
         self.lookup_negated_val = None
         self.lookup_val = None
         self.lookup_kwarg = field_path
-        self.lookup_kwarg_negated = "%s__negate" % field_path
+        self.lookup_kwarg_negated = '%s__negate' % field_path
         self.parse_query_string(params)
         self.field_path = field_path
         super().__init__(field, request, params, model, model_admin, field_path)
@@ -46,12 +46,12 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
     def value(self):
         return [
             self.lookup_val,
-            self.lookup_negated_val == "true"
+            self.lookup_negated_val == 'true'
         ]
 
     def parse_query_string(self, params):
         self.lookup_negated_val = params.get(self.lookup_kwarg_negated)
-        self.lookup_val = params.get(self.lookup_kwarg, "")
+        self.lookup_val = params.get(self.lookup_kwarg, '')
 
     def queryset(self, request, queryset):
         target, exclude = self.value()
@@ -82,16 +82,16 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
 
 class MultiValueFilter(ValueFilter):
     template = 'adminfilters/text_multi.html'
-    separator = ","
+    separator = ','
     filter_title = None
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         if not field_path.endswith('__in'):
-            field_path = f"{field_path}__in"
+            field_path = f'{field_path}__in'
         super().__init__(field, request, params, model, model_admin, field_path)
 
     def parse_query_string(self, params):
-        raw_values = params.get(self.lookup_kwarg, "").split(self.separator)
+        raw_values = params.get(self.lookup_kwarg, '').split(self.separator)
         self.lookup_negated_val = params.get(self.lookup_kwarg_negated)
         self.lookup_val = [e.strip() for e in raw_values if e.strip()]
 

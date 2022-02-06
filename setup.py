@@ -2,8 +2,8 @@
 import ast
 import codecs
 import os
-
 import re
+
 from setuptools import find_packages, setup
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
@@ -20,7 +20,7 @@ with open(init, 'rb') as f:
 
 def read(*parts):
     here = os.path.abspath(os.path.dirname(__file__))
-    return codecs.open(os.path.join(here, 'src', 'requirements', *parts), "r").read()
+    return codecs.open(os.path.join(here, 'src', 'requirements', *parts), 'r').read()
 
 
 install_requires = read('install.pip')
@@ -33,7 +33,7 @@ setup(name=name,
       download_url='https://github.com/saxix/django-adminfilters',
       author='sax',
       author_email='s.apostolico@gmail.com',
-      description="Extra filters for django admin site",
+      description='Extra filters for django admin site',
       license='MIT',
       package_dir={'': 'src'},
       packages=find_packages('src'),

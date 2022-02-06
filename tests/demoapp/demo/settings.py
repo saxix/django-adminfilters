@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(here, '..', '..')))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-db = os.environ.get('DBENGINE', "pg")
+db = os.environ.get('DBENGINE', 'pg')
 if db == 'pg':
     DATABASES = {
         'default': {

@@ -11,7 +11,7 @@ from adminfilters.filters import (DjangoLookupFilter, GenericLookupFieldFilter,
                                   NumberFilter, QueryStringFilter,
                                   RelatedFieldCheckBoxFilter,
                                   RelatedFieldRadioFilter, UnionFieldListFilter,
-                                  ValueFilter, )
+                                  ValueFilter,)
 from adminfilters.mixin import AdminFiltersMixin
 
 from .models import Artist, Band, Country
@@ -62,10 +62,10 @@ class DemoModelAdmin_IntersectionFieldListFilter(DebugMixin, ModelAdmin):
 
 
 class DemoModelFieldAdmin(DebugMixin, ModelAdmin):
-    list_display = ("char", "integer", "logic", "email", "choices")
+    list_display = ('char', 'integer', 'logic', 'email', 'choices')
     list_filter = (
-        ("choices", ChoicesFieldComboFilter),
-        ("integer", NumberFilter),
+        ('choices', ChoicesFieldComboFilter),
+        ('integer', NumberFilter),
     )
 
 
@@ -89,9 +89,9 @@ class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
         DjangoLookupFilter,
         GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
         GenericLookupFieldFilter.factory('country__name__istartswith'),
-        ("name", ValueFilter),
-        ("last_name", ValueFilter.factory(title="LastName")),
-        ("flags", JsonFieldFilter.factory(can_negate=False, options=False)),
+        ('name', ValueFilter),
+        ('last_name', ValueFilter.factory(title='LastName')),
+        ('flags', JsonFieldFilter.factory(can_negate=False, options=False)),
         ('country', AutoCompleteFilter),
         ('year_of_birth', NumberFilter),
     )

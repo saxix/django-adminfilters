@@ -96,7 +96,7 @@ class UnionFieldListFilter(MultipleSelectFieldListFilter):
         try:
             field = super().get_field()
         except AttributeError:
-            if hasattr(self.field, "choices") and self.field.choices:
+            if hasattr(self.field, 'choices') and self.field.choices:
                 field = self.field  # It's a *Field with choises
             else:
                 raise AttributeError(
@@ -104,7 +104,7 @@ class UnionFieldListFilter(MultipleSelectFieldListFilter):
         return field
 
     def queryset(self, request, queryset):
-        filter_statement = "%s__in" % self.filter_statement
+        filter_statement = '%s__in' % self.filter_statement
         filter_values = self.values()
         filter_dct = {
             filter_statement: filter_values

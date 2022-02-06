@@ -13,12 +13,12 @@ def fixtures(db):
         DemoModelField.objects.create(**values)
 
 
-@pytest.mark.parametrize("op,expected", [("unique=1", "1"),
-                                         ("unique__in=1,2,3", "1,2,3"),
-                                         ("!unique=2", "1,3,4"),
+@pytest.mark.parametrize('op,expected', [('unique=1', '1'),
+                                         ('unique__in=1,2,3', '1,2,3'),
+                                         ('!unique=2', '1,3,4'),
                                          ])
 def test_QueryStringFilter(fixtures, op, expected):
-    f = QueryStringFilter(None, {"qs": op}, None, None)
+    f = QueryStringFilter(None, {'qs': op}, None, None)
     result = f.queryset(None, DemoModelField.objects.all())
-    value = list(result.values_list("unique", flat=True))
-    assert value == expected.split(","), value
+    value = list(result.values_list('unique', flat=True))
+    assert value == expected.split(','), value

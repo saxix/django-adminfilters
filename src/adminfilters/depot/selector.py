@@ -8,11 +8,11 @@ from ..mixin import WrappperMixin
 
 
 class FilterDepotManager(WrappperMixin, ListFilter):
-    title = "Saved Filters"
+    title = 'Saved Filters'
     template = 'adminfilters/selector.html'
-    parameter_newname = "adminfilters_filter_save"
-    parameter_selection = "adminfilters_filter_select"
-    parameter_shared = "adminfilters_filter_shared"
+    parameter_newname = 'adminfilters_filter_save'
+    parameter_selection = 'adminfilters_filter_select'
+    parameter_shared = 'adminfilters_filter_shared'
 
     def __init__(self, request, params, model, model_admin):
         super().__init__(request, params, model, model_admin)
@@ -31,8 +31,8 @@ class FilterDepotManager(WrappperMixin, ListFilter):
 
     def operation(self):
         if self.selected:
-            return "update"
-        return "add"
+            return 'update'
+        return 'add'
 
     def queryset(self, request, queryset):
         if self.save_as:

@@ -10,27 +10,27 @@ from .mixin import MediaDefinitionFilter, SmartFieldListFilter
 class JsonFieldFilter(MediaDefinitionFilter, SmartFieldListFilter):
     parameter_name = None
     title = None
-    template = "adminfilters/json.html"
+    template = 'adminfilters/json.html'
     can_negate = True
     negated = False
     options = True
 
     def __init__(self, field, request, params, model, model_admin, field_path):
-        self.lookup_kwarg_key = "%s__key" % field_path
-        self.lookup_kwarg_value = "%s__value" % field_path
-        self.lookup_kwarg_negated = "%s__negate" % field_path
-        self.lookup_kwarg_options = "%s__options" % field_path
-        self.lookup_kwarg_type = "%s__type" % field_path
-        self.lookup_key_val = params.get(self.lookup_kwarg_key, "")
-        self.lookup_value_val = params.get(self.lookup_kwarg_value, "")
-        self.lookup_negated_val = params.get(self.lookup_kwarg_negated, "false")
-        self.lookup_options_val = params.get(self.lookup_kwarg_options, "e")
-        self.lookup_type_val = params.get(self.lookup_kwarg_type, "any")
+        self.lookup_kwarg_key = '%s__key' % field_path
+        self.lookup_kwarg_value = '%s__value' % field_path
+        self.lookup_kwarg_negated = '%s__negate' % field_path
+        self.lookup_kwarg_options = '%s__options' % field_path
+        self.lookup_kwarg_type = '%s__type' % field_path
+        self.lookup_key_val = params.get(self.lookup_kwarg_key, '')
+        self.lookup_value_val = params.get(self.lookup_kwarg_value, '')
+        self.lookup_negated_val = params.get(self.lookup_kwarg_negated, 'false')
+        self.lookup_options_val = params.get(self.lookup_kwarg_options, 'e')
+        self.lookup_type_val = params.get(self.lookup_kwarg_type, 'any')
 
         self.field = field
         self.query_string = None
         self.field_path = field_path
-        self.title = getattr(field, "verbose_name", field_path)
+        self.title = getattr(field, 'verbose_name', field_path)
         super().__init__(field, request, params, model, model_admin, field_path)
 
     @classmethod
@@ -47,7 +47,7 @@ class JsonFieldFilter(MediaDefinitionFilter, SmartFieldListFilter):
             self.lookup_key_val,
             self.lookup_value_val,
             self.lookup_options_val,
-            (self.can_negate and self.lookup_negated_val == "true") or self.negated,
+            (self.can_negate and self.lookup_negated_val == 'true') or self.negated,
             self.lookup_type_val,
         ]
 
@@ -59,20 +59,20 @@ class JsonFieldFilter(MediaDefinitionFilter, SmartFieldListFilter):
         key, value, options, negated, type_ = self.value()
         if key:
             if type_ == 'any' and value.isnumeric():
-                filters = Q(**{f"{self.field_path}__{key}": value}) | Q(**{f"{self.field_path}__{key}": int(value)})
+                filters = Q(**{f'{self.field_path}__{key}': value}) | Q(**{f'{self.field_path}__{key}': int(value)})
             elif type_ == 'num' and value.isnumeric():
-                filters = Q(**{f"{self.field_path}__{key}": float(value)})
+                filters = Q(**{f'{self.field_path}__{key}': float(value)})
             else:  # type_ == 'str':
-                filters = Q(**{f"{self.field_path}__{key}": str(value)})
+                filters = Q(**{f'{self.field_path}__{key}': str(value)})
 
             if negated:
                 if self.options and options == 'e':
                     filters = ~filters
                 else:
-                    filters = Q(**{f"{self.field_path}__{key}__isnull": True}) | ~filters
+                    filters = Q(**{f'{self.field_path}__{key}__isnull': True}) | ~filters
             else:
                 if options == 'i':
-                    filters = filters | Q(**{f"{self.field_path}__{key}__isnull": True})
+                    filters = filters | Q(**{f'{self.field_path}__{key}__isnull': True})
 
             queryset = queryset.filter(filters)
 

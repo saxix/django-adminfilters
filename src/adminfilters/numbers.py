@@ -15,12 +15,12 @@ class NumberFilter(SmartFieldListFilter):
     rex3 = re.compile(r'(\d+),?')
     rex4 = re.compile(r'^(<>)?([-+]?[0-9]+)$')
     # rex5 = re.compile(r'^(\d+)..(\d+)$')
-    map = {">=": "gte",
-           "<=": "lte",
-           ">": "gt",
-           "<": "lt",
-           "=": "exact",
-           "<>": "not",
+    map = {'>=': 'gte',
+           '<=': 'lte',
+           '>': 'gt',
+           '<': 'lt',
+           '=': 'exact',
+           '<>': 'not',
            }
 
     def __init__(self, field, request, params, model, model_admin, field_path):
@@ -54,21 +54,21 @@ class NumberFilter(SmartFieldListFilter):
             m4 = self.rex4.match(raw)
             if m1 and m1.groups():
                 op, value = self.rex1.match(raw).groups()
-                match = "%s__%s" % (self.field.name, self.map[op or '='])
+                match = '%s__%s' % (self.field.name, self.map[op or '='])
                 queryset = queryset.filter(**{match: value})
             elif m2 and m2.groups():
                 start, end = self.rex2.match(raw).groups()
-                queryset = queryset.filter(**{f"{self.field.name}__gte": start,
-                                              f"{self.field.name}__lte": end})
+                queryset = queryset.filter(**{f'{self.field.name}__gte': start,
+                                              f'{self.field.name}__lte': end})
             elif m3 and m3.groups():
                 value = raw.split(',')
-                match = "%s__in" % self.field.name
+                match = '%s__in' % self.field.name
                 queryset = queryset.filter(**{match: value})
             # elif m3 and m3.groups():
             #     match = "%s__exact" % self.field.name
             #     queryset = queryset.filter(**{match: raw})
             elif m4 and m4.groups():
-                match = "%s__exact" % self.field.name
+                match = '%s__exact' % self.field.name
                 op, value = self.rex4.match(raw).groups()
                 queryset = queryset.exclude(**{match: value})
             else:  # pragma: no cover
@@ -78,4 +78,3 @@ class NumberFilter(SmartFieldListFilter):
 
 # backward compatibility
 MaxMinFilter = NumberFilter
-

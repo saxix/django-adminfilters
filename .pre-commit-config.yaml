@@ -1,0 +1,49 @@
+exclude: '^$'
+fail_fast: false
+repos:
+  - repo: local
+    hooks:
+
+      - id: isort
+        args: ['--src', 'src/','--check-only']
+        exclude: tweepy
+        name: isort
+        entry: isort
+        language: system
+        types: [python]
+        stages: [commit]
+
+      - id: flake8
+        exclude: /(_plugin_template|python_twitter|migrations|tweepy)/
+        name: flake8
+        entry: flake8
+        language: system
+        types: [python]
+        stages: [commit]
+
+  - repo: git://github.com/pre-commit/pre-commit-hooks
+    rev: v2.1.0
+    hooks:
+      - id: double-quote-string-fixer
+        stages: [commit]
+
+      - id: debug-statements
+        stages: [commit]
+
+      - id: end-of-file-fixer
+        exclude: .bumpversion.cfg
+        stages: [commit]
+
+      - id: check-merge-conflict
+        stages: [commit]
+
+      - id: check-case-conflict
+        stages: [commit]
+
+  - repo: https://github.com/saxix/pch
+    rev: fc387f4
+    hooks:
+      - id: check-missed-migrations
+        args:
+          - src
+        stages: [commit]

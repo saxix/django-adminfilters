@@ -18,7 +18,7 @@ def check_adminfilters_media(*args, **kwargs):
                     elif isinstance(filter_fields, ListFilter):
                         filter_class = filter_fields
                     if filter_class and issubclass(filter_class, MediaDefinitionFilter):
-                        errors.append(Error(f"{model_admin} must inherit from AdminFiltersMixin"))
+                        errors.append(Error(f'{model_admin} must inherit from AdminFiltersMixin'))
                         break
     except Exception:
         raise

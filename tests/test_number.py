@@ -13,18 +13,18 @@ def fixtures(db):
         DemoModelField.objects.create(**values)
 
 
-@pytest.mark.parametrize("op,expected", [("=1", "1"),
-                                         ("1", "1"),
-                                         (">1", "2,3,4"),
-                                         (">=1", "1,2,3,4"),
-                                         ("<>2", "1,3,4"),
-                                         ("<2", "1"),
-                                         ("<=2", "1,2"),
-                                         ("1,3", "1,3"),
-                                         ("2..4", "2,3,4"),
+@pytest.mark.parametrize('op,expected', [('=1', '1'),
+                                         ('1', '1'),
+                                         ('>1', '2,3,4'),
+                                         ('>=1', '1,2,3,4'),
+                                         ('<>2', '1,3,4'),
+                                         ('<2', '1'),
+                                         ('<=2', '1,2'),
+                                         ('1,3', '1,3'),
+                                         ('2..4', '2,3,4'),
                                          ])
 def test_JsonFieldFilter(fixtures, op, expected):
-    f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {"unique": op}, None, None, 'unique')
+    f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {'unique': op}, None, None, 'unique')
     result = f.queryset(None, DemoModelField.objects.all())
-    value = list(result.values_list("unique", flat=True))
-    assert value == expected.split(","), value
+    value = list(result.values_list('unique', flat=True))
+    assert value == expected.split(','), value

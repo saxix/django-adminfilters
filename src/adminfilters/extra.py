@@ -23,4 +23,3 @@ class PermissionPrefixFilter(SimpleListFilter):
             return queryset.exclude(query)
         else:
             return queryset.filter(codename__startswith=self.value())
-

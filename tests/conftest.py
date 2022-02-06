@@ -20,4 +20,3 @@ def pytest_addoption(parser):
 
     parser.addoption('--show-browser', '-S', action='store_true', dest='show_browser',
                      default=False, help='will not start browsers in headless mode')
-

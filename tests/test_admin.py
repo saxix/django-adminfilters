@@ -22,11 +22,11 @@ class AdminFilterTests(TestCase):
         related1 = Band.objects.create(name='related1')
         related2 = Band.objects.create(name='related2')
         related3 = Band.objects.create(name='related3')
-        Artist.objects.create(name="name1", demo_related=related1, flags={"v": 1})
-        Artist.objects.create(name="name1.1", demo_related=related1, flags={"v": 1})
-        Artist.objects.create(name="name2", demo_related=related2, flags={"v": 2})
-        Artist.objects.create(name="name2.2", demo_related=related2, flags={"v": '2'})
-        Artist.objects.create(name="nameNone", demo_related=related3, flags={})
+        Artist.objects.create(name='name1', demo_related=related1, flags={'v': 1})
+        Artist.objects.create(name='name1.1', demo_related=related1, flags={'v': 1})
+        Artist.objects.create(name='name2', demo_related=related2, flags={'v': 2})
+        Artist.objects.create(name='name2.2', demo_related=related2, flags={'v': '2'})
+        Artist.objects.create(name='nameNone', demo_related=related3, flags={})
     #
     # def test_admin_filter_RelatedFieldRadioFilter(self):
     #     """

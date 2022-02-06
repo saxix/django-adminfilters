@@ -22,13 +22,13 @@ class ModelFactory(factory.django.DjangoModelFactory, metaclass=AutoRegisterFact
 def get_flags():
     # Convert to plain ascii text
     f = lambda: random.choice([
-        ("int", random.randint(1, 100)),
-        ("chr", chr(random.randrange(65, 90))),
-        ("int", '__'),
-        ("chr", ""),
-        ("chr", None),
-        ("int", None),
-        ("chr", '__'),
+        ('int', random.randint(1, 100)),
+        ('chr', chr(random.randrange(65, 90))),
+        ('int', '__'),
+        ('chr', ''),
+        ('chr', None),
+        ('int', None),
+        ('chr', '__'),
     ])
     value = f()
     if value[1] == '__':
@@ -42,19 +42,19 @@ def get_flags():
 
 
 class DemoModelFieldFactory(ModelFactory):
-    char = factory.Faker("name")
-    integer = factory.Faker("pyint")
-    date = factory.Faker("date_this_decade")
-    datetime = factory.Faker("date_this_decade")
-    time = factory.Faker("time")
-    logic = factory.Faker("pybool")
-    decimal = factory.Faker("coordinate")
-    float = factory.Faker("pyfloat")
-    bigint = factory.Faker("pyint")
-    generic_ip = factory.Faker("ipv4")
+    char = factory.Faker('name')
+    integer = factory.Faker('pyint')
+    date = factory.Faker('date_this_decade')
+    datetime = factory.Faker('date_this_decade')
+    time = factory.Faker('time')
+    logic = factory.Faker('pybool')
+    decimal = factory.Faker('coordinate')
+    float = factory.Faker('pyfloat')
+    bigint = factory.Faker('pyint')
+    generic_ip = factory.Faker('ipv4')
     choices = factory.fuzzy.FuzzyChoice([1, 2, 3])
     unique = factory.Sequence(lambda a: a)
-    email = factory.Faker("email")
+    email = factory.Faker('email')
 
     class Meta:
         model = models.DemoModelField
@@ -114,4 +114,4 @@ def get_factory_for_model(_model):
 
     if _model in factories_registry:
         return factories_registry[_model]
-    return type("AAA", (ModelFactory,), {'Meta': Meta})
+    return type('AAA', (ModelFactory,), {'Meta': Meta})

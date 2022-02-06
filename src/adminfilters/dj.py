@@ -8,20 +8,20 @@ from .mixin import MediaDefinitionFilter, SmartListFilter
 
 
 class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
-    parameter_name = "adam"
-    title = "Django Lookup"
-    template = "adminfilters/dj.html"
+    parameter_name = 'adam'
+    title = 'Django Lookup'
+    template = 'adminfilters/dj.html'
     can_negate = True
     negated = False
     options = True
 
     def __init__(self, request, params, model, model_admin):
-        self.lookup_kwarg_key = "%s__key" % self.parameter_name
-        self.lookup_kwarg_value = "%s__value" % self.parameter_name
-        self.lookup_kwarg_negated = "%s__negate" % self.parameter_name
-        self.lookup_field_val = params.pop(self.lookup_kwarg_key, "")
-        self.lookup_value_val = params.pop(self.lookup_kwarg_value, "")
-        self.lookup_negated_val = params.pop(self.lookup_kwarg_negated, "false")
+        self.lookup_kwarg_key = '%s__key' % self.parameter_name
+        self.lookup_kwarg_value = '%s__value' % self.parameter_name
+        self.lookup_kwarg_negated = '%s__negate' % self.parameter_name
+        self.lookup_field_val = params.pop(self.lookup_kwarg_key, '')
+        self.lookup_value_val = params.pop(self.lookup_kwarg_value, '')
+        self.lookup_negated_val = params.pop(self.lookup_kwarg_negated, 'false')
 
         self.query_string = None
         super().__init__(request, params, model, model_admin)
@@ -42,7 +42,7 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
         return [
             self.lookup_field_val,
             self.lookup_value_val,
-            (self.can_negate and self.lookup_negated_val == "true") or self.negated,
+            (self.can_negate and self.lookup_negated_val == 'true') or self.negated,
         ]
 
     def choices(self, changelist):
@@ -52,7 +52,7 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
     def queryset(self, request, queryset):
         key, value, negated = self.value()
         if key:
-            filters = Q(**{f"{self.lookup_field_val}": str(value)})
+            filters = Q(**{f'{self.lookup_field_val}': str(value)})
 
             if negated:
                 filters = ~filters

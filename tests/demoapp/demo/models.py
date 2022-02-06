@@ -51,10 +51,10 @@ class Country(models.Model):
 
 class Band(models.Model):
     name = models.CharField(max_length=255)
-    genre = models.IntegerField(choices=((1, "Rock"),
-                                         (2, "Blues"),
-                                         (3, "Soul"),
-                                         (4, "Other"),
+    genre = models.IntegerField(choices=((1, 'Rock'),
+                                         (2, 'Blues'),
+                                         (3, 'Soul'),
+                                         (4, 'Other'),
                                          ))
 
     def __str__(self):
@@ -92,22 +92,22 @@ class Artist(JSONMixin, models.Model):
 class Artist_RelatedFieldCheckBoxFilter(Artist):
     class Meta:
         proxy = True
-        verbose_name = "RelatedFieldCheckBoxFilter"
+        verbose_name = 'RelatedFieldCheckBoxFilter'
 
 
 class Artist_RelatedFieldRadioFilter(Artist):
     class Meta:
         proxy = True
-        verbose_name = "RelatedFieldRadioFilter"
+        verbose_name = 'RelatedFieldRadioFilter'
 
 
 class Artist_UnionFieldListFilter(Artist):
     class Meta:
         proxy = True
-        verbose_name = "UnionFieldListFilter"
+        verbose_name = 'UnionFieldListFilter'
 
 
 class Artist_IntersectionFieldListFilter(Artist):
     class Meta:
         proxy = True
-        verbose_name = "IntersectionFieldListFilter"
+        verbose_name = 'IntersectionFieldListFilter'
