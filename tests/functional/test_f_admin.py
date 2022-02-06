@@ -1,28 +1,18 @@
 import pytest
 from selenium.webdriver.common.by import By
 
+from demo.management.commands.init_demo import sample_data
+
 
 @pytest.fixture
-def sample_data(admin_user):
-    from demo.factories import ArtistFactory, BandFactory, CountryFactory
+def data():
+    from demo.factories import ArtistFactory
     ArtistFactory.create_batch(20)
-
-    uk = CountryFactory(name='United Kingdom')
-    australia = CountryFactory(name='Australia')
-    band = BandFactory(name='AC/DC')
-    ArtistFactory(name="Angus",
-                  last_name="Young",
-                  bands=[band],
-                  country=uk, flags={"v": 1})
-
-    ArtistFactory(name="Phil",
-                  last_name="Rudd",
-                  bands=[band],
-                  country=australia, flags={"full_name": "Phil Rudd"})
+    sample_data()
 
 
 @pytest.mark.selenium
-def test_querystring(live_server, selenium, admin_user, sample_data):
+def test_querystring(live_server, selenium, data):
     from demo.utils import wait_for
     textarea, negate, button = None, None, None
 

@@ -74,6 +74,7 @@ class CountryFactory(ModelFactory):
 
 class BandFactory(ModelFactory):
     name = factory.Faker('name')
+    genre = factory.fuzzy.FuzzyChoice([1, 2, 3, 4])
 
     class Meta:
         model = models.Band
@@ -84,9 +85,11 @@ class ArtistFactory(ModelFactory):
     name = factory.Faker('name')
     last_name = factory.Faker('last_name')
     country = factory.SubFactory(CountryFactory)
+    year_of_birth = factory.Faker('year')
 
     class Meta:
         model = models.Artist
+        django_get_or_create = ('name', 'last_name')
 
     @factory.post_generation
     def bands(self, create, extracted, **kwargs):

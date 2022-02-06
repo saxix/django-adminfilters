@@ -42,15 +42,20 @@ class DemoModelField(JSONMixin, models.Model):
         app_label = 'demo'
 
 
-class Band(models.Model):
+class Country(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
 
-class Country(models.Model):
+class Band(models.Model):
     name = models.CharField(max_length=255)
+    genre = models.IntegerField(choices=((1, "Rock"),
+                                         (2, "Blues"),
+                                         (3, "Soul"),
+                                         (4, "Other"),
+                                         ))
 
     def __str__(self):
         return self.name
@@ -60,6 +65,7 @@ class Artist(JSONMixin, models.Model):
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    year_of_birth = models.IntegerField()
     bands = models.ManyToManyField(Band,
                                    related_name='bands',
                                    verbose_name='Bands')
