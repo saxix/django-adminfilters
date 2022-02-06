@@ -1,5 +1,8 @@
 {% extends "adminfilters/_wrapper.html" %}{% load i18n %}
 {% block content %}
+    <!--
+    {{ spec.debug|safe }}
+    -->
 <ul id="{{ spec.lookup }}"
     data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
     data-lk="{{ spec.parameter_name }}"
@@ -31,7 +34,7 @@
 <script type="text/javascript">
     ;(function ($) {
         $(document).ready(function () {
-            $("#{{ spec.id }}").find("a.button").click(new LookupFilterHandler("{{ spec.id }}",
+            $("#{{ spec.lookup }}").find("a.button").click(new LookupFilterHandler("{{ spec.id }}",
                 {negated: {{spec.negated|lower}}, can_negate:{{ spec.can_negate|lower }} }).click);
         });
     })(django.jQuery);

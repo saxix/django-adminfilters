@@ -64,6 +64,7 @@ class Band(models.Model):
 class Artist(JSONMixin, models.Model):
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=255)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     year_of_birth = models.IntegerField()
     bands = models.ManyToManyField(Band,

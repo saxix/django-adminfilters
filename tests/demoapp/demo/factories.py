@@ -82,8 +82,10 @@ class BandFactory(ModelFactory):
 
 
 class ArtistFactory(ModelFactory):
-    name = factory.Faker('name')
+    name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
+    full_name = factory.LazyAttribute(lambda o: f'{o.last_name}, {o.name}')
+
     country = factory.SubFactory(CountryFactory)
     year_of_birth = factory.Faker('year')
 

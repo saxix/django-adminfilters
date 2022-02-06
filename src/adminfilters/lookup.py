@@ -27,7 +27,7 @@ class GenericLookupFieldFilter(MediaDefinitionFilter, SmartSimpleListFilter):
         if '__' not in lookup:
             lookup = f'{lookup}__exact'
 
-        kwargs['lookup_field'] = lookup
+        kwargs['lookup'] = lookup
         kwargs['id'] = kwargs.pop('id', lookup)
         kwargs['path_separator'] = kwargs.pop('path_separator', cls.path_separator)
         kwargs['arg_separator'] = kwargs.pop('arg_separator', cls.arg_separator)
@@ -51,11 +51,12 @@ class GenericLookupFieldFilter(MediaDefinitionFilter, SmartSimpleListFilter):
     def queryset(self, request, queryset):
         target, exclude = self.value()
         if target:
-            filters = {self.lookup_field: target}
+            filters = {self.lookup: target}
             if exclude:
-                return queryset.exclude(**filters)
+                queryset = queryset.exclude(**filters)
             else:
-                return queryset.filter(**filters)
+                queryset = queryset.filter(**filters)
+            self.debug = [filters, exclude]
         return queryset
 
     def lookups(self, request, model_admin):

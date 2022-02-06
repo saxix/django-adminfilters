@@ -54,6 +54,14 @@ def callable_rate(group, request):
     return (0, 1)
 
 
+def scroll_to(driver, *args, _timeout=10):
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.support.ui import WebDriverWait
+    wait = WebDriverWait(driver, _timeout)
+    wait.until(EC.visibility_of_element_located((*args,)))
+    return driver.find_element(*args)
+
+
 def wait_for(driver, *args, _timeout=10):
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait

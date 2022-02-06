@@ -4,10 +4,32 @@ from django.contrib.admin.options import ModelAdmin
 
 
 class WrappperMixin:
+    negated = False
+    can_negate = False
+    title = None
+    negated_title = None
+
+    def __init__(self, *args, **kwargs) -> None:
+        self.error = None
+        self.error_message = None
+        super().__init__(*args, **kwargs)
+
     def html_attrs(self):
-        return {'class': f'adminfilters box {self.__class__.__name__.lower()}',
+        classes = f'adminfilters box {self.__class__.__name__.lower()}'
+        if self.error_message:
+            classes += ' error'
+
+        return {'class': classes,
                 'id': '_'.join(self.expected_parameters()),
                 }
+
+    def get_title(self):
+        if not self.can_negate and self.negated:
+            if self.negated_title:
+                return self.negated_title
+            else:
+                return f'not {self.title}'
+        return self.title
 
 
 class SmartListFilter(WrappperMixin, ListFilter):

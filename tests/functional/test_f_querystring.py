@@ -11,7 +11,7 @@ def data():
 
 
 @pytest.mark.selenium
-def test_querystring(live_server, selenium, data):
+def test_querystring(live_server, selenium):
     from demo.utils import wait_for
     textarea, negate, button = None, None, None
 

@@ -60,6 +60,7 @@ class Migration(migrations.Migration):
                 ('flags', django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict, null=True)),
                 ('name', models.CharField(max_length=255)),
                 ('last_name', models.CharField(max_length=255)),
+                ('full_name', models.CharField(max_length=255)),
                 ('year_of_birth', models.IntegerField()),
                 ('bands', models.ManyToManyField(related_name='bands', to='demo.Band', verbose_name='Bands')),
                 ('country', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='demo.Country')),

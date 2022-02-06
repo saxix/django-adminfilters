@@ -59,7 +59,16 @@ def set_input_value(driver, *args):
 
 @pytest.fixture
 def selenium(driver):
+    from demo.utils import wait_for
     driver.with_timeouts = timeouts.__get__(driver)
     driver.set_input_value = set_input_value.__get__(driver)
-
+    driver.wait_for = wait_for.__get__(driver)
     yield driver
+
+
+@pytest.fixture(autouse=True)
+def data():
+    from demo.factories import ArtistFactory
+    from demo.management.commands.init_demo import sample_data
+    ArtistFactory.create_batch(20)
+    sample_data()

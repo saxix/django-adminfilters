@@ -8,7 +8,6 @@ from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
     template = 'adminfilters/text.html'
-    separator = ','
     toggleable = False
     filter_title = None
 
@@ -20,12 +19,12 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
         self.parse_query_string(params)
         self.field_path = field_path
         super().__init__(field, request, params, model, model_admin, field_path)
-        self.title = self.get_title()
+        self.title = self._get_title()
         self.params = params
         self.query_values = []
         self.operator = '+'
 
-    def get_title(self):
+    def _get_title(self):
         if self.filter_title:
             return self.filter_title
         elif '__' in self.field_path:
