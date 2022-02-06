@@ -73,6 +73,7 @@ class Artist(JSONMixin, models.Model):
 
     class Meta:
         app_label = 'demo'
+        ordering = ('name',)
 
     def __str__(self):
         return self.name

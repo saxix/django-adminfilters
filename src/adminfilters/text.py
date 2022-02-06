@@ -33,7 +33,7 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
 
     @classmethod
     def factory(cls, field_path=None, title=None, **kwargs):
-        kwargs['title'] = title
+        kwargs['filter_title'] = title
         # backward compat
         if field_path:
             return field_path, type('ValueFilter', (cls,), kwargs)
@@ -85,7 +85,7 @@ class MultiValueFilter(ValueFilter):
     filter_title = None
 
     def __init__(self, field, request, params, model, model_admin, field_path):
-        if not field_path.endswith('__in'):
+        if not field_path.endswith('__in'):  # pragma: no-cover
             field_path = f'{field_path}__in'
         super().__init__(field, request, params, model, model_admin, field_path)
 

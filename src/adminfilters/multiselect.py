@@ -1,3 +1,4 @@
+from django.contrib.admin.utils import prepare_lookup_value
 from django.db.models.fields import AutoField, IntegerField
 from django.utils.translation import gettext_lazy as _
 
@@ -9,9 +10,12 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_kwarg = '%s_filter' % field_path
         self.filter_statement = '%s' % field_path
-        self.lookup_val = request.GET.get(self.lookup_kwarg, None)
+        # self.lookup_val = request.GET.get(self.lookup_kwarg, None)
+        self.lookup_val = params.pop(self.lookup_kwarg, None)
         self.lookup_choices = field.get_choices(include_blank=False)
         super().__init__(field, request, params, model, model_admin, field_path)
+        self.used_parameters[self.lookup_kwarg] = prepare_lookup_value(self.lookup_kwarg,
+                                                                       self.lookup_val)
 
     def expected_parameters(self):
         return [self.lookup_kwarg]
@@ -104,12 +108,11 @@ class UnionFieldListFilter(MultipleSelectFieldListFilter):
         return field
 
     def queryset(self, request, queryset):
-        filter_statement = '%s__in' % self.filter_statement
         filter_values = self.values()
-        filter_dct = {
-            filter_statement: filter_values
-        }
         if filter_values:
-            return queryset.filter(**filter_dct)
-        else:
-            return queryset
+            filter_statement = '%s__in' % self.filter_statement
+            filter_dct = {
+                filter_statement: filter_values
+            }
+            queryset = queryset.filter(**filter_dct).distinct()
+        return queryset

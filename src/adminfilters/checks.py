@@ -20,6 +20,6 @@ def check_adminfilters_media(*args, **kwargs):
                     if filter_class and issubclass(filter_class, MediaDefinitionFilter):
                         errors.append(Error(f'{model_admin} must inherit from AdminFiltersMixin'))
                         break
-    except Exception:
+    except Exception:  # pragma: no-cover
         raise
     return errors
