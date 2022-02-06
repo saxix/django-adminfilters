@@ -31,8 +31,6 @@ def test_union(fixtures, value, expected):
     assert value == expected
 
 
-#
-
 @pytest.mark.parametrize('value,expected', [('1', ['a1', 'a12']),
                                             ('2', ['a12', 'a2', 'a23']),
                                             ('1,2', ['a12']),

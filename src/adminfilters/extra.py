@@ -6,7 +6,11 @@ from django.utils.translation import gettext as _
 class PermissionPrefixFilter(SimpleListFilter):
     title = 'Permission'
     parameter_name = 'perm'
-    prefixes = (('add', _('Add')), ('change', _('Change')), ('delete', _('Delete')), ('--', _('Others')))
+    prefixes = (('view', _('View')),
+                ('add', _('Add')),
+                ('change', _('Change')),
+                ('delete', _('Delete')),
+                ('--', _('Others')))
     lookup_val = None
 
     def lookups(self, request, model_admin):
