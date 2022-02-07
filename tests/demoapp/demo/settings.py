@@ -1,72 +1,25 @@
 import os
 import sys
+from pathlib import Path
+from uuid import uuid4
+
+from environ import environ
 
 here = os.path.dirname(__file__)
 sys.path.append(os.path.abspath(os.path.join(here, '..', '..')))
 
-DEBUG = True
+BASE_DIR = Path(__file__).resolve(strict=True).parents[3]
+
+env = environ.Env(
+    DEBUG=(bool, False),
+    STATIC_ROOT=(str, str(BASE_DIR / '~build' / 'static')),
+    DATABASE_URL=(str, 'sqlite:///smart_admin.db'),
+    ROOT_TOKEN=(str, uuid4().hex),
+)
+
+DEBUG = env('DEBUG')
 TEMPLATE_DEBUG = DEBUG
 ALLOWED_HOSTS = ['*']
-db = os.environ.get('DBENGINE', 'pg')
-if db == 'pg':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'adminfilters',
-            'HOST': os.environ.get('PG_HOST', '127.0.0.1'),
-            'PORT': os.environ.get('PG_PORT', '5432'),
-            'USER': os.environ.get('PG_USER', 'postgres'),
-            'PASSWORD': os.environ.get('PG_PASSWORD', ''),
-        }}
-elif db == 'mysql':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'adminfilters',
-            'HOST': os.environ.get('MYSQL_HOST', '127.0.0.1'),
-            'PORT': os.environ.get('MYSQL_PORT', ''),
-            'USER': os.environ.get('MYSQL_USER', 'root'),
-            'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
-
-            'CHARSET': 'utf8',
-            'COLLATION': 'utf8_general_ci',
-            'TEST': {
-                'CHARSET': 'utf8',
-                'COLLATION': 'utf8_general_ci',
-            },
-            'TEST_CHARSET': 'utf8',
-            'TEST_COLLATION': 'utf8_general_ci'}}
-elif db == 'myisam':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'adminfilters',
-            'HOST': os.environ.get('MYSQL_HOST', '127.0.0.1'),
-            'PORT': os.environ.get('MYSQL_PORT', ''),
-            'USER': os.environ.get('MYSQL_USER', 'root'),
-            'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
-
-            'CHARSET': 'utf8',
-            'OPTIONS': {'init_command': 'SET storage_engine=MyISAM'},
-            'COLLATION': 'utf8_general_ci',
-            'TEST': {
-                'CHARSET': 'utf8',
-                'COLLATION': 'utf8_general_ci',
-            },
-            'TEST_CHARSET': 'utf8',
-            'TEST_COLLATION': 'utf8_general_ci'}}
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': '~adminfilters.sqlite',
-            'TEST': {
-                'NAME': ':memory:',
-            },
-            'TEST_NAME': ':memory:',
-            'HOST': '',
-            'PORT': '',
-            'ATOMIC_REQUESTS': True}}
 
 TIME_ZONE = 'Asia/Bangkok'
 LANGUAGE_CODE = 'en-us'
@@ -76,7 +29,7 @@ USE_L10N = True
 USE_TZ = True
 MEDIA_ROOT = os.path.join(here, 'media')
 MEDIA_URL = '/media/'
-STATIC_ROOT = '/tmp/static/'
+STATIC_ROOT = env('STATIC_ROOT')
 STATIC_URL = '/static/'
 SECRET_KEY = 'c73*n!y=)tziu^2)y*@5i2^)$8z$tx#b9*_r3i6o1ohxo%*2^a'
 MIDDLEWARE = (
@@ -85,6 +38,11 @@ MIDDLEWARE = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',)
+
+DATABASES = {
+    'default': env.db()
+}
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 ROOT_URLCONF = 'demo.urls'
 WSGI_APPLICATION = 'demo.wsgi.application'
