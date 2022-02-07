@@ -42,12 +42,12 @@ class FilterDepotManager(WrappperMixin, ListFilter):
         return queryset
 
     def choices(self, changelist):
-        current_querystring = get_query_string(self.request, {}, self.expected_parameters())
+        self.query_string = get_query_string(self.request, {}, self.expected_parameters())
         self.selected = False
         for f in StoredFilter.objects.filter(content_type=self.content_type).order_by('name'):
-            self.selected = self.selected or str(current_querystring) == str(f.query_string)
+            self.selected = self.selected or str(self.query_string) == str(f.query_string)
             yield {
-                'selected': str(current_querystring) == str(f.query_string),
+                'selected': str(self.query_string) == str(f.query_string),
                 'query_string': f.query_string,
                 # 'pk': f.pk,
                 'name': f.name,
