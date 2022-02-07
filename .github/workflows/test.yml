@@ -40,10 +40,9 @@ jobs:
                 python-version: [ "3.8", "3.9", "3.10" ]
                 django-version: [ "2.2", "3.2", "4.0" ]
         env:
+            DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/adminfilters
             PY_VER: ${{ matrix.python-version}}
             DJ_VER: ${{ matrix.django-version}}
-            PG_USER: postgres
-            PG_PASSWORD: postgres
         steps:
             -   uses: actions/checkout@v2
 
