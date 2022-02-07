@@ -1,4 +1,4 @@
-from unittest.mock import Mock
+from unittest.mock import MagicMock, Mock
 
 from demo.models import Artist
 from django.contrib.admin import ModelAdmin
@@ -14,7 +14,7 @@ def test_save(admin_user, rf):
     request = rf.get('/')
     request.user = admin_user
     for m in [SessionMiddleware, MessageMiddleware]:
-        m().process_request(request)
+        m(MagicMock()).process_request(request)
 
     f = FilterDepotManager(request, {'adminfilters_filter_save': 'Filter1'}, None, ModelAdmin(Artist, Mock()))
     f.queryset(request, None)
@@ -25,7 +25,7 @@ def test_choices(admin_user, rf):
     request = rf.get('/?a=1')
     request.user = admin_user
     for m in [SessionMiddleware, MessageMiddleware]:
-        m().process_request(request)
+        m(MagicMock()).process_request(request)
     StoredFilter.objects.create(name='Filter1',
                                 content_type=ContentType.objects.get_for_model(Artist),
                                 owner=admin_user,
