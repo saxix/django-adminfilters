@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parents[3]
 env = environ.Env(
     DEBUG=(bool, False),
     STATIC_ROOT=(str, str(BASE_DIR / '~build' / 'static')),
-    DATABASE_URL=(str, 'sqlite:///smart_admin.db'),
+    DATABASE_URL=(str, ''),
     ROOT_TOKEN=(str, uuid4().hex),
 )
 
