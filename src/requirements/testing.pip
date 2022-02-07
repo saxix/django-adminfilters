@@ -1,4 +1,5 @@
 check-manifest
+django-environ
 factory-boy
 flake8
 isort
