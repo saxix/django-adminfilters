@@ -7,10 +7,10 @@ from adminfilters.dj import DjangoLookupFilter
 @pytest.fixture
 def fixtures(db):
     from demo.factories import ArtistFactory
-    ArtistFactory(name='a1')
-    ArtistFactory(name='a2')
-    ArtistFactory(name='b1')
-    ArtistFactory(name='c1')
+    ArtistFactory(name='a1', active=True)
+    ArtistFactory(name='a2', active=True)
+    ArtistFactory(name='b1', active=True)
+    ArtistFactory(name='c1', active=False)
 
 
 def test_media():
@@ -20,10 +20,14 @@ def test_media():
 @pytest.mark.parametrize('key,value,negate,expected', [('name', 'a1', False, ['a1']),
                                                        ('name__endswith', '2', False, ['a2']),
                                                        ('name__in', 'a1,a2', False, ['a1', 'a2']),
+                                                       ('active', '_T_', False, ['a1', 'a2', 'b1']),
+                                                       ('active', '_F_', False, ['c1']),
+                                                       ('active', '_F_', True, ['a1', 'a2', 'b1']),
                                                        ])
 def test_value_filter(fixtures, key, value, negate, expected):
     f = DjangoLookupFilter(None, {'adam__key': key,
-                                  'adam__value': value
+                                  'adam__value': value,
+                                  'adam__negate': str(negate).lower()
                                   },
                            None, 'name')
 

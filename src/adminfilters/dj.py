@@ -30,7 +30,7 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
 
     @classmethod
     def factory(cls, **kwargs):
-        return type('JsonFieldFilter', (cls,), kwargs)
+        return type('DjangoLookupFilter', (cls,), kwargs)
 
     def expected_parameters(self):
         return [self.lookup_kwarg_key,
@@ -43,7 +43,7 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
     def check_bool(self, value):
         if value in self.true_values:
             return True
-        elif value == self.false_values:
+        elif value in self.false_values:
             return False
         return value
 

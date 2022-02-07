@@ -29,11 +29,6 @@ class FilterDepotManager(WrappperMixin, ListFilter):
     def expected_parameters(self):
         return [self.parameter_newname]
 
-    def operation(self):
-        if self.selected:
-            return 'update'
-        return 'add'
-
     def queryset(self, request, queryset):
         if self.save_as:
             qs = get_query_string(request, {}, self.expected_parameters())

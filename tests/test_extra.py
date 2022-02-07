@@ -15,5 +15,8 @@ def test_GenericLookupFieldFilter(db):
     qs = f(None, {'perm': 'delete'}, None, None).queryset(None, Permission.objects.all())
     assert qs.first().codename.startswith('delete_')
 
+    qs = f(None, {}, None, None).queryset(None, Permission.objects.all())
+    assert qs.exists()
+
     qs = f(None, {'perm': '--'}, None, None).queryset(None, Permission.objects.all())
     assert not qs.exists()

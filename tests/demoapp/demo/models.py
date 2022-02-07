@@ -56,6 +56,7 @@ class Band(models.Model):
                                          (3, 'Soul'),
                                          (4, 'Other'),
                                          ))
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -67,6 +68,7 @@ class Artist(JSONMixin, models.Model):
     full_name = models.CharField(max_length=255)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     year_of_birth = models.IntegerField()
+    active = models.BooleanField(default=True)
     bands = models.ManyToManyField(Band,
                                    related_name='bands',
                                    verbose_name='Bands')

@@ -7,12 +7,13 @@ def sample_data():
 
     uk = CountryFactory(name='United Kingdom')
     australia = CountryFactory(name='Australia')
-    acdc = BandFactory(name='AC/DC')
-    geordie = BandFactory(name='Geordie')
+    acdc = BandFactory(name='AC/DC', active=True)
+    geordie = BandFactory(name='Geordie', active=False)
 
     ArtistFactory(name='Angus',
                   last_name='Young',
                   full_name='Young, Angus',
+                  active=True,
                   year_of_birth=1955,
                   bands=[acdc],
                   country=uk, flags={'v': 1})
@@ -21,6 +22,7 @@ def sample_data():
                   last_name='Young',
                   full_name='Young, Malcom',
                   year_of_birth=1953,
+                  active=True,
                   bands=[acdc],
                   country=uk, flags={'v': 1})
 
@@ -29,14 +31,24 @@ def sample_data():
                   full_name='Rudd, Phil',
                   year_of_birth=1954,
                   bands=[acdc],
+                  active=True,
                   country=australia, flags={'full_name': 'Phil Rudd'})
 
     ArtistFactory(name='Brian',
                   last_name='Johnson',
                   full_name='Johnson, Brian',
                   year_of_birth=1947,
+                  active=True,
                   bands=[acdc, geordie],
                   country=uk, flags={'full_name': 'Brian Johnson'})
+
+    ArtistFactory(name='Bon',
+                  last_name='Scott',
+                  full_name='Scott, Bon',
+                  year_of_birth=1946,
+                  active=False,
+                  bands=[acdc],
+                  country=uk, flags={'full_name': 'Bon Scott'})
 
 
 class Command(BaseCommand):

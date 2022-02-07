@@ -48,7 +48,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
     def check_bool(self, value):
         if value in self.true_values:
             return True
-        elif value == self.false_values:
+        elif value in self.false_values:
             return False
         return value
 
@@ -113,7 +113,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
             except FieldError as e:
                 self.exception = e
                 self.error_message = get_message_from_exception(e)
-            except Exception as e:
+            except Exception as e:  # pragma: no cover
                 self.exception = e
                 self.error_message = 'Invalid filter'
         return queryset
