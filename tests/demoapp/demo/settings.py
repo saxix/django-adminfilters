@@ -31,9 +31,10 @@ MEDIA_ROOT = os.path.join(here, 'media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = env('STATIC_ROOT')
 STATIC_URL = '/static/'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    STATIC_ROOT
 )
 
 SECRET_KEY = 'c73*n!y=)tziu^2)y*@5i2^)$8z$tx#b9*_r3i6o1ohxo%*2^a'

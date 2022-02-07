@@ -50,8 +50,7 @@ heroku:
 
 heroku-reset: heroku
 	heroku pg:reset --confirm django-adminfilters
+	heroku config:set DEBUG=true
 	heroku run python tests/demoapp/manage.py migrate
 	heroku run python tests/demoapp/manage.py init_demo
-	heroku config:set DEBUG=true
-	heroku config:set STATIC_ROOT=/tmp/static/
 	heroku run python tests/demoapp/manage.py collectstatic --noinput
