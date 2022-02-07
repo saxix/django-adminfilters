@@ -1,0 +1,9 @@
+# This file is only used by the Heroku sample app at https://django-smart-admin.herokuapp.com/
+-e .[dev,full]
+django
+gunicorn
+django-environ
+django-constance
+django-picklefield
+psycopg2
+whitenoise
