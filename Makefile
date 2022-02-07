@@ -49,7 +49,7 @@ heroku:
 	@echo "check demo at https://django-adminfilters.herokuapp.com/"
 
 heroku-reset: heroku
-	heroku pg:reset --confirm django-smart-admin
+	heroku pg:reset --confirm django-adminfilters
 	heroku run python tests/demoapp/manage.py migrate
 	heroku run python tests/demoapp/manage.py init_demo
 	heroku run python tests/demoapp/manage.py collectstatic --noinput
