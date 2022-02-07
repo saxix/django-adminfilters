@@ -1,4 +1,4 @@
-from django.core.management import BaseCommand
+from django.core.management import BaseCommand, call_command
 from django.db import IntegrityError
 
 
@@ -54,6 +54,8 @@ def sample_data():
 class Command(BaseCommand):
     def handle(self, *args, **options):
         from demo.factories import ArtistFactory, DemoModelFieldFactory
+        call_command('migrate')
+        call_command('collectstatic', interactive=False)
         try:
             ArtistFactory.create_batch(10)
             DemoModelFieldFactory.create_batch(10)

@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parents[3]
 
 env = environ.Env(
     DEBUG=(bool, False),
-    STATIC_ROOT=(str, str(BASE_DIR / '~build' / 'static')),
+    STATIC_ROOT=(str, str(BASE_DIR / '~build' / 'staticfiles')),
     DATABASE_URL=(str, ''),
     ROOT_TOKEN=(str, uuid4().hex),
 )
@@ -34,7 +34,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 STATICFILES_DIRS = (
-    STATIC_ROOT
+    # os.path.join(BASE_DIR, "static"),
 )
 
 SECRET_KEY = 'c73*n!y=)tziu^2)y*@5i2^)$8z$tx#b9*_r3i6o1ohxo%*2^a'
