@@ -56,6 +56,9 @@ Usage examples
 
     class MyModelAdmin(ModelAdmin):
         list_filter = (
+            FilterDepotManager,  # needs `adminfilters.depot` app
+            QueryStringFilter,
+            DjangoLookupFilter,
             ("custom", JsonFieldFilter.factory(can_negate=False, options=True)),
             ("flag", ChoicesFieldComboFilter),
             ('household', AutoCompleteFilter)

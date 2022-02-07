@@ -94,6 +94,7 @@ class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
         ('flags', JsonFieldFilter.factory(can_negate=False, options=False)),
         ('country', AutoCompleteFilter),
         ('year_of_birth', NumberFilter),
+        ('bands', UnionFieldListFilter),
     )
     search_fields = ('name',)
 

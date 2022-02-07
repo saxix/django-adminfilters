@@ -39,3 +39,17 @@ docs: mkbuilddir
 ifdef BROWSE
 	firefox ${BUILDDIR}/docs/index.html
 endif
+
+
+heroku:
+	@git checkout heroku
+	@git merge develop -m "merge develop"
+	@git push heroku heroku:master
+	@git checkout develop
+	@echo "check demo at https://django-adminfilters.herokuapp.com/"
+
+heroku-reset: heroku
+	heroku pg:reset --confirm django-smart-admin
+	heroku run python tests/demoapp/manage.py migrate
+	heroku run python tests/demoapp/manage.py init_demo
+	heroku run python tests/demoapp/manage.py collectstatic --noinput

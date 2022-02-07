@@ -89,7 +89,7 @@ MIDDLEWARE = (
 ROOT_URLCONF = 'demo.urls'
 WSGI_APPLICATION = 'demo.wsgi.application'
 
-AUTHENTICATION_BACKENDS = ('demo.backends.AnyUserBackend',)
+AUTHENTICATION_BACKENDS = ('demo.backends.AnonymousAccessUserBackend',)
 
 INSTALLED_APPS = (
     'django.contrib.auth',

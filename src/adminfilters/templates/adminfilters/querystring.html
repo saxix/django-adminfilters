@@ -1,8 +1,8 @@
 {% extends "adminfilters/_wrapper.html" %}{% load i18n %}
 {% block content %}
 <!--
-    {{ spec.filters }}
-    {{ spec.exclude }}
+    {{ spec.filters|safe }}
+    {{ spec.exclude|safe }}
 -->
 <ul id="{{ spec.parameter_name }}" class="adminfilters"
     data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
