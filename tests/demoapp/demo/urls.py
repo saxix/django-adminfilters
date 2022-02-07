@@ -1,4 +1,5 @@
 import django.contrib.admin.sites
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.urls import re_path
 
@@ -30,4 +31,6 @@ public_site.register(User, admin.IUserAdmin)
 
 urlpatterns = (
     re_path(r'', public_site.urls),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+
 )
