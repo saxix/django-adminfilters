@@ -34,6 +34,12 @@ Filters
 * UnionFieldListFilter
 * ForeignKeyFieldFilter
 
+FYI
+====
+
+Filters management (save/retrieve), is handled by an optional application `adminfilters.depot` that,
+to be less invasive as possible, it uses GET method to save filter definition to the database,
+When you use `FilterDepotManager` to save a filter the call is *idempotent* but not *safe*.
 
 Usage examples
 ==============
