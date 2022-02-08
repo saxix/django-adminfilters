@@ -23,7 +23,7 @@ def fixtures(db):
                                          ('1,3', '1,3'),
                                          ('2..4', '2,3,4'),
                                          ])
-def test_JsonFieldFilter(fixtures, op, expected):
+def test_NumberFilter(fixtures, op, expected):
     f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {'unique': op}, None, None, 'unique')
     result = f.queryset(None, DemoModelField.objects.all())
     value = list(result.values_list('unique', flat=True))

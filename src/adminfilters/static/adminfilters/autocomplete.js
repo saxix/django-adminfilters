@@ -1,6 +1,5 @@
 ;(function ($) {
     $(document).ready(function () {
-
         $('.filter-autocomplete').on("change", function (e) {
             var sel = $(e.target).find(':selected').val();
             var qs = $(e.target).data('ajax--qs');

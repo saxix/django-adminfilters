@@ -65,7 +65,7 @@ class GenericLookupFieldFilter(MediaDefinitionFilter, SmartSimpleListFilter):
                 else:
                     queryset = queryset.filter(**self.filters)
                 self.debug = [self.filters, negate]
-            except FieldError as e:
+            except FieldError as e:  # pragma: no-cover
                 self.exception = e
                 self.error_message = get_message_from_exception(e)
         return queryset

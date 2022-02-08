@@ -3,7 +3,7 @@
     <!--
     {{ spec.debug|safe }}
     -->
-<ul id="{{ spec.lookup }}"
+<ul id="{{ spec.id }}"
     data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
     data-lk="{{ spec.parameter_name }}"
     data-separator="{{ spec.arg_separator }}"
@@ -34,7 +34,7 @@
 <script type="text/javascript">
     ;(function ($) {
         $(document).ready(function () {
-            $("#{{ spec.lookup }}").find("a.button").click(new LookupFilterHandler("{{ spec.id }}",
+            $("#{{ spec.id }}").find("a.button").click(new LookupFilterHandler("{{ spec.id }}",
                 {negated: {{spec.negated|lower}}, can_negate:{{ spec.can_negate|lower }} }).click);
         });
     })(django.jQuery);

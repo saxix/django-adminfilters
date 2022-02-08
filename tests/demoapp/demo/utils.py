@@ -1,4 +1,9 @@
 from django.urls import reverse
+from django.utils.functional import cached_property
+from django.utils.html import strip_tags
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 DATA = {
     'date': '2013-01-29',
@@ -75,3 +80,91 @@ def wait_for_url(driver, url):
     from selenium.webdriver.support.ui import WebDriverWait
     wait = WebDriverWait(driver, 10)
     wait.until(EC.url_contains(url))
+
+
+class WebElementWrapper:
+    def __init__(self, element: WebElement):
+        self.element = element
+
+    def __getattr__(self, item):
+        return getattr(self.element, item)
+
+    def __repr__(self):
+        return '<{0.__module__}.{0.__name__} (session="{1}", element="{2}")>'.format(
+            type(self.element), self._parent.session_id, self.element._id)
+
+    @property
+    def driver(self):
+        return self.element.parent
+
+
+class RowWrapper(WebElementWrapper):
+
+    @cached_property
+    def cells(self):
+        ret = []
+        for e in self.element.find_elements(By.CSS_SELECTOR, 'td,th')[1:]:
+            inner = e.get_attribute('innerText')
+            if inner:
+                ret.append(inner)
+            else:
+                ret.append(strip_tags(e.get_attribute('innerHTML')))
+        return ret
+
+
+class EmptyChangeListWrapper(WebElementWrapper):
+    rows = []
+    header = []
+    matrix = []
+
+    def get_row(self, num):
+        return None
+
+    def get_col(self, num):
+        return None
+
+    def get_cell(self, row, col):
+        return None
+
+
+class ChangeListWrapper(EmptyChangeListWrapper):
+    @classmethod
+    def find_in_page(cls, driver):
+        try:
+            return ChangeListWrapper(driver.find_element(By.CSS_SELECTOR, '#changelist-form #result_list'))
+        except NoSuchElementException:
+            return EmptyChangeListWrapper(None)
+
+    @cached_property
+    def header(self) -> [RowWrapper]:
+        return RowWrapper(self.element.find_element(By.CSS_SELECTOR, 'thead tr'))
+
+    @cached_property
+    def rows(self) -> [RowWrapper]:
+        return [RowWrapper(e) for e in self.element.find_elements(By.CSS_SELECTOR, 'tbody tr')]
+
+    def get_row(self, num):
+        return list(self.rows)[num]
+
+    def get_col(self, num):
+        return [row.cells[num] for row in self.rows]
+
+    def get_cell(self, row, col):
+        return self.rows[row].cells[col]
+
+    @cached_property
+    def matrix(self):
+        cells = []
+        for row in self.rows:
+            cells.append(row.cells)
+        return cells
+
+
+class Checkbox(WebElementWrapper):
+    def check(self):
+        if not self.element.is_selected():
+            self.driver.execute_script('arguments[0].click();', self.element)
+
+    def uncheck(self):
+        if self.element.is_selected():
+            self.driver.execute_script('arguments[0].click();', self.element)
