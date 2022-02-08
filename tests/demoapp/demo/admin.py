@@ -38,26 +38,26 @@ class DebugMixin:
 
 class DemoModelAdmin_RelatedFieldCheckBoxFilter(DebugMixin, ModelAdmin):
     list_display = [f.name for f in Artist._meta.fields]
-    list_filter = (('demo_related', RelatedFieldCheckBoxFilter),
+    list_filter = (('bands', RelatedFieldCheckBoxFilter),
                    )
     search_fields = ('name',)
 
 
 class DemoModelAdmin_RelatedFieldRadioFilter(DebugMixin, ModelAdmin):
     list_display = [f.name for f in Artist._meta.fields]
-    list_filter = (('demo_related', RelatedFieldRadioFilter),)
+    list_filter = (('bands', RelatedFieldRadioFilter),)
     search_fields = ('name',)
 
 
 class DemoModelAdmin_UnionFieldListFilter(DebugMixin, ModelAdmin):
     list_display = [f.name for f in Artist._meta.fields]
-    list_filter = (('demo_related', UnionFieldListFilter),)
+    list_filter = (('bands', UnionFieldListFilter),)
     search_fields = ('name',)
 
 
 class DemoModelAdmin_IntersectionFieldListFilter(DebugMixin, ModelAdmin):
     list_display = [f.name for f in Artist._meta.fields]
-    list_filter = (('demo_related', IntersectionFieldListFilter),)
+    list_filter = (('bands', IntersectionFieldListFilter),)
     search_fields = ('name',)
 
 
