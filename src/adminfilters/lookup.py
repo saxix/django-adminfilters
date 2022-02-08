@@ -1,23 +1,30 @@
 from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
+from django.core.exceptions import FieldError
 from django.utils.translation import get_language
 
 from .mixin import MediaDefinitionFilter, SmartSimpleListFilter
+from .utils import get_message_from_exception
 
 
 class GenericLookupFieldFilter(MediaDefinitionFilter, SmartSimpleListFilter):
     template = 'adminfilters/lookup.html'
     parameter_name = None
+    lookup = None
     path_separator = '>'
     arg_separator = '|'
     can_negate = True
     negated = False
-    lookup_field = None
+    # lookup_field = None
 
     def __init__(self, request, params, model, model_admin):
         self.lookup_val = None
         self.lookup_negated = None
+        self.error_message = None
+        self.exception = None
+        self.filters = None
+        self.exclude = None
 
         super().__init__(request, params, model, model_admin)
         self.parse_query_string()
@@ -49,14 +56,18 @@ class GenericLookupFieldFilter(MediaDefinitionFilter, SmartSimpleListFilter):
                 ]
 
     def queryset(self, request, queryset):
-        target, exclude = self.value()
+        target, negate = self.value()
         if target:
-            filters = {self.lookup: target}
-            if exclude:
-                queryset = queryset.exclude(**filters)
-            else:
-                queryset = queryset.filter(**filters)
-            self.debug = [filters, exclude]
+            try:
+                self.filters = {self.lookup: target}
+                if negate:
+                    queryset = queryset.exclude(**self.filters)
+                else:
+                    queryset = queryset.filter(**self.filters)
+                self.debug = [self.filters, negate]
+            except FieldError as e:
+                self.exception = e
+                self.error_message = get_message_from_exception(e)
         return queryset
 
     def lookups(self, request, model_admin):

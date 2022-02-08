@@ -1,4 +1,3 @@
-import re
 from urllib import parse
 
 from django import forms
@@ -8,19 +7,7 @@ from django.core.exceptions import FieldError
 from django.utils.translation import get_language, gettext as _
 
 from adminfilters.mixin import MediaDefinitionFilter, SmartListFilter
-
-rex = re.compile("'.*'")
-
-
-def get_message_from_exception(e: FieldError):
-    message = str(e)
-    fieldname = rex.findall(message) or ['']
-    if 'Unsupported lookup' in message:
-        return f'Unsupported lookup: {fieldname[0]}'
-    elif 'resolve keyword' in message:
-        return f'Unknown field or lookup: {fieldname[0]}'
-    else:
-        return message
+from adminfilters.utils import get_message_from_exception
 
 
 class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):

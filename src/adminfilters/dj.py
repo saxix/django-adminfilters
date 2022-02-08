@@ -1,10 +1,12 @@
 from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
+from django.core.exceptions import FieldError
 from django.db.models import Q
 from django.utils.translation import get_language
 
 from .mixin import MediaDefinitionFilter, SmartListFilter
+from .utils import get_message_from_exception
 
 
 class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
@@ -24,6 +26,10 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
         self.lookup_field_val = params.pop(self.lookup_kwarg_key, '')
         self.lookup_value_val = params.pop(self.lookup_kwarg_value, '')
         self.lookup_negated_val = params.pop(self.lookup_kwarg_negated, 'false')
+        self.error_message = None
+        self.exception = None
+        self.filters = None
+        self.exclude = None
 
         self.query_string = None
         super().__init__(request, params, model, model_admin)
@@ -71,14 +77,16 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
     def queryset(self, request, queryset):
         key, value, negated = self.value()
         if key:
-            filters = Q(**{f'{self.lookup_field_val}': value})
+            try:
+                self.filters = Q(**{f'{self.lookup_field_val}': value})
 
-            if negated:
-                filters = ~filters
-            else:
-                filters = filters
+                if negated:
+                    self.filters = ~self.filters
 
-            queryset = queryset.filter(filters)
+                queryset = queryset.filter(self.filters)
+            except FieldError as e:
+                self.exception = e
+                self.error_message = get_message_from_exception(e)
 
         return queryset
 

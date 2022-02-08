@@ -23,6 +23,7 @@ def test_media():
                                                        ('active', '_T_', False, ['a1', 'a2', 'b1']),
                                                        ('active', '_F_', False, ['c1']),
                                                        ('active', '_F_', True, ['a1', 'a2', 'b1']),
+                                                       ('xx', 'zz', True, ['a1', 'a2', 'b1', 'c1']),
                                                        ])
 def test_value_filter(fixtures, key, value, negate, expected):
     f = DjangoLookupFilter(None, {'adam__key': key,

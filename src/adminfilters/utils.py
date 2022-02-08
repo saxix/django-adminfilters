@@ -1,13 +1,20 @@
+import re
 from urllib.parse import urlencode
 
-#
-# def parse_bool(value):
-#     if str(value).lower() in ['true', '1', 'yes', 't', 'y']:
-#         return True
-#     elif str(value).lower() in ['false', '0', 'no', 'f', 'n']:
-#         return False
-#     else:
-#         raise ValueError(value)
+from django.core.exceptions import FieldError
+
+rex = re.compile("'.*'")
+
+
+def get_message_from_exception(e: FieldError):
+    message = str(e)
+    fieldname = rex.findall(message) or ['']
+    if 'Unsupported lookup' in message:
+        return f'Unsupported lookup: {fieldname[0]}'
+    elif 'resolve keyword' in message:
+        return f'Unknown field or lookup: {fieldname[0]}'
+    else:
+        return message
 
 
 def get_query_string(request, new_params=None, remove=None):
