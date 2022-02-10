@@ -1,12 +1,22 @@
+from urllib.parse import urlencode
+
 from django.core.management import BaseCommand, call_command
 from django.db import IntegrityError
 
+from adminfilters.depot.models import StoredFilter
+
 
 def sample_data():
-    from demo.factories import ArtistFactory, BandFactory, CountryFactory
+    from demo.factories import (ArtistFactory, BandFactory,
+                                CountryFactory, UserFactory,)
+    from demo.models import Artist
+    from django.contrib.contenttypes.models import ContentType
+
+    user = UserFactory(username='user')
 
     uk = CountryFactory(name='United Kingdom')
     australia = CountryFactory(name='Australia')
+
     acdc = BandFactory(name='AC/DC', active=True)
     geordie = BandFactory(name='Geordie', active=False)
 
@@ -49,6 +59,37 @@ def sample_data():
                   active=False,
                   bands=[acdc],
                   country=uk, flags={'full_name': 'Bon Scott'})
+    ct = ContentType.objects.get_for_model(Artist)
+    StoredFilter.objects.update_or_create(
+        name='AC/DC',
+        owner=user,
+        defaults=dict(
+            owner=user,
+            query_string='?%s' % urlencode({'qs': 'bands__name=AC/DC'}),
+            content_type=ct)
+    )
+    StoredFilter.objects.update_or_create(
+        name='QueryString',
+        owner=user,
+        defaults=dict(
+            query_string='?%s' % urlencode({'qs': """country__name__istartswith=australia
+name=Phil
+year_of_birth__gt=1950
+Aactive=true""",
+                                            'qs__negate': 'false'}),
+            content_type=ct
+        )
+    )
+    StoredFilter.objects.update_or_create(
+        name='Active Artists',
+        owner=user,
+        defaults=dict(
+            query_string='?%s' % urlencode({'qs': 'active=true'}),
+            content_type=ct
+        )
+    )
+
+    return [acdc, geordie]
 
 
 class Command(BaseCommand):

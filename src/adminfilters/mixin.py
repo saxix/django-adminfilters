@@ -13,6 +13,10 @@ class WrappperMixin:
         self.error = None
         self.error_message = None
         super().__init__(*args, **kwargs)
+        if hasattr(self, 'media') and self.model_admin and not isinstance(self.model_admin, AdminFiltersMixin):
+            raise Exception(
+                f'{self.__class__.__name__} needs that the {self.model_admin.__class__.__name__} '
+                f'that use it extends AdminFiltersMixin')
 
     def html_attrs(self):
         classes = f'adminfilters box {self.__class__.__name__.lower()}'
@@ -22,6 +26,9 @@ class WrappperMixin:
         return {'class': classes,
                 'id': '_'.join(self.expected_parameters()),
                 }
+
+    def placeholder(self):
+        return ''
 
     def get_title(self):
         if not self.can_negate and self.negated:
@@ -33,25 +40,25 @@ class WrappperMixin:
 
 
 class SmartListFilter(WrappperMixin, ListFilter):
-    pass
+    def __init__(self, request, params, model, model_admin):
+        self.model_admin = model_admin
+        super().__init__(request, params, model, model_admin)
 
 
 class SmartSimpleListFilter(WrappperMixin, SimpleListFilter):
-    pass
+    def __init__(self, request, params, model, model_admin):
+        self.model_admin = model_admin
+        super().__init__(request, params, model, model_admin)
 
 
 class SmartFieldListFilter(WrappperMixin, FieldListFilter):
-    pass
+    def __init__(self, field, request, params, model, model_admin, field_path):
+        self.model_admin = model_admin
+        super().__init__(field, request, params, model, model_admin, field_path)
 
 
 class MediaDefinitionFilter:
-    def __init__(self, *args, **kwargs):
-        model_admin = kwargs.get('model_admin', None)
-        if model_admin and not isinstance(model_admin, AdminFiltersMixin):
-            raise Exception(
-                f'{self.__class__.__name__} needs that the {model_admin.__class__.__name__} '
-                f'that use it extends AdminFiltersMixin')
-        super().__init__(*args, **kwargs)
+    pass
 
 
 class AdminFiltersMixin(ModelAdmin):

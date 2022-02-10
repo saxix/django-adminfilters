@@ -1,10 +1,7 @@
 {% extends "adminfilters/_wrapper.html" %}{% load i18n %}
 {% block content %}
-<!--
-    {{ spec.filters|safe }}
-    {{ spec.exclude|safe }}
--->
-<ul id="{{ spec.parameter_name }}" class="adminfilters"
+{{ spec.debug|safe }}
+<ul class="adminfilter"
     data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
     data-qs="{{ spec.query_string }}"
     data-lk="{{ spec.parameter_name }}"
@@ -33,9 +30,18 @@
 
 <script type="text/javascript">
     ;(function ($) {
-        $(document).ready(function () {
-            $("#{{ spec.parameter_name }}").find("a.button").click(new QueryStringFilterHandler("{{ spec.parameter_name }}").click);
-        });
+        new QueryStringFilterHandler("#{{ spec.html_attrs.id }}", {{ spec.js_options|safe }});
+
+        {# $(document).ready(function () { #}
+        {#    var $filter = $("#{{ spec.parameter_name }}");#}
+        {#    var $textarea = $($filter.find('textarea')[0]);#}
+        {#    $filter.find("a.button").click(new QueryStringFilterHandler("{{ spec.parameter_name }}").click);#}
+        {#    $textarea.height($textarea.prop('scrollHeight'));#}
+        {#    $textarea.on('keyup keypress', function() {#}
+        {#        $(this).height(0);#}
+        {#        $(this).height(this.scrollHeight);#}
+        {#    });#}
+        {# }); #}
     })(django.jQuery);
 </script>
 {% endblock script %}

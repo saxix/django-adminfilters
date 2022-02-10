@@ -1,7 +1,11 @@
 import contextlib
+import logging
+from urllib.parse import urljoin
 
 import pytest
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 
 
 def pytest_configure(config):
@@ -21,20 +25,6 @@ SELENIUM_DEFAULT_PAGE_LOAD_TIMEOUT = 3
 SELENIUM_DEFAULT_IMPLICITLY_WAIT = 1
 SELENIUM_DEFAULT_SCRIPT_TIMEOUT = 1
 
-
-# @contextlib.contextmanager
-# def page_load_timeout(driver, secs):
-#     driver.set_page_load_timeout(secs)
-#     yield
-#     driver.set_page_load_timeout(SELENIUM_DEFAULT_PAGE_LOAD_TIMEOUT)
-#
-#
-# @contextlib.contextmanager
-# def implicitly_wait(driver, secs):
-#     driver.implicitly_wait(secs)
-#     yield
-#     driver.implicitly_wait(SELENIUM_DEFAULT_IMPLICITLY_WAIT)
-#
 
 @contextlib.contextmanager
 def timeouts(driver, wait=None, page=None, script=None):
@@ -57,12 +47,32 @@ def set_input_value(driver, *args):
     el.send_keys(args[-1])
 
 
+def get_errors(driver):
+    """
+    Checks browser for errors, returns a list of errors
+    :param driver:
+    :return:
+    """
+    try:
+        browser_logs = driver.get_log('browser')
+    except (ValueError, WebDriverException) as e:
+        # Some browsers does not support getting logs
+        logging.debug('Could not get browser logs for driver %s due to exception: %s',
+                      driver, e)
+        return []
+
+    errors = [entry for entry in browser_logs if entry['level'] == 'SEVERE']
+
+    return errors
+
+
 @pytest.fixture
 def selenium(driver):
     from demo.utils import wait_for
     driver.with_timeouts = timeouts.__get__(driver)
     driver.set_input_value = set_input_value.__get__(driver)
     driver.wait_for = wait_for.__get__(driver)
+    driver.get_errors = get_errors.__get__(driver)
     yield driver
 
 
@@ -72,3 +82,32 @@ def data():
     from demo.management.commands.init_demo import sample_data
     ArtistFactory.create_batch(20)
     sample_data()
+
+
+class AdminSite:
+    def __init__(self, live_server, driver):
+        self.live_server = live_server
+        self.driver = driver
+
+    def open(self, path=''):
+        self.driver.get(urljoin(self.live_server.url, path))
+        dim = self.driver.get_window_size()
+        self.driver.set_window_size(1100, dim['height'])
+
+    def wait_for(self, *args):
+        return self.driver.wait_for(*args)
+
+    def has_errors(self):
+        return len(self.get_errors())
+
+    def get_errors(self):
+        return self.driver.get_errors()
+
+
+@pytest.fixture
+def admin_site(live_server, selenium):
+    site = AdminSite(live_server, selenium)
+    site.open('/')
+    site.wait_for(By.LINK_TEXT, 'Artists').click()
+    assert not site.has_errors(), site.get_errors()
+    return site

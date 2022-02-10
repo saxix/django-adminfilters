@@ -17,14 +17,15 @@ def fixtures(db):
 @pytest.mark.parametrize('op,expected,error', [('unique=1', '1', None),
                                                ('unique__in=1,2,3', '1,2,3', None),
                                                ('!unique=2', '1,3,4', None),
-                                               ('logic=_T_', '1,3', None),
-                                               ('logic=_F_', '2,4', None),
-                                               ('!logic=_F_', '1,3', None),
-                                               ('wrong=1', '1,2,3,4', "Unknown field or lookup: 'wrong'"),
-                                               ('logic_x=1', '1,2,3,4', "Unknown field or lookup: 'logic_x'"),
+                                               ('logic=true', '1,3', None),
+                                               ('logic=false', '2,4', None),
+                                               ('!logic=false', '1,3', None),
+                                               ('logic__in=true,false', '1,2,3,4', None),
+                                               ('wrong=1', '1,2,3,4', "Unknown field 'wrong'"),
+                                               ('logic__x=1', '1,2,3,4', "Unsupported lookup: 'x'"),
                                                ])
 def test_QueryStringFilter(fixtures, op, expected, error):
-    f = QueryStringFilter(None, {'qs': op}, None, None)
+    f = QueryStringFilter(None, {'qs': op}, DemoModelField, None)
     result = f.queryset(None, DemoModelField.objects.all())
     value = list(result.values_list('unique', flat=True))
     assert value == expected.split(','), value
@@ -32,4 +33,4 @@ def test_QueryStringFilter(fixtures, op, expected, error):
 
 
 def test_media():
-    assert QueryStringFilter.factory(title='Title')(None, {}, None, 'unique').media
+    assert QueryStringFilter.factory(title='Title')(None, {}, DemoModelField, None).media

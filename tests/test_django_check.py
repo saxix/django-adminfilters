@@ -1,25 +1,30 @@
 from unittest.mock import patch
 
-from demo.models import Country
+import pytest
+from demo.admin import ArtistModelAdmin
+from demo.models import Artist, Band
 from django.contrib.admin import ModelAdmin, site
 
+from adminfilters.checkbox import RelatedFieldCheckBoxFilter
 from adminfilters.checks import check_adminfilters_media
+from adminfilters.filters import ValueFilter
 from adminfilters.querystring import QueryStringFilter
-from adminfilters.text import ValueFilter
 
 
 def test():
     ret = check_adminfilters_media(None)
-    assert ret == []
+    assert ret == [], [e.msg for e in ret]
 
 
-class BrokenCountryModelAdmin(ModelAdmin):
-    list_filter = (
-        QueryStringFilter,
-        ('name', ValueFilter),)
+@pytest.mark.parametrize('filter_class', [QueryStringFilter, ('name', ValueFilter)])
+def test_check_error(filter_class):
+    class InvalidModelAdmin(ModelAdmin):
+        list_filter = ('active',
+                       filter_class,
+                       ('genre', RelatedFieldCheckBoxFilter),
+                       )
 
-
-def test_error():
-    with patch.dict(site._registry, {Country: BrokenCountryModelAdmin}, clear=True):
+    with patch.dict(site._registry, {Artist: ArtistModelAdmin,
+                                     Band: InvalidModelAdmin}, clear=True):
         ret = check_adminfilters_media(None)
-        assert len(ret) == 1
+        assert len(ret) == 1, [e.msg for e in ret]

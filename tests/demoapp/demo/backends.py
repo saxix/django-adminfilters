@@ -1,5 +1,5 @@
 from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import Permission
 
 
 class AnonymousAccessUserBackend(ModelBackend):
@@ -18,12 +18,12 @@ class AnonymousAccessUserBackend(ModelBackend):
     def has_module_perms(self, user_obj, app_label):
         return True
 
-
-class AnyUserAuthBackend(ModelBackend):
-    def authenticate(self, request, username=None, password=None, **kwargs):
-        user, __ = User.objects.update_or_create(username=username,
-                                                 is_staff=True,
-                                                 is_active=True,
-                                                 is_superuser=True,
-                                                 email=f'{username}@demo.org')
-        return user
+#
+# class AnyUserAuthBackend(ModelBackend):
+#     def authenticate(self, request, username=None, password=None, **kwargs):
+#         user, __ = User.objects.update_or_create(username=username,
+#                                                  defaults=dict(is_staff=True,
+#                                                  is_active=True,
+#                                                  is_superuser=True,
+#                                                  email=f'{username}@demo.org'))
+#         return user

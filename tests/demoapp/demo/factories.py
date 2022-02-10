@@ -1,6 +1,7 @@
 import random
 
 import factory.fuzzy
+from django.contrib.auth.models import User
 from factory.base import FactoryMetaClass
 
 from . import models
@@ -64,6 +65,12 @@ class DemoModelFieldFactory(ModelFactory):
         return get_flags()
 
 
+class UserFactory(ModelFactory):
+    class Meta:
+        model = User
+        django_get_or_create = ('username',)
+
+
 class CountryFactory(ModelFactory):
     name = factory.Faker('country')
 
@@ -99,7 +106,7 @@ class ArtistFactory(ModelFactory):
             # Simple build, do nothing.
             return
 
-        if not extracted:
+        if extracted is None:
             # A list of groups were passed in, use them
             extracted = [BandFactory()]
         for topping in extracted:

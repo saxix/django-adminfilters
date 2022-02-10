@@ -1,14 +1,11 @@
 import re
 
 from django.contrib.admin.options import IncorrectLookupParameters
-from django.utils.safestring import mark_safe
 
-from adminfilters.text import ValueFilter
+from .value import ValueFilter
 
 
 class NumberFilter(ValueFilter):
-    # template = 'adminfilters/text.html'
-
     rex1 = re.compile(r'^(>=|<=|>|<|=)?([-+]?[0-9]+)$')
     re_range = re.compile(r'^(\d+)\.\.(\d+)$')
     re_list = re.compile(r'(\d+),?')
@@ -20,20 +17,20 @@ class NumberFilter(ValueFilter):
            '=': 'exact',
            '<>': 'not',
            }
+    can_negate = False
 
-    # def __init__(self, field, request, params, model, model_admin, field_path):
-    #     super().__init__(field, request, params, model, model_admin, field_path)
-    # self.title = mark_safe(f'{self.title} <small>(use >,>=,<,<=, fixed, list)</small>')
-    # self.lookup_kwarg = field_path
+    @classmethod
+    def factory(cls, *, title=None, **kwargs):
+        if 'lookup_name' in kwargs:
+            raise ValueError(f"'lookup_name' is not a valid value for "
+                             f"'{cls.__class__.__name__}.factory'")
+        return super().factory(title=title, **kwargs)
 
-    def _get_title(self):
-        return mark_safe(f'{self.title} <small>(use >,>=,<,<=, fixed, list)</small>')
+    def placeholder(self):
+        return '1 or >< <=> <> 1 or 1..10 or 1,4,5'
 
-    def value(self):
-        return [self.used_parameters.get(self.field.name, '')]
-
-    def expected_parameters(self):
-        return [self.lookup_kwarg]
+    # def value(self):
+    #     return [self.used_parameters.get(self.field_path, '')]
 
     def queryset(self, request, queryset):
         if self.value() and self.value()[0]:

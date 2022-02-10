@@ -4,26 +4,26 @@ from django.db.models.query_utils import Q
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
-from .mixin import WrappperMixin
+from .mixin import MediaDefinitionFilter, WrappperMixin
+from .utils import parse_bool
 
 
-class RelatedFieldCheckBoxFilter(WrappperMixin, RelatedFieldListFilter):
+class RelatedFieldCheckBoxFilter(WrappperMixin, MediaDefinitionFilter, RelatedFieldListFilter):
     template = 'adminfilters/checkbox.html'
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.model_admin = model_admin
         super().__init__(field, request, params, model, model_admin, field_path)
+        self.lookup_kwarg = '%s__%s' % (field_path, field.target_field.name)
         self.lookup_val = request.GET.getlist(self.lookup_kwarg, [])
 
     def queryset(self, request, queryset):
         filters = Q()
+        if self.lookup_val:
+            filters.add(Q(**{f'{self.lookup_kwarg}__in': self.lookup_val}), Q.OR)
 
-        for val in self.lookup_val:
-            filters.add(Q(**{self.lookup_kwarg: val}), Q.OR)
-
-        if (self.lookup_val_isnull):
-            filters.add(Q(**{self.lookup_kwarg_isnull: self.lookup_val_isnull}), Q.OR)
-
+        if self.lookup_val_isnull:
+            filters.add(Q(**{self.lookup_kwarg_isnull: parse_bool(self.lookup_val_isnull)}), Q.OR)
         return queryset.filter(filters)
 
     def choices(self, cl):

@@ -18,7 +18,7 @@ def get_real_field(model, path):
     return f
 
 
-class AutoCompleteFilter(MediaDefinitionFilter, SmartFieldListFilter):
+class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
     template = 'adminfilters/autocomplete.html'
     url_name = '%s:%s_%s_autocomplete'
 
@@ -32,7 +32,7 @@ class AutoCompleteFilter(MediaDefinitionFilter, SmartFieldListFilter):
         self.target_field = get_real_field(model, field_path)
         self.target_model = self.target_field.related_model
 
-        if django.VERSION[0] == 3:
+        if django.VERSION[0] >= 3:
             self.target_opts = self.target_field.model._meta
         elif django.VERSION[0] == 2:
             self.target_opts = self.target_model._meta

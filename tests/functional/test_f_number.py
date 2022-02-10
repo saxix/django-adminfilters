@@ -4,6 +4,8 @@ from demo.utils import ChangeListWrapper
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+pytestmark = pytest.mark.selenium
+
 
 @pytest.fixture
 def data():
@@ -11,28 +13,27 @@ def data():
 
 
 def get_elements(selenium):
-    return [selenium.wait_for(By.CSS_SELECTOR, '#year_of_birth input[type=text]'),
+    container = selenium.find_element(By.ID, 'year_of_birth__exact_year_of_birth__exact__negate')
+    return [container.find_element(By.CSS_SELECTOR, 'input[type=text]'),
             ChangeListWrapper.find_in_page(selenium)]
 
 
-@pytest.mark.parametrize('value,expected', [('1955', 1),
-                                            ('>1953', 2),
-                                            ('<>1955', 4),
-                                            ('<1947', 1),
-                                            ('<=1947', 2),
-                                            ('1955,1953', 2),
-                                            ('1953..1955', 3),
-                                            ])
+@pytest.mark.parametrize('value,expected', [('1955', lambda n: n == 1955),
+                                            ('>1953', lambda n: n > 1953),
+                                            ('<>1955', lambda n: n != 1955),
+                                            ('<1947', lambda n: n != 1947),
+                                            ('<=1947', lambda n: n <= 1947),
+                                            ('1955,1953', lambda n: n in [1953, 1955]),
+                                            ('1953..1955', lambda n: n in range(1953, 1955 + 1)),
+                                            ],
+                         ids=['=', '>1', '<>', '<', '<=', 'list', 'range'])
 @pytest.mark.selenium
-def test_number_filter(live_server, selenium, value, expected):
-    selenium.get(f'{live_server.url}/')
-    dim = selenium.get_window_size()
-    selenium.set_window_size(1100, dim['height'])
-    selenium.wait_for(By.LINK_TEXT, 'Artists').click()
+def test_number_filter(admin_site, value, expected):
+    input_text, cl = get_elements(admin_site.driver)
 
-    input, cl = get_elements(selenium)
-
-    input.send_keys(value)
-    input.send_keys(Keys.ENTER)
-    input, cl = get_elements(selenium)
-    assert len(cl.rows) == expected
+    input_text.send_keys(value)
+    input_text.send_keys(Keys.ENTER)
+    input_text, cl = get_elements(admin_site.driver)
+    years = list(map(int, cl.get_values(None, 6)))
+    filtered = list(filter(expected, years))
+    assert years == filtered

@@ -1,3 +1,5 @@
+import json
+
 from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
@@ -7,15 +9,24 @@ from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 
 class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
-    template = 'adminfilters/text.html'
+    template = 'adminfilters/value.html'
     toggleable = False
     filter_title = None
+    lookup_name = 'exact'
+    #
+    button = True
+    can_negate = True
+    negated = False
+
+    # path_separator = '-'
+    # arg_separator = '|'
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_negated_val = None
+        self.model = model
         self.lookup_val = None
-        self.lookup_kwarg = field_path
-        self.lookup_kwarg_negated = '%s__negate' % field_path
+        self.lookup_kwarg = '%s__%s' % (field_path, self.lookup_name)
+        self.lookup_kwarg_negated = '%s__negate' % self.lookup_kwarg
         self.parse_query_string(params)
         self.field_path = field_path
         super().__init__(field, request, params, model, model_admin, field_path)
@@ -23,6 +34,11 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
         self.params = params
         self.query_values = []
         self.operator = '+'
+
+    def js_options(self):
+        return json.dumps(dict(button=self.button,
+                               canNegate=self.can_negate,
+                               negated=self.negated))
 
     def _get_title(self):
         if self.filter_title:
@@ -32,11 +48,9 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
         return getattr(self.field, 'verbose_name', self.field_path)
 
     @classmethod
-    def factory(cls, field_path=None, title=None, **kwargs):
+    def factory(cls, *, title=None, lookup_name='exact', **kwargs):
         kwargs['filter_title'] = title
-        # backward compat
-        if field_path:
-            return field_path, type('ValueFilter', (cls,), kwargs)
+        kwargs['lookup_name'] = lookup_name
         return type('ValueFilter', (cls,), kwargs)
 
     def expected_parameters(self):
@@ -74,20 +88,22 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
         return forms.Media(
             js=('admin/js/vendor/jquery/jquery%s.js' % extra,
                 ) + i18n_file + ('admin/js/jquery.init.js',
-                                 'adminfilters/text%s.js' % extra,
+                                 'adminfilters/value%s.js' % extra,
                                  ),
+            css={
+                'screen': (
+                    'admin/css/vendor/select2/select2%s.css' % extra,
+                    'adminfilters/adminfilters.css',
+                ),
+            },
         )
 
 
 class MultiValueFilter(ValueFilter):
-    template = 'adminfilters/text_multi.html'
+    template = 'adminfilters/value_multi.html'
     separator = ','
     filter_title = None
-
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        if not field_path.endswith('__in'):  # pragma: no-cover
-            field_path = f'{field_path}__in'
-        super().__init__(field, request, params, model, model_admin, field_path)
+    lookup_name = 'in'
 
     def parse_query_string(self, params):
         raw_values = params.get(self.lookup_kwarg, '').split(self.separator)

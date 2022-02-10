@@ -1,3 +1,5 @@
+import sys
+
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.html import strip_tags
@@ -98,17 +100,22 @@ class WebElementWrapper:
         return self.element.parent
 
 
+class CellWrapper(WebElementWrapper):
+    @cached_property
+    def text(self):
+        return (self.element.get_attribute('innerText') or strip_tags(self.element.get_attribute('innerHTML')))
+
+
 class RowWrapper(WebElementWrapper):
+    @cached_property
+    def values(self):
+        return [e.text for e in self.cells]
 
     @cached_property
     def cells(self):
         ret = []
         for e in self.element.find_elements(By.CSS_SELECTOR, 'td,th')[1:]:
-            inner = e.get_attribute('innerText')
-            if inner:
-                ret.append(inner)
-            else:
-                ret.append(strip_tags(e.get_attribute('innerHTML')))
+            ret.append(CellWrapper(e))
         return ret
 
 
@@ -152,15 +159,38 @@ class ChangeListWrapper(EmptyChangeListWrapper):
     def get_cell(self, row, col):
         return self.rows[row].cells[col]
 
+    def get_values(self, row=None, col=None):
+        if row is None and col is None:
+            return self.matrix
+        if not (row is None or col is None):
+            return self.matrix[row][col]
+        if row is not None:
+            return self.matrix[row]
+        if col is not None:
+            return [row[col] for row in self.matrix]
+
     @cached_property
     def matrix(self):
         cells = []
         for row in self.rows:
-            cells.append(row.cells)
+            cells.append([c.text for c in row.cells])
         return cells
+
+    def pretty(self):
+        from prettytable import PrettyTable
+        x = PrettyTable()
+        x.field_names = self.header.values
+        x.add_rows(self.matrix)
+        sys.stdout.write(f'\n{x}\n')
 
 
 class Checkbox(WebElementWrapper):
+    def checked(self, value):
+        if value and not self.element.is_selected():
+            self.driver.execute_script('arguments[0].click();', self.element)
+        if not value and self.element.is_selected():
+            self.driver.execute_script('arguments[0].click();', self.element)
+
     def check(self):
         if not self.element.is_selected():
             self.driver.execute_script('arguments[0].click();', self.element)

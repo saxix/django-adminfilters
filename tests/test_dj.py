@@ -14,15 +14,15 @@ def fixtures(db):
 
 
 def test_media():
-    assert DjangoLookupFilter.factory(title='Title')(None, {}, None, 'unique').media
+    assert DjangoLookupFilter.factory(title='Title')(None, {}, Artist, None).media
 
 
 @pytest.mark.parametrize('key,value,negate,expected', [('name', 'a1', False, ['a1']),
                                                        ('name__endswith', '2', False, ['a2']),
                                                        ('name__in', 'a1,a2', False, ['a1', 'a2']),
-                                                       ('active', '_T_', False, ['a1', 'a2', 'b1']),
-                                                       ('active', '_F_', False, ['c1']),
-                                                       ('active', '_F_', True, ['a1', 'a2', 'b1']),
+                                                       ('active', 'true', False, ['a1', 'a2', 'b1']),
+                                                       ('active', 'false', False, ['c1']),
+                                                       ('active', 'false', True, ['a1', 'a2', 'b1']),
                                                        ('xx', 'zz', True, ['a1', 'a2', 'b1', 'c1']),
                                                        ])
 def test_value_filter(fixtures, key, value, negate, expected):
@@ -30,40 +30,8 @@ def test_value_filter(fixtures, key, value, negate, expected):
                                   'adam__value': value,
                                   'adam__negate': str(negate).lower()
                                   },
-                           None, 'name')
+                           Artist, None)
 
     result = f.queryset(None, Artist.objects.all())
     value = list(result.values_list('name', flat=True))
     assert value == expected
-
-#
-# def test_factory(fixtures):
-#     F = ValueFilter.factory(title='CustomTitle')
-#     f = F(Artist._meta.get_field('name'), None,
-#           {'name': 'a1', 'name__negate': 'false'}, None, None, 'name')
-#
-#     result = f.queryset(None, Artist.objects.all())
-#     value = list(result.values_list('name', flat=True))
-#     assert value == ['a1']
-#
-#
-# def test_factory_compat(fixtures):
-#     field_name, F = ValueFilter.factory('name', title='CustomTitle')
-#     f = F(Artist._meta.get_field(field_name), None,
-#           {'name': 'a1', 'name__negate': 'false'}, None, None, 'name')
-#
-#     result = f.queryset(None, Artist.objects.all())
-#     value = list(result.values_list('name', flat=True))
-#     assert value == ['a1']
-#
-#
-# @pytest.mark.parametrize('value,negate,expected', [('n', False, []),
-#                                                    ('a1', False, ['a1']),
-#                                                    ('a1', True, ['a2', 'b1', 'c1']),
-#                                                    ])
-# def test_MultiValueTextFieldFilter(fixtures, value, negate, expected):
-#     f = MultiValueFilter(Artist._meta.get_field('name'), None,
-#                          {'name__in': value, 'name__in__negate': str(negate).lower()}, None, None, 'name')
-#     result = f.queryset(None, Artist.objects.all())
-#     value = list(result.values_list('name', flat=True))
-#     assert value == expected
