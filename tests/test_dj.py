@@ -26,9 +26,9 @@ def test_media():
                                                        ('xx', 'zz', True, ['a1', 'a2', 'b1', 'c1']),
                                                        ])
 def test_value_filter(fixtures, key, value, negate, expected):
-    f = DjangoLookupFilter(None, {'adam__key': key,
-                                  'adam__value': value,
-                                  'adam__negate': str(negate).lower()
+    f = DjangoLookupFilter(None, {'dj__key': key,
+                                  'dj__value': value,
+                                  'dj__negate': str(negate).lower()
                                   },
                            Artist, None)
 

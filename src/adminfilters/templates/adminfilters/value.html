@@ -1,6 +1,10 @@
 {% extends "adminfilters/_wrapper.html" %}{% load i18n %}
 {% block content %}
     {{ spec.html_attrs.id }}
+    {{ spec.lookup_kwarg }}
+    {{ spec.lookup_kwarg_negated }}
+    {{ spec.value }}
+    {{ spec.filters }}
     <ul class="adminfilter"
         data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
         data-lk="{{ spec.lookup_kwarg }}"

@@ -3,7 +3,6 @@ from demo.factories import ArtistFactory
 from demo.models import Artist
 
 from adminfilters.json import JsonFieldFilter
-from adminfilters.lookup import GenericLookupFieldFilter
 
 
 @pytest.fixture
@@ -13,10 +12,6 @@ def fixtures(db):
     ArtistFactory(flags={'v': 2})
     ArtistFactory(flags={'v': '2'})
     ArtistFactory(flags={})
-
-
-def test_media():
-    assert GenericLookupFieldFilter.factory('char')(None, {}, None, None).media
 
 
 def test_JsonFieldFilter(fixtures):

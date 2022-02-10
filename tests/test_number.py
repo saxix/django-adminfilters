@@ -25,6 +25,7 @@ def fixtures(db):
                                          ])
 def test_NumberFilter(fixtures, op, expected):
     f = NumberFilter(DemoModelField._meta.get_field('unique'), None, {'unique': op}, None, None, 'unique')
+    assert f.value() == [op]
     result = f.queryset(None, DemoModelField.objects.all())
     value = list(result.values_list('unique', flat=True))
-    assert value == expected.split(','), value
+    assert value == expected.split(','), f.error_message

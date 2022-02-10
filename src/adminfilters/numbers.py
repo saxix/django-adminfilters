@@ -19,6 +19,10 @@ class NumberFilter(ValueFilter):
            }
     can_negate = False
 
+    # def __init__(self, field, request, params, model, model_admin, field_path):
+    #     super().__init__(field, request, params, model, model_admin, field_path)
+    #     self.lookup_kwarg = '%s__%s' % (field_path, self.lookup_name)
+
     @classmethod
     def factory(cls, *, title=None, **kwargs):
         if 'lookup_name' in kwargs:
@@ -29,8 +33,16 @@ class NumberFilter(ValueFilter):
     def placeholder(self):
         return '1 or >< <=> <> 1 or 1..10 or 1,4,5'
 
-    # def value(self):
-    #     return [self.used_parameters.get(self.field_path, '')]
+    # def parse_query_string(self, params):
+    #     self.lookup_val = params.get(self.field.name, '')
+    def expected_parameters(self):
+        self.lookup_kwarg = self.field_path
+        return [self.lookup_kwarg]
+
+    def value(self):
+        return [
+            self.parameters.get(self.lookup_kwarg, ''),
+        ]
 
     def queryset(self, request, queryset):
         if self.value() and self.value()[0]:

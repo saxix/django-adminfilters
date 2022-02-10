@@ -13,27 +13,46 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
     toggleable = False
     filter_title = None
     lookup_name = 'exact'
-    #
     button = True
     can_negate = True
     negated = False
 
-    # path_separator = '-'
-    # arg_separator = '|'
-
     def __init__(self, field, request, params, model, model_admin, field_path):
-        self.lookup_negated_val = None
-        self.model = model
-        self.lookup_val = None
-        self.lookup_kwarg = '%s__%s' % (field_path, self.lookup_name)
-        self.lookup_kwarg_negated = '%s__negate' % self.lookup_kwarg
-        self.parse_query_string(params)
+        # self.lookup_negated_val = None
+        # self.model = model
+        # self.field = field
+        # self.lookup_val = None
+        # self.lookup_kwarg = '%s__%s' % (field_path, self.lookup_name)
+        # self.lookup_kwarg_negated = '%s__negate' % self.lookup_kwarg
+        # self.parse_query_string(params)
         self.field_path = field_path
+        self.parameters = {}
+        for p in self.expected_parameters():
+            if p in params:
+                self.parameters[p] = params.pop(p)
+
         super().__init__(field, request, params, model, model_admin, field_path)
         self.title = self._get_title()
-        self.params = params
-        self.query_values = []
-        self.operator = '+'
+        # self.query_string = get_query_string(request, remove=self.expected_parameters())
+
+        # self.params = params
+        # self.query_values = []
+        # self.operator = '+'
+
+    def expected_parameters(self):
+        self.lookup_kwarg = '%s__%s' % (self.field_path, self.lookup_name)
+        self.lookup_kwarg_negated = '%s__negate' % self.lookup_kwarg
+        return [self.lookup_kwarg, self.lookup_kwarg_negated]
+
+    def value(self):
+        return [
+            self.parameters.get(self.lookup_kwarg, ''),
+            self.parameters.get(self.lookup_kwarg_negated, '') == 'true'
+            # self.parameters[self.lookup_kwarg],
+            # self.parameters[self.lookup_kwarg_negated] == 'true'
+            # self.lookup_val,
+            # self.lookup_negated_val == 'true'
+        ]
 
     def js_options(self):
         return json.dumps(dict(button=self.button,
@@ -53,27 +72,19 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
         kwargs['lookup_name'] = lookup_name
         return type('ValueFilter', (cls,), kwargs)
 
-    def expected_parameters(self):
-        return [self.lookup_kwarg, self.lookup_kwarg_negated]
-
-    def value(self):
-        return [
-            self.lookup_val,
-            self.lookup_negated_val == 'true'
-        ]
-
-    def parse_query_string(self, params):
-        self.lookup_negated_val = params.get(self.lookup_kwarg_negated)
-        self.lookup_val = params.get(self.lookup_kwarg, '')
+    # def parse_query_string(self, params):
+    #     self.lookup_negated_val = params.get(self.lookup_kwarg_negated)
+    #     self.lookup_val = params.get(self.lookup_kwarg, '')
 
     def queryset(self, request, queryset):
         target, exclude = self.value()
         if target:
-            filters = {self.lookup_kwarg: target}
+            self.filters = {self.lookup_kwarg: target}
             if exclude:
-                return queryset.exclude(**filters)
+                queryset = queryset.exclude(**self.filters)
             else:
-                return queryset.filter(**filters)
+                queryset = queryset.filter(**self.filters)
+
         return queryset
 
     def choices(self, changelist):
@@ -105,10 +116,14 @@ class MultiValueFilter(ValueFilter):
     filter_title = None
     lookup_name = 'in'
 
-    def parse_query_string(self, params):
-        raw_values = params.get(self.lookup_kwarg, '').split(self.separator)
-        self.lookup_negated_val = params.get(self.lookup_kwarg_negated)
-        self.lookup_val = [e.strip() for e in raw_values if e.strip()]
+    def value(self):
+        values = self.parameters.get(self.lookup_kwarg, None)
+        if values is not None:
+            values = values.split(self.separator)
+        return [
+            values,
+            self.parameters.get(self.lookup_kwarg_negated, '') == 'true'
+        ]
 
 
 TextFieldFilter = ValueFilter

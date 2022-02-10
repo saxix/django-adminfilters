@@ -2,12 +2,14 @@ from django.contrib.admin import ModelAdmin
 from django.contrib.admin.views.main import ChangeList
 from django.contrib.auth.admin import UserAdmin
 
+from adminfilters.autocomplete import AutoCompleteFilter
 from adminfilters.combo import ChoicesFieldComboFilter
 from adminfilters.filters import (DjangoLookupFilter,
                                   IntersectionFieldListFilter, NumberFilter,
                                   QueryStringFilter, RelatedFieldCheckBoxFilter,
                                   RelatedFieldRadioFilter, UnionFieldListFilter,
                                   ValueFilter,)
+from adminfilters.json import JsonFieldFilter
 from adminfilters.mixin import AdminFiltersMixin
 from adminfilters.value import MultiValueFilter
 
@@ -88,12 +90,12 @@ class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
         # GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
         # GenericLookupFieldFilter.factory('country__name__istartswith'),
         # ValueFilter.factory('name__istartswith', can_negate=False, negated=True),
-        # ('country__name', ValueFilter),
+        ('country__name', ValueFilter),
         ('name', MultiValueFilter),
         ('bands__name', MultiValueFilter),
         ('last_name', ValueFilter.factory(lookup_name='istartswith', title='LastName')),
-        # ('flags', JsonFieldFilter.factory(can_negate=True, options=True)),
-        # ('country', AutoCompleteFilter),
+        ('flags', JsonFieldFilter.factory(can_negate=True, options=True)),
+        ('country', AutoCompleteFilter),
         ('year_of_birth', NumberFilter),
     )
     search_fields = ('name',)

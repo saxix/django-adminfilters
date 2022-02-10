@@ -13,7 +13,7 @@ def data():
 
 
 def get_elements(selenium):
-    container = selenium.find_element(By.ID, 'year_of_birth__exact_year_of_birth__exact__negate')
+    container = selenium.find_element(By.ID, 'year_of_birth')
     return [container.find_element(By.CSS_SELECTOR, 'input[type=text]'),
             ChangeListWrapper.find_in_page(selenium)]
 
