@@ -1,16 +1,8 @@
 import pytest
-from demo.management.commands.init_demo import sample_data
 from demo.utils import ChangeListWrapper, Checkbox
 from selenium.webdriver.common.by import By
 
 pytestmark = pytest.mark.selenium
-
-
-@pytest.fixture
-def data():
-    from demo.factories import ArtistFactory
-    ArtistFactory.create_batch(20)
-    sample_data()
 
 
 def get_elements(selenium):

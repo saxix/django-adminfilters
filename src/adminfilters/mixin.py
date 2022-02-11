@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.admin import FieldListFilter, ListFilter, SimpleListFilter
+from django.contrib.admin import FieldListFilter, ListFilter
 from django.contrib.admin.options import ModelAdmin
 
 
@@ -40,12 +40,6 @@ class WrappperMixin:
 
 
 class SmartListFilter(WrappperMixin, ListFilter):
-    def __init__(self, request, params, model, model_admin):
-        self.model_admin = model_admin
-        super().__init__(request, params, model, model_admin)
-
-
-class SmartSimpleListFilter(WrappperMixin, SimpleListFilter):
     def __init__(self, request, params, model, model_admin):
         self.model_admin = model_admin
         super().__init__(request, params, model, model_admin)

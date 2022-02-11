@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from adminfilters.autocomplete import AutoCompleteFilter
 from adminfilters.combo import ChoicesFieldComboFilter
+from adminfilters.depot.selector import FilterDepotManager
 from adminfilters.filters import (DjangoLookupFilter,
                                   IntersectionFieldListFilter, NumberFilter,
                                   QueryStringFilter, RelatedFieldCheckBoxFilter,
@@ -84,7 +85,7 @@ class BandModelAdmin(DebugMixin, ModelAdmin):
 class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     list_display = [f.name for f in Artist._meta.fields]
     list_filter = (
-        # FilterDepotManager,
+        FilterDepotManager,
         QueryStringFilter,
         DjangoLookupFilter,
         # GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),

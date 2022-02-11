@@ -1,15 +1,9 @@
 import pytest
-from demo.management.commands.init_demo import sample_data
 from demo.utils import ChangeListWrapper
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
 pytestmark = pytest.mark.selenium
-
-
-@pytest.fixture
-def data():
-    sample_data()
 
 
 def get_elements(selenium):

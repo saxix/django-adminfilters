@@ -35,6 +35,7 @@ def test_factory(fixtures):
     f = F(Artist._meta.get_field('name'), None,
           {'name__exact': 'a1', 'name__exact__negate': 'false'}, None, None, 'name')
 
+    assert f.value() == ['a1', False]
     result = f.queryset(None, Artist.objects.all())
     value = list(result.values_list('name', flat=True))
     assert value == ['a1']

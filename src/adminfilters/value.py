@@ -25,8 +25,11 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
         # self.lookup_kwarg = '%s__%s' % (field_path, self.lookup_name)
         # self.lookup_kwarg_negated = '%s__negate' % self.lookup_kwarg
         # self.parse_query_string(params)
+        self.lookup_kwarg = None
+        self.lookup_kwarg_negated = None
         self.field_path = field_path
         self.parameters = {}
+        self.filters = {}
         for p in self.expected_parameters():
             if p in params:
                 self.parameters[p] = params.pop(p)

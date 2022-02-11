@@ -24,7 +24,7 @@ def fixtures(db):
                                                ('wrong=1', '1,2,3,4', "Unknown field 'wrong'"),
                                                ('logic__x=1', '1,2,3,4', "Unsupported lookup: 'x'"),
                                                ])
-def test_QueryStringFilter(fixtures, op, expected, error):
+def test_QueryStringFilter(fixtures, op, expected, error, caplog):
     f = QueryStringFilter(None, {'qs': op}, DemoModelField, None)
     result = f.queryset(None, DemoModelField.objects.all())
     value = list(result.values_list('unique', flat=True))

@@ -34,11 +34,13 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
         self.model_admin = model_admin
         self.model = model
         self.validation_errors = {}
+        self.filters = {}
+        self.exclude = {}
         super().__init__(request, params, model, model_admin)
 
     @classmethod
     def factory(cls, **kwargs):
-        return type('DjangoLookupFilter', (cls,), kwargs)
+        return type('QueryStringFilter', (cls,), kwargs)
 
     def expected_parameters(self):
         return [self.parameter_name,
@@ -86,17 +88,14 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
                     else:
                         queryset = queryset.filter(**self.filters).exclude(**self.exclude)
             except FieldError as e:
-                self.exception = e
                 self.error_message = get_message_from_exception(e)
             except ValidationError as e:  # pragma: no cover
-                self.exception = e
-                self.error_message = str(e.message)
+                self.error_message = ', '.join(e.messages)
             except Exception as e:  # pragma: no cover
-                logger.exception(e)
-                self.exception = e
                 if settings.DEBUG:
                     self.error_message = f'{e.__class__.__name__}: {e}'
                 else:
+                    logger.exception(e)
                     self.error_message = 'Invalid filter'
         return queryset
 

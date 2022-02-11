@@ -11,10 +11,6 @@ logger = logging.getLogger(__name__)
 rex = re.compile("'.*'")
 
 
-def parse_date(value):
-    return
-
-
 def parse_bool(value):
     if str(value).lower() in ['true', '1', 'yes', 't', 'y']:
         return True
@@ -109,8 +105,7 @@ def get_field_type(model, field_path):
         if field.name != parts[-1]:
             lookup = parts[-1]
         field_type = field.get_internal_type()
-    except Exception as e:
-        logger.exception(e)
+    except Exception:
         raise
     return field, lookup, field_type
 

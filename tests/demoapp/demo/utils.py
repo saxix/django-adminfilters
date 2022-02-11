@@ -77,6 +77,14 @@ def wait_for(driver, *args, _timeout=10):
     return driver.find_element(*args)
 
 
+def wait_and_click(driver, *args, _timeout=10):
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.support.ui import WebDriverWait
+    wait = WebDriverWait(driver, _timeout)
+    wait.until(EC.element_to_be_clickable((*args,)))
+    return driver.find_element(*args).click()
+
+
 def wait_for_url(driver, url):
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
@@ -178,7 +186,7 @@ class ChangeListWrapper(EmptyChangeListWrapper):
 
     def pretty(self):
         from prettytable import PrettyTable
-        x = PrettyTable()
+        x = PrettyTable(max_table_width=180)
         x.field_names = self.header.values
         x.add_rows(self.matrix)
         sys.stdout.write(f'\n{x}\n')

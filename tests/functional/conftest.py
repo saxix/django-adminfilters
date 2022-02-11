@@ -8,11 +8,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 
-def pytest_configure(config):
-    # if not config.option.driver:
-    setattr(config.option, 'driver', 'chrome')
-
-
 @pytest.fixture
 def chrome_options(request):
     chrome_options = Options()
@@ -68,10 +63,11 @@ def get_errors(driver):
 
 @pytest.fixture
 def selenium(driver):
-    from demo.utils import wait_for
+    from demo.utils import wait_and_click, wait_for
     driver.with_timeouts = timeouts.__get__(driver)
     driver.set_input_value = set_input_value.__get__(driver)
     driver.wait_for = wait_for.__get__(driver)
+    driver.wait_and_click = wait_and_click.__get__(driver)
     driver.get_errors = get_errors.__get__(driver)
     yield driver
 
@@ -97,6 +93,9 @@ class AdminSite:
     def wait_for(self, *args):
         return self.driver.wait_for(*args)
 
+    def wait_and_click(self, *args):
+        return self.driver.wait_and_click(*args)
+
     def has_errors(self):
         return len(self.get_errors())
 
@@ -105,7 +104,7 @@ class AdminSite:
 
 
 @pytest.fixture
-def admin_site(live_server, selenium):
+def admin_site(live_server, selenium, data):
     site = AdminSite(live_server, selenium)
     site.open('/')
     site.wait_for(By.LINK_TEXT, 'Artists').click()
