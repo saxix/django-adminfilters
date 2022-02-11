@@ -12,7 +12,7 @@ var ValueFilterHandler = function (element, options) {
     var getUrl = function () {
         var url = qs;
         if ($value.val()) {
-            var value = $container.data("lk") + "=" + $value.val();
+            var value = $container.data("lk") + "=" + encodeURIComponent($value.val());
             if (config.canNegate) {
                 value += "&" + $container.data("lk-negated") + "=" + $negate.is(":checked");
             }

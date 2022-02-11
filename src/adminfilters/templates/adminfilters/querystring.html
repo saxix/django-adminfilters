@@ -18,6 +18,7 @@
                   name="value"
                   data-lk="{{ spec.parameter_name }}"
                   data-original="{{ spec.value.0 }}"
+                  placeholder="{{ spec.placeholder }}"
                   style="width: 90%">{{ spec.value.0 }}</textarea>
     </li>
     <li><a class="filter-querystring adminfilters button {{ spec.parameter_name }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"

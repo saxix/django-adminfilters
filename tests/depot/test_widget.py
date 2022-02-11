@@ -1,13 +1,13 @@
 from unittest.mock import MagicMock, Mock
 
 from demo.models import Artist
-from django.contrib.admin import ModelAdmin
+from demo.urls import public_site
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
 
 from adminfilters.depot.models import StoredFilter
-from adminfilters.depot.selector import FilterDepotManager
+from adminfilters.depot.widget import DepotManager
 
 
 def test_save(admin_user, rf):
@@ -16,7 +16,8 @@ def test_save(admin_user, rf):
     for m in [SessionMiddleware, MessageMiddleware]:
         m(MagicMock()).process_request(request)
 
-    f = FilterDepotManager(request, {'adminfilters_filter_save': 'Filter1'}, None, ModelAdmin(Artist, Mock()))
+    f = DepotManager(request, {'adminfilters_filter_save': 'Filter1'},
+                     None, public_site._registry[Artist])
     f.queryset(request, None)
     assert StoredFilter.objects.filter(name='Filter1').exists()
 
@@ -35,7 +36,8 @@ def test_choices(admin_user, rf):
                                 owner=admin_user,
                                 query_string='?a=2')
 
-    f = FilterDepotManager(request, {'a': '1'}, None, ModelAdmin(Artist, Mock()))
+    f = DepotManager(request, {'a': '1'},
+                     None, public_site._registry[Artist])
     choices = list(f.choices(Mock()))
     assert len(choices) == 2
     assert choices[0] == {'name': 'Filter1', 'query_string': '?a=1', 'selected': True}

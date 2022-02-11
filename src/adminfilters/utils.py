@@ -24,8 +24,6 @@ def get_message_from_exception(e: FieldError):
     fieldname = rex.findall(message) or ['']
     if 'Unsupported lookup' in message:
         return f'Unsupported lookup: {fieldname[0]}'
-    elif 'resolve keyword' in message:
-        return f'Unknown field or lookup: {fieldname[0]}'
     else:
         return message
 

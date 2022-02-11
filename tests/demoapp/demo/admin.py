@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from adminfilters.autocomplete import AutoCompleteFilter
 from adminfilters.combo import ChoicesFieldComboFilter
-from adminfilters.depot.selector import FilterDepotManager
+from adminfilters.depot.widget import DepotManager
 from adminfilters.filters import (DjangoLookupFilter,
                                   IntersectionFieldListFilter, NumberFilter,
                                   QueryStringFilter, RelatedFieldCheckBoxFilter,
@@ -85,7 +85,10 @@ class BandModelAdmin(DebugMixin, ModelAdmin):
 class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     list_display = [f.name for f in Artist._meta.fields]
     list_filter = (
-        FilterDepotManager,
+        DepotManager,
+        ('country', AutoCompleteFilter),
+        ('year_of_birth', NumberFilter),
+        ('bands__name', MultiValueFilter),
         QueryStringFilter,
         DjangoLookupFilter,
         # GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
@@ -93,11 +96,8 @@ class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
         # ValueFilter.factory('name__istartswith', can_negate=False, negated=True),
         ('country__name', ValueFilter),
         ('name', MultiValueFilter),
-        ('bands__name', MultiValueFilter),
         ('last_name', ValueFilter.factory(lookup_name='istartswith', title='LastName')),
         ('flags', JsonFieldFilter.factory(can_negate=True, options=True)),
-        ('country', AutoCompleteFilter),
-        ('year_of_birth', NumberFilter),
     )
     search_fields = ('name',)
 

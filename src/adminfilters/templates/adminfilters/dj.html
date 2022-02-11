@@ -22,7 +22,7 @@
                    data-lk="{{ spec.lookup_kwarg_key }}"
                    data-original="{{ spec.lookup_key_val }}"
                    data-group="{{ spec.parameter_name }}"
-                   placeholder="field name"
+                   placeholder="{{ spec.field_placeholder }}"
                    class="filter-adam {{ spec.parameter_name }}"
                    value="{{ spec.lookup_field_val }}"
                    style="width: 90%">
@@ -32,7 +32,7 @@
                    name="value"
                    data-group="{{ spec.parameter_name }}"
                    data-lk="{{ spec.lookup_kwarg_value }}"
-                   placeholder="field value"
+                   placeholder="{{ spec.placeholder }}"
                    class="filter-adam {{ spec.parameter_name }}"
                    value="{{ spec.lookup_value_val }}"
                    data-original="{{ spec.lookup_value_val }}"

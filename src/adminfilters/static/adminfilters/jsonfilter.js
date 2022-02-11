@@ -53,11 +53,11 @@ var JsonFilterHandler = function (e, options) {
         if (action === "clear") {
             url = qs;
         } else if ($key.val()) {
-            url = qs + "&" + $key.data("lk") + "=" + $key.val();
-            url = url + "&" + $value.data("lk") + "=" + $value.val();
-            url = url + "&" + $type.data("lk") + "=" + $type.val();
+            url = qs + "&" + $key.data("lk") + "=" + encodeURIComponent($key.val());
+            url = url + "&" + $value.data("lk") + "=" + encodeURIComponent($value.val());
+            url = url + "&" + $type.data("lk") + "=" + encodeURIComponent($type.val());
             if (config.options) {
-                url = url + "&" + $options.data("lk") + "=" + $options.val();
+                url = url + "&" + $options.data("lk") + "=" + encodeURIComponent($options.val());
             }
             if (config.can_negate) {
                 url = url + "&" + $negate.data("lk") + "=" + $negate.is(":checked");

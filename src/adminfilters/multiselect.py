@@ -98,7 +98,7 @@ class UnionFieldListFilter(MultipleSelectFieldListFilter):
     def get_field(self):
         try:
             field = super().get_field()
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             if hasattr(self.field, 'choices') and self.field.choices:
                 field = self.field  # It's a *Field with choises
             else:

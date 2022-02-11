@@ -29,3 +29,12 @@ def test_NumberFilter(fixtures, op, expected):
     result = f.queryset(None, DemoModelField.objects.all())
     value = list(result.values_list('unique', flat=True))
     assert value == expected.split(','), f.error_message
+
+
+def test_factory(fixtures):
+    assert NumberFilter.factory(title='CustomTitle')
+
+
+def test_factory_invalid(fixtures):
+    with pytest.raises(ValueError):
+        assert NumberFilter.factory(title='CustomTitle', lookup_name='in')

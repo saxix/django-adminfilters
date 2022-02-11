@@ -32,7 +32,7 @@
                data-lk="{{ spec.lookup_kwarg_key }}"
                data-original="{{ spec.lookup_key_val }}"
                data-group="{{ spec.field_path }}"
-               placeholder="field name"
+               placeholder="{{ spec.key_placeholder }}"
                class="filter-jsonfield {{ spec.field_path }}"
                value="{{ spec.lookup_key_val }}"
                style="width: 90%">
@@ -42,7 +42,7 @@
                    name="value"
                    data-group="{{ spec.field_path }}"
                    data-lk="{{ spec.lookup_kwarg_value }}"
-                   placeholder="field value"
+                   placeholder="{{ spec.placeholder }}"
                    class="filter-jsonfield {{ spec.field_path }}"
                    value="{{ spec.lookup_value_val }}"
                    data-original="{{ spec.lookup_value_val }}"
