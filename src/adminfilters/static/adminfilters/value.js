@@ -9,9 +9,16 @@ var ValueFilterHandler = function (element, options) {
     var $targets = $container.find("input[type=text],textarea");
     var qs = $container.data("qs");
     var timer = null;
+    var isChanged = function () {
+        var changed = $value.val() != $value.data("original");
+        if (config.canNegate) {
+            changed |= $negate.is(":checked") != $negate.data("original");
+        }
+        return changed;
+    }
     var getUrl = function () {
         var url = qs;
-        if ($value.val()) {
+        if (isChanged()) {
             var value = $container.data("lk") + "=" + encodeURIComponent($value.val());
             if (config.canNegate) {
                 value += "&" + $container.data("lk-negated") + "=" + $negate.is(":checked");
@@ -22,13 +29,9 @@ var ValueFilterHandler = function (element, options) {
     };
     var updateStatus = function () {
         var newAction;
-        var changed = ($value.val() != $value.data("original"));
-        if (config.canNegate) {
-            changed |= ($negate.is(":checked") != $negate.data("original"));
-        }
         console.log("DEBUG", "$value", "changed=", $value.val() != $value.data("original"), "current=", $value.val(), "original=", $value.data("original"));
         console.log("DEBUG", "$negate", "changed=", $negate.is(":checked") != $negate.data("original"), "current=", $negate.is(":checked"), "original=", $negate.data("original"));
-        if (changed) {
+        if (isChanged()) {
             newAction = "filter";
         } else {
             newAction = "clear";
