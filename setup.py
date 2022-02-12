@@ -55,5 +55,5 @@ setup(name=name,
           'Programming Language :: Python :: 3.9',
           'Programming Language :: Python :: 3.10',
           'Intended Audience :: Developers'],
-      long_description=codecs.open('README.rst', 'r').read()
+      long_description=codecs.open('README.md', 'r').read()
       )

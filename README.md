@@ -9,6 +9,10 @@ Demo can be found at https://django-smart-admin.herokuapp.com/
 [![coverage](https://codecov.io/github/saxix/django-adminfilters/coverage.svg?branch=develop)](https://codecov.io/github/saxix/django-adminfilters?branch=develop)
 [![Test](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml/badge.svg)](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml)
 
+
+https://user-images.githubusercontent.com/27282/153727131-d875f946-a8a8-4d89-be83-1d8cb5c9391a.mp4
+
+
 Filters
 =======
 
@@ -37,7 +41,6 @@ When you use `FilterDepotManager` to save a filter the call is *idempotent* but 
 Usage examples
 ==============
 
-.. code-block:: python
 
     class MyModel(models.Model):
         index = models.CharField(max_length=255)
@@ -63,12 +66,6 @@ Usage examples
 
 Run demo app
 ============
-
-Note: django-adminfilters is also included in django-smart-admin, there is a running demo at https://django-smart-admin.herokuapp.com/
-
-
-
-.. code-block:: bash
 
     $ git clone https://github.com/saxix/django-adminfilters.git
     $ cd django-adminfilters

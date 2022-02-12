@@ -11,13 +11,13 @@
                data-group="{{ spec.field_path }}"
                data-lk="{{ spec.lookup_kwarg_negated }}"
                data-original="{{ spec.value.1|lower }}"
-               placeholder="{{ spec.placeholder }}"
             {% if spec.value.1 %} checked="checked" {% endif %}>
         <small>{% trans "Exclude" %}</small></li>
     {% endif %}
     <li><textarea class="filter-multivalue "
                   data-lk="{{ spec.lookup_kwarg }}"
                   data-original="{{ spec.value.0|join:spec.separator }}"
+                  placeholder="{{ spec.placeholder }}"
                   style="width: 90%">{{ spec.value.0|default_if_none:""|join:spec.separator }}</textarea>
     </li>
     <li><a class="filter-multivalue adminfilters button {{ spec.field_path }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"

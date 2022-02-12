@@ -8,15 +8,14 @@ class WrappperMixin:
     can_negate = False
     title = None
     negated_title = None
+    placeholder = ''
 
     def __init__(self, *args, **kwargs) -> None:
         self.error = None
         self.error_message = None
         super().__init__(*args, **kwargs)
         if hasattr(self, 'media') and self.model_admin and not isinstance(self.model_admin, AdminFiltersMixin):
-            raise Exception(
-                f'{self.__class__.__name__} needs that the {self.model_admin.__class__.__name__} '
-                f'that use it extends AdminFiltersMixin')
+            raise Exception(f'{self.model_admin.__class__.__name__} must inherit from AdminFiltersMixin')
 
     def html_attrs(self):
         classes = f'adminfilters box {self.__class__.__name__.lower()}'
@@ -26,9 +25,6 @@ class WrappperMixin:
         return {'class': classes,
                 'id': '_'.join(self.expected_parameters()),
                 }
-
-    def placeholder(self):
-        return ''
 
     def get_title(self):
         if not self.can_negate and self.negated:

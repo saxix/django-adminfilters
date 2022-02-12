@@ -21,6 +21,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
     negated = False
     options = True
     separator = ','
+    placeholder = _('django db lookup values')
 
     def __init__(self, request, params, model, model_admin):
         self.parameter_name_negated = '%s__negate' % self.parameter_name

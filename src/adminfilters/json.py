@@ -2,7 +2,7 @@ from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.db.models import Q
-from django.utils.translation import get_language
+from django.utils.translation import get_language, gettext as _
 
 from .mixin import MediaDefinitionFilter, SmartFieldListFilter
 
@@ -14,6 +14,8 @@ class JsonFieldFilter(MediaDefinitionFilter, SmartFieldListFilter):
     can_negate = True
     negated = False
     options = True
+    key_placeholder = _('JSON key')
+    placeholder = _('JSON value')
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_kwarg_key = '%s__key' % field_path

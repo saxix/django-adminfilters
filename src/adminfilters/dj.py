@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.core.exceptions import FieldError, ValidationError
 from django.db.models import Q
-from django.utils.translation import get_language
+from django.utils.translation import get_language, gettext as _
 
 from .mixin import MediaDefinitionFilter, SmartListFilter
 from .utils import cast_value, get_field_type, get_message_from_exception
@@ -17,6 +17,8 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
     negated = False
     options = True
     button = True
+    field_placeholder = _('field lookup. Es. name__startswith')
+    placeholder = _('field value')
 
     def __init__(self, request, params, model, model_admin):
         self.lookup_kwarg_key = '%s__key' % self.parameter_name

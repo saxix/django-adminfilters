@@ -1,9 +1,10 @@
+
 import json
 
 from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
-from django.utils.translation import get_language
+from django.utils.translation import get_language, gettext as _
 
 from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
@@ -118,6 +119,9 @@ class MultiValueFilter(ValueFilter):
     separator = ','
     filter_title = None
     lookup_name = 'in'
+
+    def placeholder(self):
+        return _('comma separated list of values')
 
     def value(self):
         values = self.parameters.get(self.lookup_kwarg, None)
