@@ -6,9 +6,6 @@ def pytest_addoption(parser):
     parser.addoption('--selenium', '-S', action='store_true', dest='enable_selenium',
                      default=False, help='enable selenium tests')
 
-    # parser.addoption('--driver', '-D', action='store', dest='driver',
-    #                  default='chrome', help='set selenium driver')
-
     parser.addoption('--show-browser', '-B', action='store_true', dest='show_browser',
                      default=False, help='will display start browsers in selenium tests')
 
