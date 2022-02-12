@@ -16,20 +16,31 @@ https://user-images.githubusercontent.com/27282/153727131-d875f946-a8a8-4d89-be8
 Filters
 =======
 
-* AutocompleteFilter
-* AllValuesComboFilter
-* AllValuesRadioFilter
-* BooleanRadioFilter
-* NumberFilter
-* RelatedFieldComboFilter
-* RelatedFieldRadioFilter
-* RelatedFieldCheckBoxFilter
-* StartWithFilter
-* PermissionPrefixFilter
-* MultipleSelectFieldListFilter
-* IntersectionFieldListFilter
-* UnionFieldListFilter
-* ForeignKeyFieldFilter
+* Autocomplete
+  * AutocompleteFilter
+* Combobox
+  * AllValuesComboFilter
+  * AllValuesRadioFilter
+  * RelatedFieldComboFilter
+* Radio
+  * AllValuesRadioFilter
+  * RelatedFieldRadioFilter
+  * ChoicesFieldRadioFilter
+  * BooleanRadioFilter
+* Checkbox
+  * RelatedFieldCheckBoxFilter
+* Multiple
+  * MultiValueFilter
+  * IntersectionFieldListFilter
+  * UnionFieldListFilter
+* JSON
+  * JsonFieldFilter
+* Number
+  * NumberFilter
+* Special
+  * QueryStringFilter
+  * DjangoLookupFilter
+  * PermissionPrefixFilter
 
 FYI
 ====
