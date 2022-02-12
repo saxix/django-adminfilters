@@ -25,6 +25,8 @@ jobs:
         #        if: ${{github.event}} && ${{ !contains(github.event.head_commit.message, 'ci skip') }}
         runs-on: ubuntu-latest
         services:
+            hub:
+                image: selenium/hub:3.141.59-gold
             postgres:
                 image: postgres:12
                 env:
@@ -44,7 +46,7 @@ jobs:
             PY_VER: ${{ matrix.python-version}}
             DJ_VER: ${{ matrix.django-version}}
         steps:
-            -   uses: actions/checkout@v2
+            - uses: actions/checkout@v2
             - name: Set up JDK 1.8
               uses: actions/setup-java@v1 # Setup JAVA
               with:
