@@ -96,9 +96,6 @@ class AdminSite:
     def wait_and_click(self, *args):
         return self.driver.wait_and_click(*args)
 
-    def has_errors(self):
-        return len(self.get_errors())
-
     def get_errors(self):
         return self.driver.get_errors()
 
@@ -108,5 +105,6 @@ def admin_site(live_server, selenium, data):
     site = AdminSite(live_server, selenium)
     site.open('/')
     site.wait_for(By.LINK_TEXT, 'Artists').click()
-    assert not site.has_errors(), site.get_errors()
+    errors = site.get_errors()
+    assert len(errors) == 0, '\n'.join(['{message}'.format(**err) for err in errors])
     return site
