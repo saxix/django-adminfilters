@@ -5,7 +5,7 @@ export PYTHONPATH:=${PWD}/tests/:${PWD}/src
 DJANGO?='1.7.x'
 
 .mkbuilddir:
-	mkdir -p ${BUILDDIR}
+	@mkdir -p ${BUILDDIR}
 
 lint:
 	pre-commit run --all-files
@@ -34,12 +34,10 @@ fullclean:
 coverage:
 	 py.test src tests -vv --capture=no --doctest-modules --cov=adminfilters --cov-report=html --cov-config=tests/.coveragerc
 
-docs: mkbuilddir
-	mkdir -p ${BUILDDIR}/docs
-	sphinx-build -aE docs/source ${BUILDDIR}/docs
-ifdef BROWSE
-	firefox ${BUILDDIR}/docs/index.html
-endif
+docs: .mkbuilddir
+	@sh docs/to_gif.sh docs/images
+	@mkdir -p ${BUILDDIR}/docs
+	sphinx-build -aE docs ${BUILDDIR}/docs
 
 
 heroku:
