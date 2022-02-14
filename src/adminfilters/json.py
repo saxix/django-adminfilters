@@ -90,4 +90,9 @@ class JsonFieldFilter(MediaDefinitionFilter, SmartFieldListFilter):
                 ) + i18n_file + ('admin/js/jquery.init.js',
                                  'adminfilters/jsonfilter%s.js' % extra,
                                  ),
+            css={
+                'screen': (
+                    'adminfilters/adminfilters.css',
+                ),
+            },
         )

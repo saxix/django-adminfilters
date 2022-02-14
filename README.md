@@ -18,10 +18,12 @@ Filters
 
 * Autocomplete
   * AutocompleteFilter
+* Simple
+  * ValueFilter
 * Combobox
   * AllValuesComboFilter
-  * AllValuesRadioFilter
   * RelatedFieldComboFilter
+  * ChoicesFieldComboFilter
 * Radio
   * AllValuesRadioFilter
   * RelatedFieldRadioFilter
@@ -31,6 +33,7 @@ Filters
   * RelatedFieldCheckBoxFilter
 * Multiple
   * MultiValueFilter
+* ManyToMany
   * IntersectionFieldListFilter
   * UnionFieldListFilter
 * JSON

@@ -8,3 +8,4 @@
 dist/
 coverage.xml
 pytest.xml
+docs/images/*.mov
