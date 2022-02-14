@@ -8,6 +8,7 @@ Demo can be found at https://django-adminfilters.herokuapp.com/demo/artist/
 [![Pypi](https://badge.fury.io/py/django-adminfilters.svg)](https://badge.fury.io/py/django-adminfilters)
 [![coverage](https://codecov.io/github/saxix/django-adminfilters/coverage.svg?branch=develop)](https://codecov.io/github/saxix/django-adminfilters?branch=develop)
 [![Test](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml/badge.svg)](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml)
+[![ReadTheDocs](https://readthedocs.org/projects/django-adminfilters/badge/?version=latest)](https://django-adminfilters.readthedocs.io/en/latest/)
 
 
 https://user-images.githubusercontent.com/27282/153727131-d875f946-a8a8-4d89-be83-1d8cb5c9391a.mp4

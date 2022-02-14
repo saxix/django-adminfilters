@@ -19,7 +19,7 @@ django-adminfilters
 
 .. image:: https://readthedocs.org/projects/django-adminfilters/badge/?version=latest
     :alt: Documentation Status
-    :target: https://github.com/saxix/django-adminfilters
+    :target: https://django-adminfilters.readthedocs.io/en/latest/
 
 About
 =====
