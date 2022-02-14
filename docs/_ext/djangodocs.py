@@ -4,6 +4,7 @@ Sphinx plugins for Django documentation.
 import json
 import os
 import re
+
 from sphinx import __version__ as sphinx_ver, addnodes
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.util.compat import Directive

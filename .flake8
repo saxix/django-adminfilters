@@ -7,3 +7,4 @@ putty-ignore =
 
 per-file-ignores =
     */__init__.py:F401,F403
+    filters.py:F401

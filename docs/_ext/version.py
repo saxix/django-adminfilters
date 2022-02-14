@@ -1,4 +1,5 @@
 import re
+
 from sphinx import addnodes, roles
 from sphinx.util.compat import Directive
 
