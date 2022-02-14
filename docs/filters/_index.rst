@@ -1,4 +1,4 @@
-.. include:: globals.rst
+.. include:: ../globals.rst
 
 .. _filters:
 
@@ -14,3 +14,10 @@ Filters
     json
     value
     multivalue
+    dj
+    querystring
+    multiselect
+    numbers
+    combo
+    radio
+    extra

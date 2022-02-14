@@ -5,14 +5,30 @@
 django-adminfilters
 ===================
 
-.. image:: https://secure.travis-ci.org/saxix/django-adminfilters.png?branch=master
-   :target: http://travis-ci.org/saxix/django-adminfilters/
+.. image:: https://badge.fury.io/py/django-adminfilters.svg
+    :alt: Project Home
+    :target: https://pypi.org/project/django-adminfilters/
+
+.. image:: https://github.com/saxix/django-adminfilters/actions/workflows/test.yml/badge.svg
+    :alt: CI Status
+    :target: https://github.com/saxix/django-adminfilters/actions/workflows/test.yml
 
 .. image:: https://codecov.io/github/saxix/django-adminfilters/coverage.svg?branch=develop
-       :target: https://codecov.io/github/saxix/django-adminfilters?branch=develop
+    :alt: Coverage
+    :target: https://codecov.io/github/saxix/django-adminfilters?branch=develop
+
+.. image:: https://readthedocs.org/projects/django-adminfilters/badge/?version=latest
+    :alt: Documentation Status
+    :target: https://github.com/saxix/django-adminfilters
+
+About
+=====
+
+Collection of useful filters to use with django admin site  with low impact and no dependencies with external libraries.
 
 
-Collection of useful filters to use with django admin
+
+Sample application is available at https://django-adminfilters.herokuapp.com/
 
 
 Table Of Contents
@@ -23,12 +39,7 @@ Table Of Contents
 
     install
     filters/_index
-
-Project Info
-============
-.. toctree::
-    :maxdepth: 1
-
+    depot/_index
     changes
 
 

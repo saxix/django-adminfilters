@@ -1,6 +1,6 @@
 .. include:: ../globals.rst
 
-.. _filters_value
+.. _filters_value:
 
 
 ValueFilter
@@ -25,24 +25,24 @@ Usage
             ('full_name', ValueFilter.factory(lookup='istartswith'),  #  custom lookup
             ...
             )
-:
+
 
 Options
 ~~~~~~~
 
-.. attribute:: JsonFilter.can_negate
+.. attribute:: ValueFilter.can_negate
 
     Control ability to work as `exclude` filter. Set to `False` hides the Exclude checkbox
 
-.. attribute:: JsonFilter.placeholder
+.. attribute:: ValueFilter.placeholder
 
     Placeholder value for the Key input text. (Default. "JSON key")
 
-.. attribute:: JsonFilter.template
+.. attribute:: ValueFilter.template
 
     Template name used to render the filter. (Default. "adminfilters/value.html")
 
-.. attribute:: JsonFilter.title
+.. attribute:: ValueFilter.title
 
     Filter title. (Default. "<Field verbose_name>")
 

@@ -1,12 +1,12 @@
 .. include:: ../globals.rst
 
-.. _filters_value
+.. _filters_multivalue:
 
 
 MultiValueFilter
 ================
 
-.. image:: ../images/multivalue.png
+.. image:: ../images/multivalue.gif
     :width: 200
 
 
@@ -21,31 +21,31 @@ Usage
             ('country__name', MultiValueFilter),
             ...
             )
-:
+
 
 Options
 ~~~~~~~
 
-.. attribute:: JsonFilter.can_negate
+.. attribute:: MultiValueFilter.can_negate
 
     Control ability to work as `exclude` filter. Set to `False` hides the Exclude checkbox
 
-.. attribute:: JsonFilter.placeholder
+.. attribute:: MultiValueFilter.placeholder
 
     Placeholder value for the Key input text. (Default. "JSON key")
 
-.. attribute:: JsonFilter.template
+.. attribute:: MultiValueFilter.template
 
     Template name used to render the filter. (Default. "adminfilters/value.html")
 
-.. attribute:: JsonFilter.title
+.. attribute:: MultiValueFilter.title
 
     Filter title. (Default. "<Field verbose_name>")
 
 Configuration
 ~~~~~~~~~~~~~
 
-The filter can be configured either using subclassing or `.factory()` method::
+The filter can be configured either using subclassing or ``.factory()`` method::
 
     class MyModelAdmin(models.ModelAdmin):
         list_filter = (

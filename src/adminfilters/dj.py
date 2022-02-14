@@ -15,7 +15,6 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
     template = 'adminfilters/dj.html'
     can_negate = True
     negated = False
-    options = True
     button = True
     field_placeholder = _('field lookup. Es. name__startswith')
     placeholder = _('field value')
@@ -97,4 +96,9 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
                 ) + i18n_file + ('admin/js/jquery.init.js',
                                  'adminfilters/dj%s.js' % extra,
                                  ),
+            css={
+                'screen': (
+                    'adminfilters/adminfilters.css',
+                ),
+            },
         )

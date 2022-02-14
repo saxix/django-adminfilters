@@ -1,12 +1,12 @@
 from .autocomplete import AutoCompleteFilter  # noqa
 from .checkbox import RelatedFieldCheckBoxFilter  # noqa
-from .combo import AllValuesComboFilter  # noqa
-from .combo import ChoicesFieldComboFilter, RelatedFieldComboFilter  # noqa
+from .combo import (AllValuesComboFilter,  # noqa
+                    ChoicesFieldComboFilter, RelatedFieldComboFilter,)
 from .dj import DjangoLookupFilter  # noqa
 from .extra import PermissionPrefixFilter  # noqa
 from .json import JsonFieldFilter  # noqa
-from .multiselect import IntersectionFieldListFilter  # noqa
-from .multiselect import UnionFieldListFilter  # noqa
+from .multiselect import (IntersectionFieldListFilter,  # noqa
+                          UnionFieldListFilter,)
 from .numbers import MaxMinFilter, NumberFilter  # noqa
 from .querystring import QueryStringFilter  # noqa
 from .radio import (AllValuesRadioFilter, BooleanRadioFilter,  # noqa

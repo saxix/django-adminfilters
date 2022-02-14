@@ -11,7 +11,7 @@ Autocomplete
 
 
 This filter is for ForeignKeys and uses select2_ javascript. It is based on the standard Django
-autocomplete_ implementation, so no external libraries are needed.
+autocomplete_ implementation, no external libraries are needed.
 
 See Django autocomplete_ documentation for the ajax service options.
 
