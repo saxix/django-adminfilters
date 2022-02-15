@@ -7,7 +7,8 @@ Depot
 
 .. versionadded:: 2.0
 
-.. seealso:: :ref:`depot_widget`
+.. image:: ../images/depot.gif
+    :width: 800
 
 
 This optional django app allows you to store/retrieve filters configuration.
@@ -52,7 +53,7 @@ Filters are stored in :class:StoredFilter model and availble thru ``StoredFilter
 
 
 DepotManager
-============
+------------
 
 .. image:: ../images/depot.png
     :width: 200
