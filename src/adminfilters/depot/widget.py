@@ -14,7 +14,8 @@ from ..mixin import WrappperMixin
 class DepotManager(WrappperMixin, ListFilter):
     title = 'Saved Filters'
     template = 'adminfilters/widget.html'
-    parameter_name = 'adminfilters_filter_save'
+    parameter_name = 'adminfilters_depot'
+    parameter_name_op = 'adminfilters_depot_op'
 
     def __init__(self, request, params, model, model_admin):
         self.model_admin = model_admin
@@ -23,33 +24,41 @@ class DepotManager(WrappperMixin, ListFilter):
         self.query_string = get_query_string(self.request, {}, self.expected_parameters())
         self.can_add_filter = request.user.has_perm('depot.add_storedfilter')
         self.content_type = ContentType.objects.get_for_model(model_admin.model)
-        if self.parameter_name in params:
-            self.used_parameters[self.parameter_name] = params.pop(self.parameter_name)
+        for p in self.expected_parameters():
+            if p in params:
+                self.used_parameters[p] = params.pop(p)
 
     def has_output(self):
         return True
 
     def expected_parameters(self):
-        return [self.parameter_name]
+        return [self.parameter_name, self.parameter_name_op]
 
     def queryset(self, request, queryset):
-        if self.used_parameters:
-            filter_name = self.used_parameters[self.parameter_name]
-            qs = get_query_string(request, {}, self.expected_parameters())
+        filter_name = self.used_parameters.get(self.parameter_name)
+        operation = self.used_parameters.get(self.parameter_name_op, 'add')
+        if filter_name:
+            if operation == 'add':
+                qs = get_query_string(request, {}, self.expected_parameters())
 
-            StoredFilter.objects.update_or_create(content_type=self.content_type,
-                                                  name=filter_name,
-                                                  defaults={
-                                                      'query_string': qs,
-                                                      'owner': request.user,
-                                                  })
-            self.model_admin.message_user(self.request, f"Filter '{filter_name}' successfully saved")
+                StoredFilter.objects.update_or_create(content_type=self.content_type,
+                                                      name=filter_name,
+                                                      defaults={
+                                                          'query_string': qs,
+                                                          'owner': request.user,
+                                                      })
+                self.model_admin.message_user(self.request, f"Filter '{filter_name}' successfully saved")
+            elif operation == 'delete':
+                StoredFilter.objects.filter(id=filter_name).delete()
         return queryset
 
     def choices(self, changelist):
         self.selected = False
         for f in StoredFilter.objects.filter(content_type=self.content_type).order_by('name'):
-            self.selected = self.selected or str(self.query_string) == str(f.query_string)
+            if str(self.query_string) == str(f.query_string):
+                self.selected = True
+                self.selected_id = f.pk
+
             yield {
                 'selected': str(self.query_string) == str(f.query_string),
                 'query_string': f.query_string,

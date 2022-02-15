@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 from adminfilters.autocomplete import AutoCompleteFilter
 from adminfilters.combo import ChoicesFieldComboFilter
 from adminfilters.depot.widget import DepotManager
-from adminfilters.filters import (DjangoLookupFilter,
+from adminfilters.filters import (BooleanRadioFilter, DjangoLookupFilter,
                                   IntersectionFieldListFilter, NumberFilter,
                                   QueryStringFilter, RelatedFieldCheckBoxFilter,
                                   RelatedFieldRadioFilter, UnionFieldListFilter,
@@ -95,6 +95,7 @@ class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
         ('name', MultiValueFilter),
         ('last_name', ValueFilter.factory(lookup_name='istartswith', title='LastName')),
         ('flags', JsonFieldFilter.factory(can_negate=True, options=True)),
+        ('active', BooleanRadioFilter),
     )
     search_fields = ('name',)
 

@@ -77,6 +77,29 @@ def wait_for(driver, *args, _timeout=10):
     return driver.find_element(*args)
 
 
+def prompt(driver, text, _timeout=10):
+    from selenium.webdriver.common.alert import Alert
+    from selenium.webdriver.support.expected_conditions import alert_is_present
+    from selenium.webdriver.support.ui import WebDriverWait
+    wait = WebDriverWait(driver, _timeout)
+    wait.until(alert_is_present())
+
+    alert = Alert(driver)
+    alert.send_keys(text)
+    return alert
+
+
+def confirm(driver, _timeout=10):
+    from selenium.webdriver.common.alert import Alert
+    from selenium.webdriver.support.expected_conditions import alert_is_present
+    from selenium.webdriver.support.ui import WebDriverWait
+    wait = WebDriverWait(driver, _timeout)
+    wait.until(alert_is_present())
+
+    alert = Alert(driver)
+    return alert
+
+
 def wait_and_click(driver, *args, _timeout=10):
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait

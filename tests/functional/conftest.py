@@ -63,11 +63,13 @@ def get_errors(driver):
 
 @pytest.fixture
 def selenium(driver):
-    from demo.utils import wait_and_click, wait_for
+    from demo.utils import confirm, prompt, wait_and_click, wait_for
     driver.with_timeouts = timeouts.__get__(driver)
     driver.set_input_value = set_input_value.__get__(driver)
     driver.wait_for = wait_for.__get__(driver)
     driver.wait_and_click = wait_and_click.__get__(driver)
+    driver.prompt = prompt.__get__(driver)
+    driver.confirm = confirm.__get__(driver)
     driver.get_errors = get_errors.__get__(driver)
     yield driver
 
@@ -92,6 +94,12 @@ class AdminSite:
 
     def wait_for(self, *args):
         return self.driver.wait_for(*args)
+
+    def prompt(self, *args):
+        return self.driver.prompt(*args)
+
+    def confirm(self, *args):
+        return self.driver.confirm(*args)
 
     def wait_and_click(self, *args):
         return self.driver.wait_and_click(*args)

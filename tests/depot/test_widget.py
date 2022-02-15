@@ -16,7 +16,7 @@ def test_save(admin_user, rf):
     for m in [SessionMiddleware, MessageMiddleware]:
         m(MagicMock()).process_request(request)
 
-    f = DepotManager(request, {'adminfilters_filter_save': 'Filter1'},
+    f = DepotManager(request, {DepotManager.parameter_name: 'Filter1'},
                      None, public_site._registry[Artist])
     f.queryset(request, None)
     assert StoredFilter.objects.filter(name='Filter1').exists()
