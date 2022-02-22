@@ -1,3 +1,7 @@
+Release 2.0.1
+=============
+* fixes packaging
+
 Release 2.0
 ===========
 * add ability to save/retrieve filters configuration.
