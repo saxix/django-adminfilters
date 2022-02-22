@@ -1,11 +1,11 @@
 import django
 from django import forms
 from django.conf import settings
-from django.contrib.admin import FieldListFilter
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
-from django.db.models import ManyToOneRel
 from django.urls import reverse
 from django.utils.translation import get_language
+
+from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 
 def get_real_field(model, path):
@@ -18,29 +18,28 @@ def get_real_field(model, path):
     return f
 
 
-class AutoCompleteFilter(FieldListFilter):
+class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
     template = 'adminfilters/autocomplete.html'
     url_name = '%s:%s_%s_autocomplete'
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_kwarg = '%s__exact' % field_path
         self.lookup_kwarg_isnull = '%s__isnull' % field_path
-
         self.lookup_val = params.get(self.lookup_kwarg)
         super().__init__(field, request, params, model, model_admin, field_path)
         self.admin_site = model_admin.admin_site
-        self.query_string = ""
+        self.query_string = ''
         self.target_field = get_real_field(model, field_path)
         self.target_model = self.target_field.related_model
 
-        if django.VERSION[0] == 3:
+        if django.VERSION[0] >= 3:
             self.target_opts = self.target_field.model._meta
         elif django.VERSION[0] == 2:
             self.target_opts = self.target_model._meta
 
         if not hasattr(field, 'get_limit_choices_to'):
             raise Exception(f"Filter '{field_path}' of {model_admin} is not supported by AutoCompleteFilter."
-                            f" Check your {model_admin}.list_filter value")
+                            f' Check your {model_admin}.list_filter value')
 
         self.url = self.get_url()
 
@@ -49,7 +48,7 @@ class AutoCompleteFilter(FieldListFilter):
 
     def get_url(self):
         if django.VERSION[:2] >= (3, 2):
-            return reverse("admin:autocomplete")
+            return reverse('admin:autocomplete')
         return reverse(self.url_name % (self.admin_site.name,
                                         self.target_opts.app_label,
                                         self.target_opts.model_name))
@@ -57,17 +56,7 @@ class AutoCompleteFilter(FieldListFilter):
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=[self.lookup_kwarg, self.lookup_kwarg_isnull])
         if self.lookup_val:
-            # dump = {'self.model': self.model,
-            #         'self.lookup_val': self.lookup_val,
-            #         'self.model_name': self.model_name,
-            #         'self.field_name': self.field_name,
-            #         'self.lookup_kwarg': self.lookup_kwarg,
-            #         'self.query_string': self.query_string,
-            #         'self.related_field': self.related_field,
-            #         'self.related_model': self.related_field.related_model,
-            #         }
-            # return [str(self.model.objects.get(**{self.field_name:self.lookup_val})) or ""]
-            return [str(self.target_model.objects.get(pk=self.lookup_val)) or ""]
+            return [str(self.target_model.objects.get(pk=self.lookup_val)) or '']
         return []
 
     @property
@@ -80,7 +69,7 @@ class AutoCompleteFilter(FieldListFilter):
                 'admin/js/vendor/select2/select2.full%s.js' % extra,
                 ) + i18n_file + ('admin/js/jquery.init.js',
                                  'admin/js/autocomplete.js',
-                                 'adminfilters/adminfilters%s.js' % extra,
+                                 'adminfilters/autocomplete%s.js' % extra,
                                  ),
             css={
                 'screen': (

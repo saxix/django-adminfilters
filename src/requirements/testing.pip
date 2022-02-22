@@ -1,10 +1,14 @@
 check-manifest
-coverage
+django-environ
+factory-boy
+flake8
+isort
+pdbpp
+psycopg2==2.8.6
 pytest
 pytest-cov
 pytest-django
 pytest-echo
 pytest-pythonpath
+pytest-selenium
 tox
-flake8
-isort

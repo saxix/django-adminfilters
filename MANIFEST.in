@@ -18,4 +18,12 @@ recursive-include src *.pip
 
 recursive-include tests *
 
+recursive-exclude tests *.pyc
+recursive-exclude src *.pyc
+recursive-exclude tests ~*
+recursive-exclude src ~*
+
 exclude Makefile
+exclude .bumpversion.cfg
+exclude .isort.cfg
+exclude .flake8

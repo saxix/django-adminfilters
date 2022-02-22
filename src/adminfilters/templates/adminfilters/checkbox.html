@@ -1,0 +1,62 @@
+{% load i18n %}
+<h3>{% blocktrans with title as filter_title %} By {{ filter_title }}{% endblocktrans %}</h3>
+<div id="field-{{ spec.field.name }}">
+    <ul>
+    {% for choice in choices %}
+        <li>
+            <label>
+                <input type="checkbox"{% if choice.selected %} checked="checked"{% endif %}
+                data-uncheck-to-remove="{{ choice.uncheck_to_remove }}"
+                data-check-to-remove="{{ choice.check_to_remove }}"
+                value="{{ choice.query_string }}"/> {{ choice.display }}
+            </label>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<script type="text/javascript">
+    Array.prototype.unique = function(){
+       var u = {}, a = [];
+       for(var i = 0, l = this.length; i < l; ++i){
+          if(this[i] in u)
+             continue;
+          a.push(this[i]);
+          u[this[i]] = 1;
+       }
+       return a;
+    };
+    (function($){
+        $('#field-{{ spec.field.name }} input[type=checkbox]').change(function(){
+            var rex = /(.*)\?(.*)/gi;
+            var m = rex.exec(location.href);
+            var current_checkbox = $(this);
+            var uncheck_to_remove = current_checkbox.data('uncheck-to-remove');
+            var check_to_remove = current_checkbox.data('check-to-remove');
+
+            if(m) {
+                var base = m[1];
+                var params = m[2].split("&");
+            }else {
+                var base = location.href;
+                var params = [];
+            }
+            var filter = current_checkbox.val().replace("?", "").split('&');
+
+            if (current_checkbox.is(':checked')){
+                if(check_to_remove != "") {
+                    check_to_remove = check_to_remove.split("&");
+                    check_to_remove.forEach(function(item, i, arr) {
+                        if (params.indexOf(item) > 0)
+                            params.splice(params.indexOf(item), 1);
+                    });
+                } else {
+                    Array.prototype.push.apply(params, filter);
+                }
+            } else {
+                params.splice(params.indexOf(uncheck_to_remove), 1);
+            }
+            redirect_location =  base + "?" + params.unique().join("&");
+            location.href = redirect_location;
+        });
+    })(django.jQuery);
+</script>

@@ -1,6 +1,27 @@
+Release 2.0
+===========
+* add ability to save/retrieve filters configuration.
+* new DjangoLookupFilter
+* new QueryStringFilter
+
+Release 1.9
+===========
+* Drop support Django < 3
+* new JsonFieldFilter
+* MultiValueTextFilter/TextFilter refactoring
+* AdminFiltersMixin to easily add media files
+
+
+Release 1.8
+=============
+* added support to Dj4
+* add MultiValueTextFilter
+
+
 Release 1.7
 =============
 * Improves AutocompleteFilter to work with chained ForeignKey
+
 
 Release 1.6.1
 =============

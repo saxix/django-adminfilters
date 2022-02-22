@@ -1,0 +1,38 @@
+{% extends "adminfilters/_wrapper.html" %}{% load i18n %}
+{% block content %}
+    <ul class="adminfilter"
+    data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
+    data-lk="{{ spec.lookup_kwarg }}"
+    data-lk-negated="{{ spec.lookup_kwarg_negated }}"
+    data-qs="{{ spec.query_string }}">
+    {% if spec.can_negate %}
+    <li><input type="checkbox"
+               class="filter-multivalue negate "
+               data-group="{{ spec.field_path }}"
+               data-lk="{{ spec.lookup_kwarg_negated }}"
+               data-original="{{ spec.value.1|lower }}"
+            {% if spec.value.1 %} checked="checked" {% endif %}>
+        <small>{% trans "Exclude" %}</small></li>
+    {% endif %}
+    <li><textarea class="filter-multivalue "
+                  data-lk="{{ spec.lookup_kwarg }}"
+                  data-original="{{ spec.value.0|join:spec.separator }}"
+                  placeholder="{{ spec.placeholder }}"
+                  style="width: 90%">{{ spec.value.0|default_if_none:""|join:spec.separator }}</textarea>
+    </li>
+    <li><a class="filter-multivalue adminfilters button {{ spec.field_path }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"
+           href="#">{% if spec.value.0 %}{% trans "clear" %}{% else %}{% trans "activate"%}{% endif %}</a>
+    </li>
+</ul>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+    ;(function ($) {
+        {# $(document).ready(function () {#}
+        new ValueFilterHandler("#{{ spec.html_attrs.id }}", {{ spec.js_options|safe }});
+
+        {#$("#{{ spec.html_attrs.id }}").find("a.button").click(new TextFilterHandler("{{ spec.field_path }}").click);#}
+        {# });#}
+    })(django.jQuery);
+</script>
+{% endblock %}

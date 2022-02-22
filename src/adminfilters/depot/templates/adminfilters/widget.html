@@ -1,0 +1,50 @@
+{% extends "adminfilters/_wrapper.html" %}{% load i18n %}
+{% block title %}
+    <h3>{% blocktrans with title as filter_title %}{{ filter_title }} {% endblocktrans %}
+        <span class="opener"></span>
+    </h3>{% endblock %}
+{% block content %}
+    <ul class="adminfilter"
+        data-lk="{{ spec.parameter_name }}"
+        data-lk-op="{{ spec.parameter_name_op }}"
+        data-id="{{ spec.selected_id }}"
+        data-qs="{{ spec.query_string }}">
+        <li>
+            <select id="depot_manager" style="width: 100%">
+                <option data-qs="?" value="0">--</option>
+                {% for c in choices %}
+                    <option
+                            data-qs="{{ c.query_string }}"
+                            value="{{ c.pk }}" {% if c.selected %}selected="selected"{% endif %}>{{ c.name }}</option>
+                {% endfor %}</select>
+        </li>
+        {% if spec.can_add_filter and spec.selected %}
+            <li style="display: inline-flex;width: 100%">
+                <a class="adminfilters button delete filter"
+                   onclick="return false;"
+                   style="width: 100%" href="#">{% trans "delete saved filter" %}</a>
+                <a class="adminfilters button clear filter"
+                   style="width: 100%" href="?">{% trans "clear" %}</a>
+            </li>
+        {% endif %}
+        {% if spec.can_add_filter and not spec.selected %}
+            <li style="display: inline-flex;width: 100%">
+                <a class="adminfilters button save filter {% if spec.query_string == "?" %}disabled{% endif %}"
+                   onclick="return false;"
+                   style="width: 100%" href="#">{% trans "add" %}</a>
+            </li>
+        {% endif %}
+
+    </ul>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        ;(function ($) {
+            $(document).ready(function () {
+                new DepotManager('#{{ spec.html_attrs.id }}');
+            });
+            $("#depot_manager").select2();
+
+        })(django.jQuery);
+    </script>
+{% endblock %}

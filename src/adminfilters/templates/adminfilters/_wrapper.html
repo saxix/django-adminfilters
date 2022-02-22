@@ -1,0 +1,13 @@
+{% load i18n static %}
+
+<div {% include "adminfilters/_attrs.html" with spec=spec %}>
+    {% block title %}
+        <h3>{% blocktrans with spec.get_title as filter_title %} By {{ filter_title }} {% endblocktrans %}
+{#            <span class="opener"></span>#}
+        </h3>
+    {% endblock %}
+    <div class="filter-content">
+        {% block content %}{% endblock %}
+        {% block script %}{% endblock  %}
+    </div>
+</div>

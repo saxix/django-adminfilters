@@ -1,0 +1,36 @@
+{% extends "adminfilters/_wrapper.html" %}{% load i18n %}
+{% block content %}
+<ul class="adminfilter"
+    data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
+    data-qs="{{ spec.query_string }}"
+    data-lk="{{ spec.parameter_name }}"
+    data-op="{{ spec.operator }}">
+    {% if spec.error_message %} {{ spec.error_message }} {% endif %}
+    <li><input type="checkbox"
+               class="filter-querystring negate {{ spec.parameter_name }}"
+               name="{{ spec.lookup_kwarg_negated }}"
+               data-group="{{ spec.parameter_name }}"
+               data-lk="{{ spec.parameter_name_negated }}"
+               data-original="{{ spec.value.1|lower }}"
+            {% if spec.value.1 %} checked="checked" {% endif %}>
+        <small>{% trans "Exclude" %}</small></li>
+    <li><textarea class="filter-querystring {{ spec.parameter_name }}"
+                  name="value"
+                  data-lk="{{ spec.parameter_name }}"
+                  data-original="{{ spec.value.0 }}"
+                  placeholder="{{ spec.placeholder }}"
+                  style="width: 90%">{{ spec.value.0 }}</textarea>
+    </li>
+    <li><a class="filter-querystring adminfilters button {{ spec.parameter_name }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"
+           href="#">{% if spec.value.0 %}{% trans "clear" %}{% else %}{% trans "activate"%}{% endif %}</a>
+    </li>
+</ul>
+{% endblock %}
+{% block script %}
+
+<script type="text/javascript">
+    ;(function () {
+        new QueryStringFilterHandler("#{{ spec.html_attrs.id }}", {{ spec.js_options|safe }});
+    })(django.jQuery);
+</script>
+{% endblock script %}
