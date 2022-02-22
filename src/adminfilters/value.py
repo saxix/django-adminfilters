@@ -107,7 +107,6 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
                                  ),
             css={
                 'screen': (
-                    'admin/css/vendor/select2/select2%s.css' % extra,
                     'adminfilters/adminfilters.css',
                 ),
             },
