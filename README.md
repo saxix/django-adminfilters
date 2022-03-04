@@ -74,7 +74,7 @@ Usage examples
             ("custom", JsonFieldFilter.factory(can_negate=False, options=True)),
             ("flag", ChoicesFieldComboFilter),
             ('household', AutoCompleteFilter)
-            GenericLookupFieldFilter.factory('name__istartswith', can_negate=False, negated=True),
+            ('name', ValueFilter.factory(lookup='istartswith'),
             ("age", NumberFilter),
         )
 
@@ -96,3 +96,4 @@ Project links
 
 * Project home page: https://github.com/saxix/django-adminfilters
 * Download: http://pypi.python.org/pypi/django-adminfilters/
+* Documentation: https://django-adminfilters.readthedocs.io/en/latest/
