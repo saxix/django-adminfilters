@@ -1,3 +1,7 @@
+Release 2.0.2
+=============
+* fixes QueryStringFilter fk null filtering
+
 Release 2.0.1
 =============
 * fixes packaging
