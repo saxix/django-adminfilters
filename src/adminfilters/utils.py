@@ -85,7 +85,12 @@ def get_field_by_path(model, field_path):
         field_object, model, direct, m2m = get_field_by_name(model, target)
         if isinstance(field_object, models.ForeignKey):
             if parts[1:]:
-                return get_field_by_path(field_object.related_model, '.'.join(parts[1:]))
+                while True:
+                    fk = get_field_by_path(field_object.related_model, '.'.join(parts[1:]))
+                    if fk is None:
+                        break
+                    field_object = fk
+                return field_object
             else:
                 return field_object
         else:
@@ -108,11 +113,11 @@ def get_field_type(model, field_path):
     return field, lookup, field_type
 
 
-def cast_value(v, fld, multiple):
-    if isinstance(fld, (BooleanField,)):
+def cast_value(v, fld, lookup):
+    if isinstance(fld, (BooleanField,)) or lookup in ['isnull']:
         func = parse_bool
     else:
         func = fld.to_python
-    if multiple:
+    if lookup in ['in']:
         return [func(e) for e in v.split(',')]
     return func(v)
