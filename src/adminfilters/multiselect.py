@@ -1,5 +1,5 @@
 from django.contrib.admin.utils import prepare_lookup_value
-from django.db.models.fields import AutoField, IntegerField
+from django.db.models.fields import AutoField, BigAutoField, IntegerField
 from django.utils.translation import gettext_lazy as _
 
 from adminfilters.mixin import SmartFieldListFilter
@@ -33,7 +33,7 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
 
         field = self.get_field()
         # convert to integers if IntegerField
-        if type(field) in [IntegerField, AutoField]:
+        if type(field) in [IntegerField, AutoField, BigAutoField]:
             values = [int(x) for x in values]
         return values
 
