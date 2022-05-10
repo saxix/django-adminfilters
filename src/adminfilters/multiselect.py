@@ -1,5 +1,5 @@
 from django.contrib.admin.utils import prepare_lookup_value
-from django.db.models.fields import BigAutoField, AutoField, IntegerField
+from django.db.models.fields import AutoField, BigAutoField, IntegerField
 from django.utils.translation import gettext_lazy as _
 
 from adminfilters.mixin import SmartFieldListFilter
