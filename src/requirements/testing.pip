@@ -9,6 +9,5 @@ pytest
 pytest-cov
 pytest-django
 pytest-echo
-pytest-pythonpath
 pytest-selenium
 tox

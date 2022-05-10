@@ -1,7 +1,7 @@
 import pytest
 from demo.utils import ChangeListWrapper
-from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 pytestmark = pytest.mark.selenium
 
