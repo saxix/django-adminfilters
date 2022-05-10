@@ -11,6 +11,7 @@ from selenium.webdriver.common.by import By
 @pytest.fixture
 def chrome_options(request):
     chrome_options = Options()
+    chrome_options.add_experimental_option('w3c', False)
     if not request.config.getvalue('show_browser'):
         chrome_options.add_argument('--headless')
     return chrome_options

@@ -4,6 +4,7 @@ factory-boy
 flake8
 isort
 pdbpp
+prettytable
 psycopg2==2.8.6
 pytest
 pytest-cov
