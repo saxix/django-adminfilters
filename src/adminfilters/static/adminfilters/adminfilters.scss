@@ -1,7 +1,26 @@
 select.filter-autocomplete {
   width: 20em;
 }
+.select2 {
+  border: 1px solid var(--border-color);
+  //border-radius: 4px;
+  //padding: 5px 6px;
+  //margin-top: 0;
+  color: var(--body-fg);
+  background-color: var(--body-bg);
+}
+.select2-dropdown, .select2-search__field{
+  //border: 1px solid var(--border-color);
+  border-radius: 4px;
+  //padding: 5px 6px;
+  //margin-top: 0;
+  color: var(--body-fg);
+  background-color: var(--body-bg);
+}
+.select2-selection__rendered{
+  color: var(--body-fg);
 
+}
 .select2-container--filter-autocomplete.select2-container {
   min-height: 30px;
 }
@@ -29,13 +48,13 @@ select.filter-autocomplete {
 }
 
 .select2-container--filter-autocomplete .select2-selection--single {
-  background-color: #fff;
-  border: 1px solid #ccc;
+  //background-color: #fff;
+  //border: 1px solid #ccc;
   border-radius: 4px;
 }
 
 .select2-container--filter-autocomplete .select2-selection--single .select2-selection__rendered {
-  color: #444;
+  //color: #444;
   line-height: 30px;
 }
 
@@ -46,7 +65,7 @@ select.filter-autocomplete {
 }
 
 .select2-container--filter-autocomplete .select2-selection--single .select2-selection__placeholder {
-  color: #999;
+  //color: #999;
 }
 
 .select2-container--filter-autocomplete .select2-selection--single .select2-selection__arrow {
@@ -94,7 +113,7 @@ select.filter-autocomplete {
 }
 
 .select2-container--filter-autocomplete .select2-selection--multiple {
-  background-color: white;
+  //background-color: white;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: text;
@@ -113,7 +132,7 @@ select.filter-autocomplete {
 }
 
 .select2-container--filter-autocomplete .select2-selection--multiple .select2-selection__placeholder {
-  color: #999;
+  //color: #999;
   margin-top: 5px;
   float: left;
 }
@@ -321,4 +340,26 @@ select.filter-autocomplete {
   top: 1px;
   cursor: pointer;
   /*background-position: 0 -56px;*/
+}
+
+@media (prefers-color-scheme: dark) {
+  .select2{
+    //border: 1px solid var(--border-color);
+    //border-radius: 4px;
+    //padding: 5px 6px;
+    //margin-top: 0;
+    color: var(--body-fg);
+    background-color: var(--body-bg);
+    //.select2-container--filter-autocomplete .select2-results__option--highlighted[aria-selected] {
+    //  background-color: #79aec8;
+    //  //color: white;
+    //}
+    //.select2-container--filter-autocomplete .select2-selection--multiple {
+    //  background-color: var(--body-bg);
+    //  border: 1px solid #ccc;
+    //  border-radius: 4px;
+    //  cursor: text;
+    //}
+
+  }
 }
