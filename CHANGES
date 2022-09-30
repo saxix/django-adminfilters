@@ -1,3 +1,9 @@
+Release 2.0.3
+=============
+* Fix dark mode CSS
+* Improves error handling in NumberFilter
+
+* fixes QueryStringFilter fk null filtering
 Release 2.0.2
 =============
 * fixes QueryStringFilter fk null filtering
