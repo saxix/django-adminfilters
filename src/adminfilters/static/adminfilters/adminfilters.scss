@@ -19,6 +19,7 @@ select.filter-autocomplete {
 }
 .select2-selection__rendered{
   color: var(--body-fg);
+  background-color: var(--body-bg);
 
 }
 .select2-container--filter-autocomplete.select2-container {
