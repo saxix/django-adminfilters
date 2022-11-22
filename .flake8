@@ -1,7 +1,7 @@
 [flake8]
 max-complexity = 14
 max-line-length = 120
-exclude = _plugin_template migrations settings
+exclude = _plugin_template migrations settings ~*
 ignore = E401,W391,E128,E261,E731,Q000,W504,W606,E265
 putty-ignore =
 
