@@ -92,6 +92,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
             except ValidationError as e:  # pragma: no cover
                 self.error_message = ', '.join(e.messages)
             except Exception as e:  # pragma: no cover
+                logger.exception(e)
                 if settings.DEBUG:
                     self.error_message = f'{e.__class__.__name__}: {e}'
                 else:
