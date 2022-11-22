@@ -100,7 +100,7 @@ class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     search_fields = ('name',)
 
 
-class IUserAdmin(DebugMixin, UserAdmin):
+class IUserAdmin(DebugMixin, AdminFiltersMixin, UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name',
                     'is_staff')
     list_filter = (('username', ValueFilter.factory(lookup_name='istartswith')),

@@ -64,14 +64,13 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
         query_params = dict(parse.parse_qsl('&'.join(value.splitlines())))
         exclude = {}
         filters = {}
-
         for field_name, raw_value in query_params.items():
             target = filters
             if field_name[0] == '!':
                 field_name = field_name[1:]
                 target = exclude
             field, lookup, field_type = get_field_type(self.model, field_name)
-            value = cast_value(raw_value, field, multiple=lookup in ['in'])
+            value = cast_value(raw_value, field, lookup)
             target[field_name] = value
 
         return filters, exclude
@@ -93,6 +92,7 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
             except ValidationError as e:  # pragma: no cover
                 self.error_message = ', '.join(e.messages)
             except Exception as e:  # pragma: no cover
+                logger.exception(e)
                 if settings.DEBUG:
                     self.error_message = f'{e.__class__.__name__}: {e}'
                 else:

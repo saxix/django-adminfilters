@@ -50,7 +50,7 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
         try:
             if self.lookup_field_val:
                 field, lookup, field_type = get_field_type(self.model, self.lookup_field_val)
-                value = cast_value(self.lookup_value_val, field, multiple=lookup in ['in'])
+                value = cast_value(self.lookup_value_val, field, lookup)
                 return [
                     self.lookup_field_val,
                     value,

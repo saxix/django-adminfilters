@@ -7,7 +7,7 @@ from .value import ValueFilter
 
 class NumberFilter(ValueFilter):
     rex1 = re.compile(r'^(>=|<=|>|<|=)?([-+]?[0-9]+)$')
-    re_range = re.compile(r'^(\d+)\.\.(\d+)$')
+    re_range = re.compile(r'^(\d+)\.{2,}(\d+)$')
     re_list = re.compile(r'(\d+),?')
     re_unlike = re.compile(r'^(<>)([-+]?[0-9]+)$')
     map = {'>=': 'gte',
@@ -74,7 +74,10 @@ class NumberFilter(ValueFilter):
                 #     queryset = queryset.exclude(**{match: value})
                 else:  # pragma: no cover
                     raise IncorrectLookupParameters()
-                queryset = queryset.filter(**self.filters)
+                try:
+                    queryset = queryset.filter(**self.filters)
+                except Exception:
+                    raise IncorrectLookupParameters(self.value())
         return queryset
 
 

@@ -1,12 +1,28 @@
+Release 2.0.3
+=============
+* drop support Django<3
+* Fix dark mode CSS
+* Improves error handling in NumberFilter/ValueFilter
+* Fix AutoCompleteFilter reverse url
+* fixes QueryStringFilter fk null filtering
+
+
+Release 2.0.2
+=============
+* fixes QueryStringFilter fk null filtering
+
+
 Release 2.0.1
 =============
 * fixes packaging
+
 
 Release 2.0
 ===========
 * add ability to save/retrieve filters configuration.
 * new DjangoLookupFilter
 * new QueryStringFilter
+
 
 Release 1.9
 ===========

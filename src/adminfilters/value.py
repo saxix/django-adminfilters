@@ -3,6 +3,7 @@ import json
 
 from django import forms
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.utils.translation import get_language, gettext as _
 
@@ -83,12 +84,16 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
     def queryset(self, request, queryset):
         target, exclude = self.value()
         if target:
-            self.filters = {self.lookup_kwarg: target}
-            if exclude:
-                queryset = queryset.exclude(**self.filters)
-            else:
-                queryset = queryset.filter(**self.filters)
-
+            try:
+                self.filters = {self.lookup_kwarg: target}
+                if exclude:
+                    queryset = queryset.exclude(**self.filters)
+                else:
+                    queryset = queryset.filter(**self.filters)
+            except Exception as e:
+                msg = _('%s filter ignored due to an error %s') % (self.title, e)
+                self.model_admin.message_user(request, msg, messages.ERROR)
+                pass
         return queryset
 
     def choices(self, changelist):
