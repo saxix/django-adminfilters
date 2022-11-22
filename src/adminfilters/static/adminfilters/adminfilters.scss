@@ -232,7 +232,7 @@ select.filter-autocomplete {
 }
 
 .select2-container--filter-autocomplete .select2-results__option[aria-selected=true] {
-  background-color: #ddd;
+  background-color: var(--body-bg);
 }
 
 .select2-container--filter-autocomplete .select2-results__option .select2-results__option {
@@ -270,7 +270,7 @@ select.filter-autocomplete {
 
 .select2-container--filter-autocomplete .select2-results__option--highlighted[aria-selected] {
   background-color: #79aec8;
-  color: white;
+  color: var(--body-fg);
 }
 
 .select2-container--filter-autocomplete .select2-results__group {

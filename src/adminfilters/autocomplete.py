@@ -48,7 +48,7 @@ class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
 
     def get_url(self):
         if django.VERSION[:2] >= (3, 2):
-            return reverse('admin:autocomplete')
+            return reverse('%s:autocomplete' % self.admin_site.name)
         return reverse(self.url_name % (self.admin_site.name,
                                         self.target_opts.app_label,
                                         self.target_opts.model_name))
