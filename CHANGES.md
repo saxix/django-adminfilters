@@ -1,3 +1,8 @@
+Release 2.0.4
+=============
+* fixes `cast_value()` to properly handle Date/DateTime lookups
+
+
 Release 2.0.3
 =============
 * drop support Django<3
