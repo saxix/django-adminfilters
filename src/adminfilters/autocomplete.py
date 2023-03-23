@@ -56,7 +56,8 @@ class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(remove=[self.lookup_kwarg, self.lookup_kwarg_isnull])
         if self.lookup_val:
-            return [str(self.target_model.objects.get(pk=self.lookup_val)) or '']
+            get_kwargs = {self.field.target_field.name: self.lookup_val}
+            return [str(self.target_model.objects.get(**get_kwargs)) or '']
         return []
 
     @property

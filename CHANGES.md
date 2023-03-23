@@ -1,3 +1,15 @@
+Release 2.1
+=============
+* add DateRangeFilter
+* removes `default_app_config`
+* Merge #27 - Foreign Key can refer not only to pk field (@ef-end-y)
+
+
+Release 2.0.4
+=============
+* fixes `cast_value()` to properly handle Date/DateTime lookups
+
+
 Release 2.0.3
 =============
 * drop support Django<3

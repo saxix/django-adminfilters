@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 
 from django.core.exceptions import FieldError, ValidationError
 from django.db import models
-from django.db.models import BooleanField
+from django.db.models import BooleanField, DateField, DateTimeField
 
 logger = logging.getLogger(__name__)
 
@@ -123,6 +123,8 @@ def get_field_type(model, field_path):
 def cast_value(v, fld, lookup):
     if isinstance(fld, (BooleanField,)) or lookup in ['isnull']:
         func = parse_bool
+    elif isinstance(fld, (DateField, DateTimeField,)) and lookup:
+        return v
     else:
         func = fld.to_python
     if lookup in ['in']:
