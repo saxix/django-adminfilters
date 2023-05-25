@@ -28,7 +28,7 @@ class DemoModelField(JSONMixin, models.Model):
     generic_ip = models.GenericIPAddressField()
     url = models.URLField()
     text = models.TextField()
-
+    json = models.JSONField()
     unique = models.CharField(max_length=255, unique=True)
     nullable = models.CharField(max_length=255, null=True)
     blank = models.CharField(max_length=255, blank=True, null=True)

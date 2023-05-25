@@ -1,4 +1,8 @@
-Release 2.1
+Release 2.2
+=============
+* Improves support for JsonFields (use `#` to cast integer `.` to cast float)
+
+* Release 2.1
 =============
 * add DateRangeFilter
 * removes `default_app_config`

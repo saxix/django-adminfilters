@@ -56,6 +56,10 @@ class DemoModelFieldFactory(ModelFactory):
     choices = factory.fuzzy.FuzzyChoice([1, 2, 3])
     unique = factory.Sequence(lambda a: a)
     email = factory.Faker('email')
+    json = {'char': 'string',
+            'integer': 100,
+            'float': 2.0
+            }
 
     class Meta:
         model = models.DemoModelField

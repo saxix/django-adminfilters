@@ -10,6 +10,7 @@ def fixtures(db):
     for i in range(1, 5):
         values = DATA.copy()
         values['unique'] = i
+        values['json'] = {}
         DemoModelField.objects.create(**values)
 
 

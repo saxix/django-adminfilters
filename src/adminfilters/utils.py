@@ -120,8 +120,10 @@ def get_field_type(model, field_path):
     return field, lookup, field_type
 
 
-def cast_value(v, fld, lookup):
-    if isinstance(fld, (BooleanField,)) or lookup in ['isnull']:
+def cast_value(v, fld, lookup, force=None):
+    if force:
+        func = force
+    elif isinstance(fld, (BooleanField,)) or lookup in ['isnull']:
         func = parse_bool
     elif isinstance(fld, (DateField, DateTimeField,)) and lookup:
         return v

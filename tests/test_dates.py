@@ -12,6 +12,8 @@ def fixtures(db):
         values['unique'] = i
         values['datetime'] = '2000-01-%d 10:30:00-00:00' % i
         values['date'] = '2000-01-%d' % i
+        values['json'] = {}
+
         DemoModelField.objects.create(**values)
 
 

@@ -11,6 +11,11 @@ def fixtures(db):
         values = DATA.copy()
         values['unique'] = i
         values['logic'] = bool(i % 2)
+        values['json'] = {'char': chr(ord('a') + i),
+                          'integer': i * 100,
+                          'float': i * 1.0
+                          }
+
         DemoModelField.objects.create(**values)
 
 
@@ -20,6 +25,10 @@ def fixtures(db):
                                                ('logic=true', '1,3', None),
                                                ('logic=false', '2,4', None),
                                                ('!logic=false', '1,3', None),
+                                               ('json__char=b', '1', None),
+                                               ('#json__integer=100', '1', None),
+                                               ('!#json__integer=100', '2,3,4', None),
+                                               ('.json__float=1.0', '1', None),
                                                ('logic__in=true,false', '1,2,3,4', None),
                                                ('wrong=1', '1,2,3,4', "Unknown field 'wrong'"),
                                                ('logic__x=1', '1,2,3,4', "Unsupported lookup: 'x'"),
