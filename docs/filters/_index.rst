@@ -14,6 +14,7 @@ Filters
     json
     value
     multivalue
+    date
     dj
     querystring
     multiselect

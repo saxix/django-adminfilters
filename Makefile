@@ -16,8 +16,7 @@ develop:
 	./.venv/bin/pip install -r src/requirements/develop.pip
 
 demo:
-	#cd tests/demoapp && python manage.py migrate
-	#cd tests/demoapp && python manage.py migrate
+	cd tests/demoapp && python manage.py makemigrations demo
 	cd tests/demoapp && python manage.py init_demo
 	cd tests/demoapp && python manage.py runserver
 

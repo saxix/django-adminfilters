@@ -25,6 +25,8 @@ Filters
   * AllValuesComboFilter
   * RelatedFieldComboFilter
   * ChoicesFieldComboFilter
+* Dates
+  * DateRangeFilter
 * Radio
   * AllValuesRadioFilter
   * RelatedFieldRadioFilter
