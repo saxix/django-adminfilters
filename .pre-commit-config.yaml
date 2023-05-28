@@ -5,7 +5,7 @@ repos:
     hooks:
 
       - id: isort
-        args: ['--src', 'src/','--check-only']
+        args: ['--check-only', '--settings', '.isort.cfg']
         exclude: tweepy
         name: isort
         entry: isort
@@ -24,8 +24,8 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.1.0
     hooks:
-      - id: double-quote-string-fixer
-        stages: [commit]
+#      - id: double-quote-string-fixer
+#        stages: [commit]
 
       - id: debug-statements
         stages: [commit]

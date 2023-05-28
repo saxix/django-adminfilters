@@ -17,8 +17,7 @@ from django.conf import settings
 import adminfilters as app
 
 here = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-up = lambda base, level: os.path.abspath(
-    os.path.join(base, *([os.pardir] * level)))
+up = lambda base, level: os.path.abspath(os.path.join(base, *([os.pardir] * level)))
 sys.path.insert(0, up(here, 2))
 
 settings.configure(SITE_ID=1)
@@ -35,20 +34,20 @@ needs_sphinx = '1.0'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-sys.path.append(os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '_ext')))
-extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.todo',
-              'sphinx.ext.graphviz',
-              'sphinx.ext.intersphinx',
-              'sphinx.ext.doctest',
-              'sphinx.ext.extlinks',
-              'sphinx.ext.autosummary',
-              'sphinx.ext.coverage',
-              'sphinx.ext.viewcode',
-              'sphinxcontrib.video',
-              'github',
-              ]
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '_ext')))
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.todo',
+    'sphinx.ext.graphviz',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.doctest',
+    'sphinx.ext.extlinks',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.coverage',
+    'sphinx.ext.viewcode',
+    'sphinxcontrib.video',
+    'github',
+]
 
 next_version = 'dev'
 github_project_url = 'https://github.com/saxix/django-adminfilters/'
@@ -75,8 +74,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Django AdminFilters'
-copyright = u'2012-2022, Stefano Apostolico'
+project = 'Django AdminFilters'
+copyright = '2012-2022, Stefano Apostolico'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -224,8 +223,13 @@ htmlhelp_basename = 'djangoadminactionsdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'DjangoAdminActions.tex', u'Django Admin Actions Documentation',
-     u'Stefano Apostolico', 'manual'),
+    (
+        'index',
+        'DjangoAdminActions.tex',
+        'Django Admin Actions Documentation',
+        'Stefano Apostolico',
+        'manual',
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -257,6 +261,11 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'djangoadminactions', u'Django Admin Actions Documentation',
-     [u'Stefano Apostolico'], 1)
+    (
+        'index',
+        'djangoadminactions',
+        'Django Admin Actions Documentation',
+        ['Stefano Apostolico'],
+        1,
+    )
 ]

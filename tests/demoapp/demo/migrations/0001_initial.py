@@ -5,122 +5,173 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Band',
+            name="Band",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('genre', models.IntegerField(choices=[(1, 'Rock'), (2, 'Blues'), (3, 'Soul'), (4, 'Other')])),
-                ('active', models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "genre",
+                    models.IntegerField(
+                        choices=[(1, "Rock"), (2, "Blues"), (3, "Soul"), (4, "Other")]
+                    ),
+                ),
+                ("active", models.BooleanField(default=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Country',
+            name="Country",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
             ],
             options={
-                'verbose_name_plural': 'Countries',
-                'ordering': ('name',),
+                "verbose_name_plural": "Countries",
+                "ordering": ("name",),
             },
         ),
         migrations.CreateModel(
-            name='DemoModelField',
+            name="DemoModelField",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('flags', models.JSONField(blank=True, default=dict, null=True)),
-                ('char', models.CharField(max_length=255)),
-                ('integer', models.IntegerField()),
-                ('logic', models.BooleanField(default=False)),
-                ('date', models.DateField()),
-                ('datetime', models.DateTimeField()),
-                ('time', models.TimeField()),
-                ('decimal', models.DecimalField(decimal_places=3, max_digits=10)),
-                ('email', models.EmailField(max_length=254)),
-                ('float', models.FloatField()),
-                ('bigint', models.BigIntegerField()),
-                ('generic_ip', models.GenericIPAddressField()),
-                ('url', models.URLField()),
-                ('text', models.TextField()),
-                ('json', models.JSONField()),
-                ('unique', models.CharField(max_length=255, unique=True)),
-                ('nullable', models.CharField(max_length=255, null=True)),
-                ('blank', models.CharField(blank=True, max_length=255, null=True)),
-                ('not_editable', models.CharField(blank=True, editable=False, max_length=255, null=True)),
-                ('choices', models.IntegerField(choices=[(1, 'Choice 1'), (2, 'Choice 2'), (3, 'Choice 3')])),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("flags", models.JSONField(blank=True, default=dict, null=True)),
+                ("char", models.CharField(max_length=255)),
+                ("integer", models.IntegerField()),
+                ("logic", models.BooleanField(default=False)),
+                ("date", models.DateField()),
+                ("datetime", models.DateTimeField()),
+                ("time", models.TimeField()),
+                ("decimal", models.DecimalField(decimal_places=3, max_digits=10)),
+                ("email", models.EmailField(max_length=254)),
+                ("float", models.FloatField()),
+                ("bigint", models.BigIntegerField()),
+                ("generic_ip", models.GenericIPAddressField()),
+                ("url", models.URLField()),
+                ("text", models.TextField()),
+                ("json", models.JSONField()),
+                ("unique", models.CharField(max_length=255, unique=True)),
+                ("nullable", models.CharField(max_length=255, null=True)),
+                ("blank", models.CharField(blank=True, max_length=255, null=True)),
+                (
+                    "not_editable",
+                    models.CharField(
+                        blank=True, editable=False, max_length=255, null=True
+                    ),
+                ),
+                (
+                    "choices",
+                    models.IntegerField(
+                        choices=[(1, "Choice 1"), (2, "Choice 2"), (3, "Choice 3")]
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Artist',
+            name="Artist",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('flags', models.JSONField(blank=True, default=dict, null=True)),
-                ('name', models.CharField(max_length=255)),
-                ('last_name', models.CharField(max_length=255)),
-                ('full_name', models.CharField(max_length=255)),
-                ('year_of_birth', models.IntegerField()),
-                ('active', models.BooleanField(default=True)),
-                ('bands', models.ManyToManyField(related_name='bands', to='demo.Band', verbose_name='Bands')),
-                ('country', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='demo.country')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("flags", models.JSONField(blank=True, default=dict, null=True)),
+                ("name", models.CharField(max_length=255)),
+                ("last_name", models.CharField(max_length=255)),
+                ("full_name", models.CharField(max_length=255)),
+                ("year_of_birth", models.IntegerField()),
+                ("active", models.BooleanField(default=True)),
+                (
+                    "bands",
+                    models.ManyToManyField(
+                        related_name="bands", to="demo.Band", verbose_name="Bands"
+                    ),
+                ),
+                (
+                    "country",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="demo.country"
+                    ),
+                ),
             ],
             options={
-                'ordering': ('name',),
+                "ordering": ("name",),
             },
         ),
         migrations.CreateModel(
-            name='Artist_IntersectionFieldListFilter',
-            fields=[
-            ],
+            name="Artist_IntersectionFieldListFilter",
+            fields=[],
             options={
-                'verbose_name': 'IntersectionFieldListFilter',
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "verbose_name": "IntersectionFieldListFilter",
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('demo.artist',),
+            bases=("demo.artist",),
         ),
         migrations.CreateModel(
-            name='Artist_RelatedFieldCheckBoxFilter',
-            fields=[
-            ],
+            name="Artist_RelatedFieldCheckBoxFilter",
+            fields=[],
             options={
-                'verbose_name': 'RelatedFieldCheckBoxFilter',
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "verbose_name": "RelatedFieldCheckBoxFilter",
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('demo.artist',),
+            bases=("demo.artist",),
         ),
         migrations.CreateModel(
-            name='Artist_RelatedFieldRadioFilter',
-            fields=[
-            ],
+            name="Artist_RelatedFieldRadioFilter",
+            fields=[],
             options={
-                'verbose_name': 'RelatedFieldRadioFilter',
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "verbose_name": "RelatedFieldRadioFilter",
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('demo.artist',),
+            bases=("demo.artist",),
         ),
         migrations.CreateModel(
-            name='Artist_UnionFieldListFilter',
-            fields=[
-            ],
+            name="Artist_UnionFieldListFilter",
+            fields=[],
             options={
-                'verbose_name': 'UnionFieldListFilter',
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "verbose_name": "UnionFieldListFilter",
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('demo.artist',),
+            bases=("demo.artist",),
         ),
     ]

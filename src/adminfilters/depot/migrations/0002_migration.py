@@ -4,19 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('depot', '0001_initial'),
+        ("depot", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='storedfilter',
-            options={'ordering': ('name',)},
+            name="storedfilter",
+            options={"ordering": ("name",)},
         ),
         migrations.AlterField(
-            model_name='storedfilter',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="storedfilter",
+            name="id",
+            field=models.BigAutoField(
+                auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+            ),
         ),
     ]

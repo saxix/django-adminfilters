@@ -8,18 +8,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 DATA = {
-    'date': '2013-01-29',
-    'datetime': '2013-01-01T02:18:33Z',
-    'integer': 888888,
-    'nullable': 'bbbb',
-    'time': '19:00:35',
-    'bigint': 333333333,
+    "date": "2013-01-29",
+    "datetime": "2013-01-01T02:18:33Z",
+    "integer": 888888,
+    "nullable": "bbbb",
+    "time": "19:00:35",
+    "bigint": 333333333,
     # "blank": "",
-    'choices': 2,
-    'decimal': '22.2',
+    "choices": 2,
+    "decimal": "22.2",
     # "email": "s.apostolico@gmail.com",
-    'float': 10.1,
-    'generic_ip': '192.168.10.2',
+    "float": 10.1,
+    "generic_ip": "192.168.10.2",
     # "logic": False,
     # "not_editable": None,
     # "text": "lorem ipsum",
@@ -30,16 +30,19 @@ DATA = {
 
 def check_link_by_class(selenium, cls, view_name):
     link = selenium.find_element_by_class_name(cls)
-    url = reverse(f'{view_name}')
-    return f' href="{url}"' in link.get_attribute('innerHTML')
+    url = reverse(f"{view_name}")
+    return f' href="{url}"' in link.get_attribute("innerHTML")
 
 
 def get_all_attributes(driver, element):
-    return list(driver.execute_script(
-        'var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) {'
-        ' items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value'
-        ' }; return items;',
-        element))
+    return list(
+        driver.execute_script(
+            "var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) {"
+            " items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value"
+            " }; return items;",
+            element,
+        )
+    )
 
 
 def is_clickable(driver, element):
@@ -52,7 +55,7 @@ def is_clickable(driver, element):
 
 
 def mykey(group, request):
-    return request.META['REMOTE_ADDR'][::-1]
+    return request.META["REMOTE_ADDR"][::-1]
 
 
 def callable_rate(group, request):
@@ -64,6 +67,7 @@ def callable_rate(group, request):
 def scroll_to(driver, *args, _timeout=10):
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
+
     wait = WebDriverWait(driver, _timeout)
     wait.until(EC.visibility_of_element_located((*args,)))
     return driver.find_element(*args)
@@ -72,6 +76,7 @@ def scroll_to(driver, *args, _timeout=10):
 def wait_for(driver, *args, _timeout=10):
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
+
     wait = WebDriverWait(driver, _timeout)
     wait.until(EC.visibility_of_element_located((*args,)))
     return driver.find_element(*args)
@@ -81,6 +86,7 @@ def prompt(driver, text, _timeout=10):
     from selenium.webdriver.common.alert import Alert
     from selenium.webdriver.support.expected_conditions import alert_is_present
     from selenium.webdriver.support.ui import WebDriverWait
+
     wait = WebDriverWait(driver, _timeout)
     wait.until(alert_is_present())
 
@@ -93,6 +99,7 @@ def confirm(driver, _timeout=10):
     from selenium.webdriver.common.alert import Alert
     from selenium.webdriver.support.expected_conditions import alert_is_present
     from selenium.webdriver.support.ui import WebDriverWait
+
     wait = WebDriverWait(driver, _timeout)
     wait.until(alert_is_present())
 
@@ -103,6 +110,7 @@ def confirm(driver, _timeout=10):
 def wait_and_click(driver, *args, _timeout=10):
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
+
     wait = WebDriverWait(driver, _timeout)
     wait.until(EC.element_to_be_clickable((*args,)))
     return driver.find_element(*args).click()
@@ -111,6 +119,7 @@ def wait_and_click(driver, *args, _timeout=10):
 def wait_for_url(driver, url):
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.support.ui import WebDriverWait
+
     wait = WebDriverWait(driver, 10)
     wait.until(EC.url_contains(url))
 
@@ -124,7 +133,8 @@ class WebElementWrapper:
 
     def __repr__(self):
         return '<{0.__module__}.{0.__name__} (session="{1}", element="{2}")>'.format(
-            type(self.element), self._parent.session_id, self.element._id)
+            type(self.element), self._parent.session_id, self.element._id
+        )
 
     @property
     def driver(self):
@@ -134,7 +144,9 @@ class WebElementWrapper:
 class CellWrapper(WebElementWrapper):
     @cached_property
     def text(self):
-        return (self.element.get_attribute('innerText') or strip_tags(self.element.get_attribute('innerHTML')))
+        return self.element.get_attribute("innerText") or strip_tags(
+            self.element.get_attribute("innerHTML")
+        )
 
 
 class RowWrapper(WebElementWrapper):
@@ -145,7 +157,7 @@ class RowWrapper(WebElementWrapper):
     @cached_property
     def cells(self):
         ret = []
-        for e in self.element.find_elements(By.CSS_SELECTOR, 'td,th')[1:]:
+        for e in self.element.find_elements(By.CSS_SELECTOR, "td,th")[1:]:
             ret.append(CellWrapper(e))
         return ret
 
@@ -169,17 +181,22 @@ class ChangeListWrapper(EmptyChangeListWrapper):
     @classmethod
     def find_in_page(cls, driver):
         try:
-            return ChangeListWrapper(driver.find_element(By.CSS_SELECTOR, '#changelist-form #result_list'))
+            return ChangeListWrapper(
+                driver.find_element(By.CSS_SELECTOR, "#changelist-form #result_list")
+            )
         except NoSuchElementException:
             return EmptyChangeListWrapper(None)
 
     @cached_property
     def header(self) -> [RowWrapper]:
-        return RowWrapper(self.element.find_element(By.CSS_SELECTOR, 'thead tr'))
+        return RowWrapper(self.element.find_element(By.CSS_SELECTOR, "thead tr"))
 
     @cached_property
     def rows(self) -> [RowWrapper]:
-        return [RowWrapper(e) for e in self.element.find_elements(By.CSS_SELECTOR, 'tbody tr')]
+        return [
+            RowWrapper(e)
+            for e in self.element.find_elements(By.CSS_SELECTOR, "tbody tr")
+        ]
 
     def get_row(self, num):
         return list(self.rows)[num]
@@ -209,23 +226,24 @@ class ChangeListWrapper(EmptyChangeListWrapper):
 
     def pretty(self):
         from prettytable import PrettyTable
+
         x = PrettyTable(max_table_width=180)
         x.field_names = self.header.values
         x.add_rows(self.matrix)
-        sys.stdout.write(f'\n{x}\n')
+        sys.stdout.write(f"\n{x}\n")
 
 
 class Checkbox(WebElementWrapper):
     def checked(self, value):
         if value and not self.element.is_selected():
-            self.driver.execute_script('arguments[0].click();', self.element)
+            self.driver.execute_script("arguments[0].click();", self.element)
         if not value and self.element.is_selected():
-            self.driver.execute_script('arguments[0].click();', self.element)
+            self.driver.execute_script("arguments[0].click();", self.element)
 
     def check(self):
         if not self.element.is_selected():
-            self.driver.execute_script('arguments[0].click();', self.element)
+            self.driver.execute_script("arguments[0].click();", self.element)
 
     def uncheck(self):
         if self.element.is_selected():
-            self.driver.execute_script('arguments[0].click();', self.element)
+            self.driver.execute_script("arguments[0].click();", self.element)

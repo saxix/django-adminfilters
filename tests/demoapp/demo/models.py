@@ -32,14 +32,15 @@ class DemoModelField(JSONMixin, models.Model):
     unique = models.CharField(max_length=255, unique=True)
     nullable = models.CharField(max_length=255, null=True)
     blank = models.CharField(max_length=255, blank=True, null=True)
-    not_editable = models.CharField(max_length=255, editable=False,
-                                    blank=True, null=True)
-    choices = models.IntegerField(choices=((1, 'Choice 1'),
-                                           (2, 'Choice 2'),
-                                           (3, 'Choice 3')))
+    not_editable = models.CharField(
+        max_length=255, editable=False, blank=True, null=True
+    )
+    choices = models.IntegerField(
+        choices=((1, "Choice 1"), (2, "Choice 2"), (3, "Choice 3"))
+    )
 
     class Meta:
-        app_label = 'demo'
+        app_label = "demo"
 
 
 class Country(models.Model):
@@ -49,17 +50,20 @@ class Country(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = 'Countries'
-        ordering = ('name',)
+        verbose_name_plural = "Countries"
+        ordering = ("name",)
 
 
 class Band(models.Model):
     name = models.CharField(max_length=255)
-    genre = models.IntegerField(choices=((1, 'Rock'),
-                                         (2, 'Blues'),
-                                         (3, 'Soul'),
-                                         (4, 'Other'),
-                                         ))
+    genre = models.IntegerField(
+        choices=(
+            (1, "Rock"),
+            (2, "Blues"),
+            (3, "Soul"),
+            (4, "Other"),
+        )
+    )
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -73,13 +77,11 @@ class Artist(JSONMixin, models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     year_of_birth = models.IntegerField()
     active = models.BooleanField(default=True)
-    bands = models.ManyToManyField(Band,
-                                   related_name='bands',
-                                   verbose_name='Bands')
+    bands = models.ManyToManyField(Band, related_name="bands", verbose_name="Bands")
 
     class Meta:
-        app_label = 'demo'
-        ordering = ('name',)
+        app_label = "demo"
+        ordering = ("name",)
 
     def __str__(self):
         return self.name
@@ -100,22 +102,22 @@ class Artist(JSONMixin, models.Model):
 class Artist_RelatedFieldCheckBoxFilter(Artist):
     class Meta:
         proxy = True
-        verbose_name = 'RelatedFieldCheckBoxFilter'
+        verbose_name = "RelatedFieldCheckBoxFilter"
 
 
 class Artist_RelatedFieldRadioFilter(Artist):
     class Meta:
         proxy = True
-        verbose_name = 'RelatedFieldRadioFilter'
+        verbose_name = "RelatedFieldRadioFilter"
 
 
 class Artist_UnionFieldListFilter(Artist):
     class Meta:
         proxy = True
-        verbose_name = 'UnionFieldListFilter'
+        verbose_name = "UnionFieldListFilter"
 
 
 class Artist_IntersectionFieldListFilter(Artist):
     class Meta:
         proxy = True
-        verbose_name = 'IntersectionFieldListFilter'
+        verbose_name = "IntersectionFieldListFilter"
