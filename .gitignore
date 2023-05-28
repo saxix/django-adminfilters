@@ -4,6 +4,8 @@
 !.gitignore
 !.github
 !.bumpversion.cfg
+!.flake8
+!.isort.cfg
 .travis.yml
 dist/
 coverage.xml

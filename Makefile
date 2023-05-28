@@ -4,34 +4,49 @@ BINDIR=${PWD}/~build/bin
 export PYTHONPATH:=${PWD}/tests/:${PWD}/src
 DJANGO?='1.7.x'
 
+
+define PRINT_HELP_PYSCRIPT
+import re, sys
+
+for line in sys.stdin:
+	match = re.match(r'^([a-zA-Z0-9_-]+):.*?## (.*)$$', line)
+	if match:
+		target, help = match.groups()
+		print("\033[93m%-10s\033[0m %s" % (target, help))
+endef
+export PRINT_HELP_PYSCRIPT
+
+help:
+	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+
 .mkbuilddir:
 	@mkdir -p ${BUILDDIR}
 
-lint:
-	pre-commit run --all-files
+lint:  ## code lint
+	tox -e lint
+	#pre-commit run --all-files
 
-develop:
+develop:  ## setup development env
 	python3 -m venv ./.venv
 	./.venv/bin/pip install -r src/requirements/testing.pip
 	./.venv/bin/pip install -r src/requirements/develop.pip
 
-demo:
-	#cd tests/demoapp && python manage.py migrate
-	#cd tests/demoapp && python manage.py migrate
+demo:  ## run demo app
+	cd tests/demoapp && python manage.py makemigrations demo
 	cd tests/demoapp && python manage.py init_demo
 	cd tests/demoapp && python manage.py runserver
 
-clean:
+clean:  ## clean development directory
 	rm -fr ${BUILDDIR} dist *.egg-info .coverage coverage.xml pytest.xml .cache MANIFEST build .pytest_cache
 	find . -name __pycache__ | xargs rm -rf
 	find . -name "*.py?" -o -name "*.orig" -prune | xargs rm -rf
 
-fullclean:
+fullclean:  ## clean development directory
 	rm -fr .tox .cache
 	rm -fr *.sqlite
 	$(MAKE) clean
 
-coverage:
+test:  ## run test
 	 py.test src tests -vv --capture=no --doctest-modules --cov=adminfilters --cov-report=html --cov-config=tests/.coveragerc
 
 docs: .mkbuilddir

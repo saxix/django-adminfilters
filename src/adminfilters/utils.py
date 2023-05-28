@@ -12,18 +12,18 @@ rex = re.compile("'.*'")
 
 
 def parse_bool(value):
-    if str(value).lower() in ['true', '1', 'yes', 't', 'y']:
+    if str(value).lower() in ["true", "1", "yes", "t", "y"]:
         return True
-    elif str(value).lower() in ['false', '0', 'no', 'f', 'n']:
+    elif str(value).lower() in ["false", "0", "no", "f", "n"]:
         return False
     return value
 
 
 def get_message_from_exception(e: FieldError):
     message = str(e)
-    fieldname = rex.findall(message) or ['']
-    if 'Unsupported lookup' in message:
-        return f'Unsupported lookup: {fieldname[0]}'
+    fieldname = rex.findall(message) or [""]
+    if "Unsupported lookup" in message:
+        return f"Unsupported lookup: {fieldname[0]}"
     else:
         return message
 
@@ -44,7 +44,7 @@ def get_query_string(request, new_params=None, remove=None):
                 del p[k]
         else:
             p[k] = v
-    return '?%s' % urlencode(sorted(p.items()))
+    return "?%s" % urlencode(sorted(p.items()))
 
 
 def get_field_by_name(model, name):
@@ -55,12 +55,20 @@ def get_field_by_name(model, name):
 
 def get_all_field_names(model):
     from itertools import chain
+
     if not model:
         raise ValueError("'model' must be a Model instance")
-    return list(set(chain.from_iterable((field.name, field.attname)
-                                        if hasattr(field, 'attname') else (field.name,)
-                                        for field in model._meta.get_fields()
-                                        if not (field.many_to_one and field.related_model is None))))
+    return list(
+        set(
+            chain.from_iterable(
+                (field.name, field.attname)
+                if hasattr(field, "attname")
+                else (field.name,)
+                for field in model._meta.get_fields()
+                if not (field.many_to_one and field.related_model is None)
+            )
+        )
+    )
 
 
 def get_field_by_path(model, field_path):
@@ -81,7 +89,7 @@ def get_field_by_path(model, field_path):
     >>> get_field_by_path(p, 'content_type.app_label').name
     'app_label'
     """
-    parts = field_path.split('.')
+    parts = field_path.split(".")
     target = parts[0]
     if not model:
         raise ValueError("'model' must be a Model instance")
@@ -93,7 +101,9 @@ def get_field_by_path(model, field_path):
                 while True:
                     if field_object.related_model is None:
                         break
-                    fk = get_field_by_path(field_object.related_model, '.'.join(parts[1:]))
+                    fk = get_field_by_path(
+                        field_object.related_model, ".".join(parts[1:])
+                    )
                     if fk is None:
                         break
                     field_object = fk
@@ -106,10 +116,10 @@ def get_field_by_path(model, field_path):
 
 
 def get_field_type(model, field_path):
-    lookup = 'exact'
+    lookup = "exact"
     try:
-        parts = field_path.split('__')
-        field = get_field_by_path(model, '.'.join(parts))
+        parts = field_path.split("__")
+        field = get_field_by_path(model, ".".join(parts))
         if not field:
             raise ValidationError(f"Unknown field '{field_path}'")
         if field.name != parts[-1]:
@@ -120,13 +130,24 @@ def get_field_type(model, field_path):
     return field, lookup, field_type
 
 
-def cast_value(v, fld, lookup):
-    if isinstance(fld, (BooleanField,)) or lookup in ['isnull']:
+def cast_value(v, fld, lookup, force=None):
+    if force:
+        func = force
+    elif isinstance(fld, (BooleanField,)) or lookup in ["isnull"]:
         func = parse_bool
-    elif isinstance(fld, (DateField, DateTimeField,)) and lookup:
+    elif (
+        isinstance(
+            fld,
+            (
+                DateField,
+                DateTimeField,
+            ),
+        )
+        and lookup
+    ):
         return v
     else:
         func = fld.to_python
-    if lookup in ['in']:
-        return [func(e) for e in v.split(',')]
+    if lookup in ["in"]:
+        return [func(e) for e in v.split(",")]
     return func(v)

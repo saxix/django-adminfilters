@@ -5,15 +5,15 @@ import json
 import os
 import re
 
-from sphinx import __version__ as sphinx_ver, addnodes
+from sphinx import __version__ as sphinx_ver
+from sphinx import addnodes
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.util.compat import Directive
 from sphinx.util.console import bold
 from sphinx.writers.html import SmartyPantsHTMLTranslator
 
 # RE for option descriptions without a '--' prefix
-simple_option_desc_re = re.compile(
-    r'([-_a-zA-Z0-9]+)(\s*.*?)(?=,\s+(?:/|-|--)|$)')
+simple_option_desc_re = re.compile(r'([-_a-zA-Z0-9]+)(\s*.*?)(?=,\s+(?:/|-|--)|$)')
 
 
 def setup(app):
@@ -25,12 +25,12 @@ def setup(app):
     app.add_crossref_type(
         directivename='templatetag',
         rolename='ttag',
-        indextemplate='pair: %s; template tag'
+        indextemplate='pair: %s; template tag',
     )
     app.add_crossref_type(
         directivename='templatefilter',
         rolename='tfilter',
-        indextemplate='pair: %s; template filter'
+        indextemplate='pair: %s; template filter',
     )
     app.add_crossref_type(
         directivename='fieldlookup',
@@ -73,7 +73,9 @@ class VersionDirective(Directive):
             node['version'] = self.arguments[0]
         node['type'] = self.name
         if len(self.arguments) == 2:
-            inodes, messages = self.state.inline_text(self.arguments[1], self.lineno + 1)
+            inodes, messages = self.state.inline_text(
+                self.arguments[1], self.lineno + 1
+            )
             node.extend(inodes)
             if self.content:
                 self.state.nested_parse(self.content, self.content_offset, node)
@@ -129,12 +131,10 @@ class DjangoHTMLTranslator(SmartyPantsHTMLTranslator):
     }
 
     def visit_versionmodified(self, node):
-        self.body.append(
-            self.starttag(node, 'div', CLASS=node['type'])
-        )
+        self.body.append(self.starttag(node, 'div', CLASS=node['type']))
         title = '%s%s' % (
             self.version_text[node['type']] % node['version'],
-            len(node) and ':' or '.'
+            len(node) and ':' or '.',
         )
         self.body.append('<span class="title">%s</span> ' % title)
 
@@ -161,6 +161,7 @@ def parse_django_admin_node(env, sig, signode):
 def parse_django_adminopt_node(env, sig, signode):
     """A copy of sphinx.directives.CmdoptionDesc.parse_signature()"""
     from sphinx.domains.std import option_desc_re
+
     count = 0
     firstname = ''
     for m in option_desc_re.finditer(sig):
@@ -199,10 +200,16 @@ class DjangoStandaloneHTMLBuilder(StandaloneHTMLBuilder):
         self.info(bold('writing templatebuiltins.js...'))
         xrefs = self.env.domaindata['std']['objects']
         templatebuiltins = {
-            'ttags': [n for ((t, n), (lnk, a)) in xrefs.items()
-                      if t == 'templatetag' and lnk == 'ref/templates/builtins'],
-            'tfilters': [n for ((t, n), (lnk, a)) in xrefs.items()
-                         if t == 'templatefilter' and lnk == 'ref/templates/builtins'],
+            'ttags': [
+                n
+                for ((t, n), (lnk, a)) in xrefs.items()
+                if t == 'templatetag' and lnk == 'ref/templates/builtins'
+            ],
+            'tfilters': [
+                n
+                for ((t, n), (lnk, a)) in xrefs.items()
+                if t == 'templatefilter' and lnk == 'ref/templates/builtins'
+            ],
         }
         outfilename = os.path.join(self.outdir, 'templatebuiltins.js')
         with open(outfilename, 'wb') as fp:

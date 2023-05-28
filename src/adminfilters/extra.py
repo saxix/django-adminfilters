@@ -4,13 +4,15 @@ from django.utils.translation import gettext as _
 
 
 class PermissionPrefixFilter(SimpleListFilter):
-    title = 'Permission'
-    parameter_name = 'perm'
-    prefixes = (('view', _('View')),
-                ('add', _('Add')),
-                ('change', _('Change')),
-                ('delete', _('Delete')),
-                ('--', _('Others')))
+    title = "Permission"
+    parameter_name = "perm"
+    prefixes = (
+        ("view", _("View")),
+        ("add", _("Add")),
+        ("change", _("Change")),
+        ("delete", _("Delete")),
+        ("--", _("Others")),
+    )
     lookup_val = None
 
     def lookups(self, request, model_admin):
@@ -19,7 +21,7 @@ class PermissionPrefixFilter(SimpleListFilter):
     def queryset(self, request, queryset):
         if not self.value():
             return queryset
-        if self.value() == '--':
+        if self.value() == "--":
             k = [prefix for prefix, label in self.prefixes]
             query = Q()
             for el in k:

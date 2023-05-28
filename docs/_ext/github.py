@@ -38,15 +38,18 @@ def make_link_node(rawtext, app, type, slug, options):
         if not base.endswith('/'):
             base += '/'
     except AttributeError as err:
-        raise ValueError('github_project_url configuration value is not set (%s)' % str(err))
+        raise ValueError(
+            'github_project_url configuration value is not set (%s)' % str(err)
+        )
 
     ref = base + type + '/' + slug + '/'
     set_classes(options)
     prefix = '#'
     if type == 'pull':
         prefix = 'PR ' + prefix
-    node = nodes.reference(rawtext, prefix + utils.unescape(slug), refuri=ref,
-                           **options)
+    node = nodes.reference(
+        rawtext, prefix + utils.unescape(slug), refuri=ref, **options
+    )
     return node
 
 
@@ -73,7 +76,9 @@ def ghissue_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
     except ValueError:
         msg = inliner.reporter.error(
             'GitHub issue number must be a number greater than or equal to 1; '
-            '"%s" is invalid.' % text, line=lineno)
+            '"%s" is invalid.' % text,
+            line=lineno,
+        )
         prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
     app = inliner.document.settings.env.app
@@ -83,8 +88,9 @@ def ghissue_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
         category = 'issues'
     else:
         msg = inliner.reporter.error(
-            'GitHub roles include "ghpull" and "ghissue", '
-            '"%s" is invalid.' % name, line=lineno)
+            'GitHub roles include "ghpull" and "ghissue", ' '"%s" is invalid.' % name,
+            line=lineno,
+        )
         prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
     node = make_link_node(rawtext, app, category, str(issue_num), options)
@@ -135,7 +141,9 @@ def ghcommit_role(name, rawtext, text, lineno, inliner, options={}, content=[]):
         if not base.endswith('/'):
             base += '/'
     except AttributeError as err:
-        raise ValueError('github_project_url configuration value is not set (%s)' % str(err))
+        raise ValueError(
+            'github_project_url configuration value is not set (%s)' % str(err)
+        )
 
     ref = base + text
     node = nodes.reference(rawtext, text[:6], refuri=ref, **options)

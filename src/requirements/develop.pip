@@ -1,6 +1,7 @@
-pdbpp
+black
 django
 check-manifest
+pre-commit
 pytest
 flake8
 sphinx

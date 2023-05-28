@@ -16,15 +16,17 @@ def test():
     assert ret == [], [e.msg for e in ret]
 
 
-@pytest.mark.parametrize('filter_class', [QueryStringFilter, ('name', ValueFilter)])
+@pytest.mark.parametrize("filter_class", [QueryStringFilter, ("name", ValueFilter)])
 def test_check_error(filter_class):
     class InvalidModelAdmin(ModelAdmin):
-        list_filter = ('active',
-                       filter_class,
-                       ('genre', RelatedFieldCheckBoxFilter),
-                       )
+        list_filter = (
+            "active",
+            filter_class,
+            ("genre", RelatedFieldCheckBoxFilter),
+        )
 
-    with patch.dict(site._registry, {Artist: ArtistModelAdmin,
-                                     Band: InvalidModelAdmin}, clear=True):
+    with patch.dict(
+        site._registry, {Artist: ArtistModelAdmin, Band: InvalidModelAdmin}, clear=True
+    ):
         ret = check_adminfilters_media(None)
         assert len(ret) == 1, [e.msg for e in ret]

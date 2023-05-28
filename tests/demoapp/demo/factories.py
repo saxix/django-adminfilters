@@ -16,46 +16,51 @@ class AutoRegisterFactoryMetaClass(FactoryMetaClass):
         return new_class
 
 
-class ModelFactory(factory.django.DjangoModelFactory, metaclass=AutoRegisterFactoryMetaClass):
+class ModelFactory(
+    factory.django.DjangoModelFactory, metaclass=AutoRegisterFactoryMetaClass
+):
     pass
 
 
 def get_flags():
     # Convert to plain ascii text
-    f = lambda: random.choice([
-        ('int', random.randint(1, 100)),
-        ('chr', chr(random.randrange(65, 90))),
-        ('int', '__'),
-        ('chr', ''),
-        ('chr', None),
-        ('int', None),
-        ('chr', '__'),
-    ])
+    f = lambda: random.choice(
+        [
+            ("int", random.randint(1, 100)),
+            ("chr", chr(random.randrange(65, 90))),
+            ("int", "__"),
+            ("chr", ""),
+            ("chr", None),
+            ("int", None),
+            ("chr", "__"),
+        ]
+    )
     value = f()
-    if value[1] == '__':
+    if value[1] == "__":
         base = {}
     else:
         base = dict([value])
     value = f()
-    if value[1] != '__':
+    if value[1] != "__":
         base.update(dict([value]))
     return base
 
 
 class DemoModelFieldFactory(ModelFactory):
-    char = factory.Faker('name')
-    integer = factory.Faker('pyint')
-    date = factory.Faker('date_this_decade')
-    datetime = factory.Faker('date_this_decade')
-    time = factory.Faker('time')
-    logic = factory.Faker('pybool')
-    decimal = factory.Faker('coordinate')
-    float = factory.Faker('pyfloat')
-    bigint = factory.Faker('pyint')
-    generic_ip = factory.Faker('ipv4')
+    char = factory.Faker("name")
+    integer = factory.Faker("pyint")
+    date = factory.Faker("date_this_decade")
+    datetime = factory.Faker("date_this_decade")
+    time = factory.Faker("time")
+    logic = factory.Faker("pybool")
+    decimal = factory.Faker("coordinate")
+    float = factory.Faker("pyfloat")
+    bigint = factory.Faker("pyint")
+    generic_ip = factory.Faker("ipv4")
     choices = factory.fuzzy.FuzzyChoice([1, 2, 3])
     unique = factory.Sequence(lambda a: a)
-    email = factory.Faker('email')
+    email = factory.Faker("email")
+    json = {"char": "string", "integer": 100, "float": 2.0}
 
     class Meta:
         model = models.DemoModelField
@@ -68,37 +73,37 @@ class DemoModelFieldFactory(ModelFactory):
 class UserFactory(ModelFactory):
     class Meta:
         model = User
-        django_get_or_create = ('username',)
+        django_get_or_create = ("username",)
 
 
 class CountryFactory(ModelFactory):
-    name = factory.Faker('country')
+    name = factory.Faker("country")
 
     class Meta:
         model = models.Country
-        django_get_or_create = ('name',)
+        django_get_or_create = ("name",)
 
 
 class BandFactory(ModelFactory):
-    name = factory.Faker('name')
+    name = factory.Faker("name")
     genre = factory.fuzzy.FuzzyChoice([1, 2, 3, 4])
 
     class Meta:
         model = models.Band
-        django_get_or_create = ('name',)
+        django_get_or_create = ("name",)
 
 
 class ArtistFactory(ModelFactory):
-    name = factory.Faker('first_name')
-    last_name = factory.Faker('last_name')
-    full_name = factory.LazyAttribute(lambda o: f'{o.last_name}, {o.name}')
+    name = factory.Faker("first_name")
+    last_name = factory.Faker("last_name")
+    full_name = factory.LazyAttribute(lambda o: f"{o.last_name}, {o.name}")
 
     country = factory.SubFactory(CountryFactory)
-    year_of_birth = factory.Faker('year')
+    year_of_birth = factory.Faker("year")
 
     class Meta:
         model = models.Artist
-        django_get_or_create = ('name', 'last_name')
+        django_get_or_create = ("name", "last_name")
 
     @factory.post_generation
     def bands(self, create, extracted, **kwargs):
@@ -123,4 +128,4 @@ def get_factory_for_model(_model):
 
     if _model in factories_registry:
         return factories_registry[_model]
-    return type('AAA', (ModelFactory,), {'Meta': Meta})
+    return type("AAA", (ModelFactory,), {"Meta": Meta})

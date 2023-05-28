@@ -6,15 +6,15 @@ from adminfilters.mixin import SmartFieldListFilter
 
 
 class MultipleSelectFieldListFilter(SmartFieldListFilter):
-
     def __init__(self, field, request, params, model, model_admin, field_path):
-        self.lookup_kwarg = '%s_filter' % field_path
-        self.filter_statement = '%s' % field_path
+        self.lookup_kwarg = "%s_filter" % field_path
+        self.filter_statement = "%s" % field_path
         self.lookup_val = params.pop(self.lookup_kwarg, None)
         self.lookup_choices = field.get_choices(include_blank=False)
         super().__init__(field, request, params, model, model_admin, field_path)
-        self.used_parameters[self.lookup_kwarg] = prepare_lookup_value(self.lookup_kwarg,
-                                                                       self.lookup_val)
+        self.used_parameters[self.lookup_kwarg] = prepare_lookup_value(
+            self.lookup_kwarg, self.lookup_val
+        )
 
     def expected_parameters(self):
         return [self.lookup_kwarg]
@@ -29,7 +29,7 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
         values = []
         value = self.used_parameters.get(self.lookup_kwarg, None)
         if value:
-            values = value.split(',')
+            values = value.split(",")
 
         field = self.get_field()
         # convert to integers if IntegerField
@@ -43,11 +43,9 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
     def choices(self, cl):
         # from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
         yield {
-            'selected': self.lookup_val is None,
-            'query_string': cl.get_query_string(
-                {},
-                [self.lookup_kwarg]),
-            'display': _('All')
+            "selected": self.lookup_val is None,
+            "query_string": cl.get_query_string({}, [self.lookup_kwarg]),
+            "display": _("All"),
         }
         for pk_val, val in self.lookup_choices:
             selected = pk_val in self.values()
@@ -56,18 +54,19 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
                 pk_list.remove(pk_val)
             else:
                 pk_list.add(pk_val)
-            queryset_value = ','.join([str(x) for x in pk_list])
+            queryset_value = ",".join([str(x) for x in pk_list])
             if pk_list:
                 query_string = cl.get_query_string(
                     {
                         self.lookup_kwarg: queryset_value,
-                    })
+                    }
+                )
             else:
                 query_string = cl.get_query_string({}, [self.lookup_kwarg])
             yield {
-                'selected': selected,
-                'query_string': query_string,
-                'display': val,
+                "selected": selected,
+                "query_string": query_string,
+                "display": val,
             }
 
 
@@ -80,9 +79,7 @@ class IntersectionFieldListFilter(MultipleSelectFieldListFilter):
 
     def queryset(self, request, queryset):
         for value in self.values():
-            filter_dct = {
-                self.filter_statement: value
-            }
+            filter_dct = {self.filter_statement: value}
             queryset = queryset.filter(**filter_dct)
         return queryset
 
@@ -99,19 +96,18 @@ class UnionFieldListFilter(MultipleSelectFieldListFilter):
         try:
             field = super().get_field()
         except AttributeError:  # pragma: no cover
-            if hasattr(self.field, 'choices') and self.field.choices:
+            if hasattr(self.field, "choices") and self.field.choices:
                 field = self.field  # It's a *Field with choises
             else:
                 raise AttributeError(
-                    'Multiselect field must be a FK or any type with choices')
+                    "Multiselect field must be a FK or any type with choices"
+                )
         return field
 
     def queryset(self, request, queryset):
         filter_values = self.values()
         if filter_values:
-            filter_statement = '%s__in' % self.filter_statement
-            filter_dct = {
-                filter_statement: filter_values
-            }
+            filter_statement = "%s__in" % self.filter_statement
+            filter_dct = {filter_statement: filter_values}
             queryset = queryset.filter(**filter_dct).distinct()
         return queryset

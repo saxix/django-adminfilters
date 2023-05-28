@@ -6,17 +6,18 @@ from .value import ValueFilter
 
 
 class NumberFilter(ValueFilter):
-    rex1 = re.compile(r'^(>=|<=|>|<|=)?([-+]?[0-9]+)$')
-    re_range = re.compile(r'^(\d+)\.{2,}(\d+)$')
-    re_list = re.compile(r'(\d+),?')
-    re_unlike = re.compile(r'^(<>)([-+]?[0-9]+)$')
-    map = {'>=': 'gte',
-           '<=': 'lte',
-           '>': 'gt',
-           '<': 'lt',
-           '=': 'exact',
-           '<>': 'not',
-           }
+    rex1 = re.compile(r"^(>=|<=|>|<|=)?([-+]?[0-9]+)$")
+    re_range = re.compile(r"^(\d+)\.{2,}(\d+)$")
+    re_list = re.compile(r"(\d+),?")
+    re_unlike = re.compile(r"^(<>)([-+]?[0-9]+)$")
+    map = {
+        ">=": "gte",
+        "<=": "lte",
+        ">": "gt",
+        "<": "lt",
+        "=": "exact",
+        "<>": "not",
+    }
     can_negate = False
 
     # def __init__(self, field, request, params, model, model_admin, field_path):
@@ -25,13 +26,15 @@ class NumberFilter(ValueFilter):
 
     @classmethod
     def factory(cls, *, title=None, **kwargs):
-        if 'lookup_name' in kwargs:
-            raise ValueError(f"'lookup_name' is not a valid value for "
-                             f"'{cls.__class__.__name__}.factory'")
+        if "lookup_name" in kwargs:
+            raise ValueError(
+                f"'lookup_name' is not a valid value for "
+                f"'{cls.__class__.__name__}.factory'"
+            )
         return super().factory(title=title, **kwargs)
 
     def placeholder(self):
-        return '1 or >< <=> <> 1 or 1..10 or 1,4,5'
+        return "1 or >< <=> <> 1 or 1..10 or 1,4,5"
 
     # def parse_query_string(self, params):
     #     self.lookup_val = params.get(self.field.name, '')
@@ -41,7 +44,7 @@ class NumberFilter(ValueFilter):
 
     def value(self):
         return [
-            self.parameters.get(self.lookup_kwarg, ''),
+            self.parameters.get(self.lookup_kwarg, ""),
         ]
 
     def queryset(self, request, queryset):
@@ -52,21 +55,23 @@ class NumberFilter(ValueFilter):
             m_list = self.re_list.match(raw_value)
             m_unlike = self.re_unlike.match(raw_value)
             if m_unlike and m_unlike.groups():
-                match = '%s__exact' % self.field.name
+                match = "%s__exact" % self.field.name
                 op, value = self.re_unlike.match(raw_value).groups()
                 queryset = queryset.exclude(**{match: value})
             else:
                 if m1 and m1.groups():
                     op, value = self.rex1.match(raw_value).groups()
-                    match = '%s__%s' % (self.field.name, self.map[op or '='])
+                    match = "%s__%s" % (self.field.name, self.map[op or "="])
                     self.filters = {match: value}
                 elif m_range and m_range.groups():
                     start, end = self.re_range.match(raw_value).groups()
-                    self.filters = {f'{self.field.name}__gte': start,
-                                    f'{self.field.name}__lte': end}
+                    self.filters = {
+                        f"{self.field.name}__gte": start,
+                        f"{self.field.name}__lte": end,
+                    }
                 elif m_list and m_list.groups():
-                    value = raw_value.split(',')
-                    match = '%s__in' % self.field.name
+                    value = raw_value.split(",")
+                    match = "%s__in" % self.field.name
                     self.filters = {match: value}
                 # elif m_unlike and m_unlike.groups():
                 #     match = '%s__exact' % self.field.name
