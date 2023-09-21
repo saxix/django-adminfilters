@@ -10,5 +10,6 @@ pytest-cov
 pytest-django
 pytest-echo
 pytest-pythonpath
-pytest-selenium
+pytest-selenium<4
+selenium<4.10
 tox

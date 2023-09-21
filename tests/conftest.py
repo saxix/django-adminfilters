@@ -1,5 +1,6 @@
 import os
 import sys
+from pathlib import Path
 
 
 def pytest_addoption(parser):
@@ -24,6 +25,7 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     sys._called_from_pytest = True
+    sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
     setattr(config.option, "driver", "chrome")
 
     if config.option.show_browser:
