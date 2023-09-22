@@ -11,5 +11,5 @@ pytest-django
 pytest-echo
 pytest-pythonpath
 pytest-selenium<4
-selenium<4.10
+selenium==4.9.1
 tox
