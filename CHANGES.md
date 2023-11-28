@@ -1,4 +1,4 @@
-(dev)
+* Release 2.3
 =============
 * BUG FIX: fixes check() implementation
 * new LinkedAutoCompleteFilter
