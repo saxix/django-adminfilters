@@ -34,3 +34,42 @@ python::
 
 
 .. _autocomplete: https://docs.djangoproject.com/en/4.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.autocomplete_fields
+
+
+
+LinkedAutoComplete
+==================
+
+.. image:: ../images/autocomplete.gif
+    :width: 200
+
+
+As filter_autocomplete_ it can be used in case dependant master/details elements where we want to limits the "details" based on the "master" selection.
+
+
+Usage
+-----
+
+python::
+
+    class Country(models.ModelAdmin):
+        ...
+
+    class Region(models.ModelAdmin):
+        country = models.ForeignKey(Country, ...)
+
+    class MyModel(models.ModelAdmin):
+        region = models.ForeignKey(Region, ...)
+
+    class MyCountry(models.ModelAdmin):
+        search_fields = ('name', )
+
+    class MyRegion(models.ModelAdmin):
+        search_fields = ('name', )
+
+    class MyModelAdmin(models.ModelAdmin):
+        list_filter = (
+            ('region__country', LinkedAutoCompleteFilter.factory(None),
+            ('region', LinkedAutoCompleteFilter.factory("region__country"),
+            ...
+            )

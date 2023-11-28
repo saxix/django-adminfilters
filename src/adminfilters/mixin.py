@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.admin import FieldListFilter, ListFilter
 from django.contrib.admin.options import ModelAdmin
+from django.core import checks
 
 
 class WrappperMixin:
@@ -59,6 +60,68 @@ class MediaDefinitionFilter:
 
 
 class AdminFiltersMixin(ModelAdmin):
+    def _check_linked_fields_modeladmin(self):
+        from .autocomplete import LinkedAutoCompleteFilter
+
+        linked_filters = [
+            e
+            for e in self.list_filter
+            if isinstance(e, (list, tuple))
+            and issubclass(e[1], LinkedAutoCompleteFilter)
+        ]
+        errs = []
+        seen = []
+        for pos, entry in enumerate(linked_filters):
+            if entry[1] and entry[1].parent:
+                parts = entry[1].parent.split("__")
+                m = self.model
+                for part in parts:
+                    m = m._meta.get_field(part).remote_field.model
+                    ma: ModelAdmin = self.admin_site._registry[m]
+                    if ma not in seen and not isinstance(
+                        ma, AdminAutoCompleteSearchMixin
+                    ):
+                        errs.append(
+                            checks.Error(
+                                f"{ma}` must inherits from AdminAutoCompleteSearchMixin",
+                                obj=ma.__class__,
+                                id="admin.E041",
+                            )
+                        )
+                        seen.append(ma)
+
+        return errs
+
+    def _check_linked_fields_order(self):
+        from .autocomplete import LinkedAutoCompleteFilter
+
+        linked_filters = [
+            e
+            for e in self.list_filter
+            if isinstance(e, (list, tuple))
+            and issubclass(e[1], LinkedAutoCompleteFilter)
+        ]
+        errs = []
+        seen = []
+        for pos, entry in enumerate(linked_filters):
+            if entry[1] and entry[1].parent and entry[1].parent not in seen:
+                errs.append(
+                    checks.Error(
+                        f"Invalid Filters ordering. '{entry[1].parent}' must be defined before '{entry[0]}'.",
+                        obj=self.__class__,
+                        id="admin.E040",
+                    )
+                )
+            seen.append(entry[0])
+        return errs
+
+    def check(self, **kwargs):
+        return [
+            *super().check(**kwargs),
+            *self._check_linked_fields_order(),
+            *self._check_linked_fields_modeladmin(),
+        ]
+
     def get_changelist_instance(self, request):
         cl = super().get_changelist_instance(request)
         for flt in cl.filter_specs:
@@ -76,3 +139,14 @@ class AdminFiltersMixin(ModelAdmin):
         if hasattr(self, "admin_filters_media"):
             original += self.admin_filters_media
         return original
+
+
+class AdminAutoCompleteSearchMixin(ModelAdmin):
+    def get_search_results(self, request, queryset, search_term):
+        field_names = [f.name for f in self.model._meta.get_fields()]
+        filters = {k: v for k, v in request.GET.items() if k in field_names}
+        queryset = queryset.filter(**filters)
+        queryset, may_have_duplicates = super().get_search_results(
+            request, queryset, search_term
+        )
+        return queryset, may_have_duplicates

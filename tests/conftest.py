@@ -6,7 +6,6 @@ from pathlib import Path
 def pytest_addoption(parser):
     parser.addoption(
         "--selenium",
-        "-S",
         action="store_true",
         dest="enable_selenium",
         default=False,
@@ -15,7 +14,7 @@ def pytest_addoption(parser):
 
     parser.addoption(
         "--show-browser",
-        "-B",
+        "-S",
         action="store_true",
         dest="show_browser",
         default=False,
