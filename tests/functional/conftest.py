@@ -13,6 +13,10 @@ def chrome_options(request):
     chrome_options = Options()
     if not request.config.getvalue("show_browser"):
         chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--whitelisted-ips")
+        chrome_options.add_argument("--enable-automation")
     return chrome_options
 
 
