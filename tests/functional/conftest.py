@@ -17,6 +17,7 @@ def chrome_options(request):
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--allow-insecure-localhost")
     chrome_options.add_argument("--disable-translate")
+    chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--lang=en-GB")
     chrome_options.add_argument("--disable-gpu")
