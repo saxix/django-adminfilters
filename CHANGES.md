@@ -1,4 +1,9 @@
-Release 2.2
+* Release 2.3
+=============
+* BUG FIX: fixes check() implementation
+* new LinkedAutoCompleteFilter
+
+* Release 2.2
 =============
 * Improves support for JsonFields (use `#` to cast integer `.` to cast float)
 

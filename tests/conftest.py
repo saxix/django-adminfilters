@@ -1,11 +1,11 @@
 import os
 import sys
+from pathlib import Path
 
 
 def pytest_addoption(parser):
     parser.addoption(
         "--selenium",
-        "-S",
         action="store_true",
         dest="enable_selenium",
         default=False,
@@ -14,7 +14,7 @@ def pytest_addoption(parser):
 
     parser.addoption(
         "--show-browser",
-        "-B",
+        "-S",
         action="store_true",
         dest="show_browser",
         default=False,
@@ -24,6 +24,7 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     sys._called_from_pytest = True
+    sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
     setattr(config.option, "driver", "chrome")
 
     if config.option.show_browser:
