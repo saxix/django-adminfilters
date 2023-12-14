@@ -114,7 +114,8 @@ class LinkedAutoCompleteFilter(AutoCompleteFilter):
         super().__init__(field, request, params, model, model_admin, field_path)
         for pos, entry in enumerate(model_admin.list_filter):
             if (
-                len(entry) == 2
+                isinstance(entry, (list, tuple))
+                and len(entry) == 2
                 and entry[0] != self.field_path
                 and entry[1].__name__ == type(self).__name__
                 and entry[1].parent == self.field_path
