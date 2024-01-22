@@ -7,6 +7,7 @@ from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 
+from adminfilters.compat import DJANGO_MAJOR
 from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 
@@ -37,6 +38,7 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
                 self.parameters[p] = params.pop(p)
 
         super().__init__(field, request, params, model, model_admin, field_path)
+        self._params = self.parameters
         self.title = self._get_title()
         # self.query_string = get_query_string(request, remove=self.expected_parameters())
 
@@ -51,8 +53,8 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
 
     def value(self):
         return [
-            self.parameters.get(self.lookup_kwarg, ""),
-            self.parameters.get(self.lookup_kwarg_negated, "") == "true"
+            self.get_parameters(self.lookup_kwarg),
+            self.get_parameters(self.lookup_kwarg_negated) == "true",
             # self.parameters[self.lookup_kwarg],
             # self.parameters[self.lookup_kwarg_negated] == 'true'
             # self.lookup_val,
@@ -132,10 +134,8 @@ class MultiValueFilter(ValueFilter):
         return _("comma separated list of values")
 
     def value(self):
-        values = self.parameters.get(self.lookup_kwarg, None)
-        if values is not None:
-            values = values.split(self.separator)
-        return [values, self.parameters.get(self.lookup_kwarg_negated, "") == "true"]
+        values = self.get_parameters(self.lookup_kwarg, None, multi=True)
+        return [values, self.get_parameters(self.lookup_kwarg_negated, "") == "true"]
 
 
 TextFieldFilter = ValueFilter
