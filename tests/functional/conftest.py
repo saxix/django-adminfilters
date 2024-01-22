@@ -94,8 +94,9 @@ def data():
     from demo.factories import ArtistFactory
     from demo.management.commands.init_demo import sample_data
 
-    ArtistFactory.create_batch(20)
+    batch = ArtistFactory.create_batch(20)
     sample_data()
+    return batch
 
 
 class AdminSite:
@@ -129,6 +130,6 @@ def admin_site(live_server, selenium, data):
     site = AdminSite(live_server, selenium)
     site.open("/")
     site.wait_for(By.LINK_TEXT, "Artists").click()
-    errors = site.get_errors()
+    errors = [err for err in site.get_errors() if err and 'favicon' not in err['message']]
     assert len(errors) == 0, "\n".join(["{message}".format(**err) for err in errors])
     return site

@@ -1,6 +1,7 @@
 import random
 
 import factory.fuzzy
+import faker
 from django.contrib.auth.models import User
 from factory.base import FactoryMetaClass
 
@@ -95,7 +96,7 @@ class BandFactory(ModelFactory):
 
 class ArtistFactory(ModelFactory):
     name = factory.Faker("first_name")
-    last_name = factory.Faker("last_name")
+    last_name = factory.Sequence(lambda n: f'Dummy{faker.Faker().unique.last_name()}{n}')
     full_name = factory.LazyAttribute(lambda o: f"{o.last_name}, {o.name}")
 
     country = factory.SubFactory(CountryFactory)

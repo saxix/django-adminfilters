@@ -2,6 +2,7 @@ import re
 
 from django.contrib.admin.options import IncorrectLookupParameters
 
+from .compat import DJANGO_MAJOR
 from .value import ValueFilter
 
 
@@ -44,7 +45,7 @@ class NumberFilter(ValueFilter):
 
     def value(self):
         return [
-            self.parameters.get(self.lookup_kwarg, ""),
+            self.get_parameters(self.lookup_kwarg),
         ]
 
     def queryset(self, request, queryset):
