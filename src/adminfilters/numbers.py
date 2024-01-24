@@ -2,7 +2,6 @@ import re
 
 from django.contrib.admin.options import IncorrectLookupParameters
 
-from .compat import DJANGO_MAJOR
 from .value import ValueFilter
 
 

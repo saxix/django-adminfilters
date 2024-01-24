@@ -4,8 +4,6 @@ from django.forms import Media
 from django.urls import reverse
 from django.utils.translation import get_language
 
-from adminfilters.compat import DJANGO_MAJOR
-
 from .mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 

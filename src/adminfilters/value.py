@@ -7,7 +7,6 @@ from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 
-from adminfilters.compat import DJANGO_MAJOR
 from adminfilters.mixin import MediaDefinitionFilter, SmartFieldListFilter
 
 

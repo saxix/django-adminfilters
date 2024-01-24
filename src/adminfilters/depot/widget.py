@@ -8,7 +8,6 @@ from django.utils.translation import get_language
 from adminfilters.depot.models import StoredFilter
 from adminfilters.utils import get_query_string
 
-from ..compat import DJANGO_MAJOR
 from ..mixin import WrappperMixin
 
 

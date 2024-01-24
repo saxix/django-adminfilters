@@ -8,7 +8,6 @@ from django.core.exceptions import FieldError, ValidationError
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 
-from .compat import DJANGO_MAJOR
 from .mixin import MediaDefinitionFilter, SmartListFilter
 from .utils import cast_value, get_field_type, get_message_from_exception
 
@@ -28,8 +27,8 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
     def __init__(self, request, params, model, model_admin):
         self.parameter_name_negated = "%s__negate" % self.parameter_name
         self._params = params
-        self.lookup_field_val = self._pop_parameter(self.parameter_name, "")
-        self.lookup_negated_val = self._pop_parameter(self.parameter_name_negated, "false")
+        self.lookup_field_val = self.get_parameters(self.parameter_name, pop=True)
+        self.lookup_negated_val = self.get_parameters(self.parameter_name_negated, "false", pop=True)
         self.query_string = None
         self.error_message = None
         self.exception = None
@@ -41,13 +40,6 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
         self.filters = {}
         self.exclude = {}
         super().__init__(request, params, model, model_admin)
-
-    def _pop_parameter(self, param_name, default):
-        val = self._params.pop(param_name, default)
-        if DJANGO_MAJOR >= 5:
-            if val and isinstance(val, list):
-                return val[-1]
-        return val
 
     @classmethod
     def factory(cls, **kwargs):
