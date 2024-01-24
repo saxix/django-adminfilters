@@ -3,11 +3,16 @@
 .. _filters_combo:
 
 
+.. image:: ../images/choices_field_combo.gif
+    :width: 900
+
+
 ====================
 AllValuesComboFilter
 ====================
 
     Just overrides standard template of Django ``AllValuesFieldListFilter``  to use Combobox widget
+
 
 =======================
 ChoicesFieldComboFilter
