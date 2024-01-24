@@ -26,11 +26,8 @@ class WrappperMixin:
                 f"{self.model_admin.__class__.__name__} must inherit from AdminFiltersMixin"
             )
 
-    def get_parameters(self, param_name, default="", multi=False, pop=False, separator=","):
-        if pop:
-            val = self._params.pop(param_name, default)
-        else:
-            val = self._params.get(param_name, default)
+    def get_parameters(self, param_name, default="", multi=False, separator=","):
+        val = self._params.get(param_name, default)
         if val:
             if DJANGO_MAJOR >= 5:
                 if isinstance(val, list) and not multi:
