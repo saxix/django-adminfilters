@@ -1,6 +1,7 @@
 import pytest
 from demo.models import Artist
 
+from adminfilters.compat import DJANGO_MAJOR
 from adminfilters.filters import MultiValueFilter, ValueFilter
 
 
@@ -69,10 +70,14 @@ def test_factory(fixtures):
     ],
 )
 def test_MultiValueTextFieldFilter(fixtures, value, negate, expected):
+    if DJANGO_MAJOR < 5:
+        val = value
+    else:
+        val = [value]
     f = MultiValueFilter(
         Artist._meta.get_field("name"),
         None,
-        {"name__in": value, "name__in__negate": str(negate).lower()},
+        {"name__in": val, "name__in__negate": str(negate).lower()},
         None,
         None,
         "name",

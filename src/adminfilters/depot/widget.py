@@ -19,6 +19,7 @@ class DepotManager(WrappperMixin, ListFilter):
 
     def __init__(self, request, params, model, model_admin):
         self.model_admin = model_admin
+        self._params = params.copy()
         super().__init__(request, params, model, model_admin)
         self.request = request
         self.query_string = get_query_string(
@@ -37,8 +38,8 @@ class DepotManager(WrappperMixin, ListFilter):
         return [self.parameter_name, self.parameter_name_op]
 
     def queryset(self, request, queryset):
-        filter_name = self.used_parameters.get(self.parameter_name)
-        operation = self.used_parameters.get(self.parameter_name_op, "add")
+        filter_name = self.get_parameters(self.parameter_name)
+        operation = self.get_parameters(self.parameter_name_op, "add")
         if filter_name:
             if operation == "add":
                 qs = get_query_string(request, {}, self.expected_parameters())

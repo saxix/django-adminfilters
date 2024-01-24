@@ -24,9 +24,10 @@ class DjangoLookupFilter(MediaDefinitionFilter, SmartListFilter):
         self.lookup_kwarg_key = "%s__key" % self.parameter_name
         self.lookup_kwarg_value = "%s__value" % self.parameter_name
         self.lookup_kwarg_negated = "%s__negate" % self.parameter_name
-        self.lookup_field_val = params.pop(self.lookup_kwarg_key, "")
-        self.lookup_value_val = params.pop(self.lookup_kwarg_value, "")
-        self.lookup_negated_val = params.pop(self.lookup_kwarg_negated, "false")
+        self._params = params
+        self.lookup_field_val = self.get_parameters(self.lookup_kwarg_key, pop=True)
+        self.lookup_value_val = self.get_parameters(self.lookup_kwarg_value, pop=True)
+        self.lookup_negated_val = self.get_parameters(self.lookup_kwarg_negated, "false", pop=True)
         self.error_message = None
         self.exception = None
         self.filters = None

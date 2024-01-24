@@ -3,6 +3,8 @@ from django.contrib.admin import FieldListFilter, ListFilter
 from django.contrib.admin.options import ModelAdmin
 from django.core import checks
 
+from adminfilters.compat import DJANGO_MAJOR
+
 
 class WrappperMixin:
     negated = False
@@ -23,6 +25,19 @@ class WrappperMixin:
             raise Exception(
                 f"{self.model_admin.__class__.__name__} must inherit from AdminFiltersMixin"
             )
+
+    def get_parameters(self, param_name, default="", multi=False, pop=False, separator=","):
+        if pop:
+            val = self._params.pop(param_name, default)
+        else:
+            val = self._params.get(param_name, default)
+        if val:
+            if DJANGO_MAJOR >= 5:
+                if isinstance(val, list) and not multi:
+                    val = val[-1]
+            elif multi:
+                val = val.split(separator)
+        return val
 
     def html_attrs(self):
         classes = f"adminfilters box {self.__class__.__name__.lower()}"
@@ -46,12 +61,14 @@ class WrappperMixin:
 class SmartListFilter(WrappperMixin, ListFilter):
     def __init__(self, request, params, model, model_admin):
         self.model_admin = model_admin
+        self._params = params
         super().__init__(request, params, model, model_admin)
 
 
 class SmartFieldListFilter(WrappperMixin, FieldListFilter):
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.model_admin = model_admin
+        self._params = params
         super().__init__(field, request, params, model, model_admin, field_path)
 
 
