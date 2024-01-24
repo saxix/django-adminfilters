@@ -1,3 +1,8 @@
+Release 2.4 (dev)
+=================
+* Django 5.x support
+
+
 Release 2.3.1
 ===============
 * Bug fixes
