@@ -1,5 +1,4 @@
 import pytest
-
 from demo.admin import ArtistModelAdmin
 from demo.models import Artist, Country
 from demo.urls import public_site
