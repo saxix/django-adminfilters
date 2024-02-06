@@ -55,15 +55,22 @@ class DemoModelAdmin_RelatedFieldRadioFilter(DebugMixin, ModelAdmin):
 
 
 class DemoModelAdmin_UnionFieldListFilter(DebugMixin, ModelAdmin):
-    list_display = [f.name for f in Artist._meta.fields]
+    # list_display = [f.name for f in Artist._meta.fields]
+    list_display = ["name", "last_name", "full_name", "country", "year_of_birth", "active", "_bands"]
     list_filter = (("bands", UnionFieldListFilter),)
     search_fields = ("name",)
 
+    def _bands(self, obj):
+        return [b.name for b in obj.bands.all()]
+
 
 class DemoModelAdmin_IntersectionFieldListFilter(DebugMixin, ModelAdmin):
-    list_display = [f.name for f in Artist._meta.fields]
+    list_display = ["name", "last_name", "full_name", "country", "year_of_birth", "active", "_bands"]
     list_filter = (("bands", IntersectionFieldListFilter),)
     search_fields = ("name",)
+
+    def _bands(self, obj):
+        return [b.name for b in obj.bands.all()]
 
 
 class DemoModelFieldAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
@@ -83,7 +90,7 @@ class CountryModelAdmin(DebugMixin, ModelAdmin):
 class BandModelAdmin(DebugMixin, ModelAdmin):
     list_display = [f.name for f in Band._meta.fields]
     search_fields = ("name",)
-    list_filter = ("genre",)
+    list_filter = ("genre", ChoicesFieldComboFilter), ("active", BooleanRadioFilter),
 
 
 class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):

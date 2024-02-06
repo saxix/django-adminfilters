@@ -21,7 +21,7 @@ python::
     class MyModel(models.ModelAdmin):
         flags = models.JSONField()
 
-    class MyModelAdmin(models.ModelAdmin):
+    class MyModelAdmin(AdminFiltersMixin, models.ModelAdmin):
         list_filter = (
             ('flags', JsonFieldFilter),
             ...

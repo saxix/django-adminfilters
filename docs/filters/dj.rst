@@ -19,7 +19,7 @@ Usage
 python::
 
 
-    class MyModelAdmin(models.ModelAdmin):
+    class MyModelAdmin(AdminFiltersMixin, models.ModelAdmin):
         list_filter = (
             DjangoLookupFilter,
             ...

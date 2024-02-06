@@ -7,9 +7,9 @@ __pycache__
 !.bumpversion.cfg
 !.flake8
 !.isort.cfg
+!.readthedocs.yaml
 .travis.yml
 dist/
 coverage.xml
 pytest.xml
 docs/images/*.mov
-__pycache__

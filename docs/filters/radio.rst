@@ -3,6 +3,11 @@
 .. _filters_radio:
 
 
+
+.. image:: ../images/boolean_radio.gif
+    :width: 900
+
+
 ====================
 AllValuesRadioFilter
 ====================

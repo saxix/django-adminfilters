@@ -44,7 +44,7 @@ class NumberFilter(ValueFilter):
 
     def value(self):
         return [
-            self.parameters.get(self.lookup_kwarg, ""),
+            self.get_parameters(self.lookup_kwarg),
         ]
 
     def queryset(self, request, queryset):
