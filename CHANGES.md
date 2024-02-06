@@ -1,4 +1,4 @@
-Release 2.4 (dev)
+Release 2.4
 =================
 * Django 5.x support
 
