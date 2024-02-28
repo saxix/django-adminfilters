@@ -114,18 +114,18 @@ class LinkedAutoCompleteFilter(AutoCompleteFilter):
             self.parent_lookup_kwarg = f"{self.parent}__exact"
         super().__init__(field, request, params, model, model_admin, field_path)
         for pos, entry in enumerate(model_admin.list_filter):
-            if (
-                isinstance(entry, (list, tuple))
-                and len(entry) == 2
-                and entry[0] != self.field_path
-                and entry[1].__name__ == type(self).__name__
-                and entry[1].parent == self.field_path
-            ):
-                kwarg = f"{entry[0]}__exact"
-                if entry[1].parent:
-                    if kwarg not in self.dependants:
-                        self.dependants.extend(entry[1].dependants)
-                        self.dependants.append(kwarg)
+            if isinstance(entry, (list, tuple)):
+                if (
+                    len(entry) == 2
+                    and entry[0] != self.field_path
+                    and entry[1].__name__ == type(self).__name__
+                    and entry[1].parent == self.field_path
+                ):
+                    kwarg = f"{entry[0]}__exact"
+                    if entry[1].parent:
+                        if kwarg not in self.dependants:
+                            self.dependants.extend(entry[1].dependants)
+                            self.dependants.append(kwarg)
 
     def has_output(self):
         if self.parent:
