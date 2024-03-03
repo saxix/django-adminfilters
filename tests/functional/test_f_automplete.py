@@ -25,3 +25,5 @@ def test_autocomplete(admin_site):
     admin_site.wait_and_click(By.XPATH, '//li[contains(text(), "United Kingdom")]')
     *__, cl = get_elements(admin_site.driver)
     assert set(cl.get_values(None, 5)) == {"United Kingdom"}
+    el = admin_site.driver.find_elements(By.ID, "select2-ac_country-container")
+    assert 'United Kingdom' in el[0].text
