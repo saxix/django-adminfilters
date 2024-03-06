@@ -29,8 +29,8 @@ class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
         self.lookup_kwarg_isnull = "%s__isnull" % field_path
         self._params = params
         self.request = request
-        super().__init__(field, request, params, model, model_admin, field_path)
         self.lookup_val = self.get_parameters(self.lookup_kwarg)
+        super().__init__(field, request, params, model, model_admin, field_path)
         self.admin_site = model_admin.admin_site
         self.query_string = ""
         self.target_field = get_real_field(model, field_path)

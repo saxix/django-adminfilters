@@ -2,7 +2,7 @@ from django.contrib.admin import ModelAdmin
 from django.contrib.admin.views.main import ChangeList
 from django.contrib.auth.admin import UserAdmin
 
-from adminfilters.autocomplete import AutoCompleteFilter
+from adminfilters.autocomplete import AutoCompleteFilter, LinkedAutoCompleteFilter
 from adminfilters.combo import ChoicesFieldComboFilter
 from adminfilters.depot.widget import DepotManager
 from adminfilters.filters import (
@@ -17,10 +17,10 @@ from adminfilters.filters import (
     ValueFilter,
 )
 from adminfilters.json import JsonFieldFilter
-from adminfilters.mixin import AdminFiltersMixin
+from adminfilters.mixin import AdminAutoCompleteSearchMixin, AdminFiltersMixin
 from adminfilters.value import MultiValueFilter
 
-from .models import Artist, Band, Country
+from .models import Artist, Band, City, Country, Region
 
 
 class DebugChangeList(ChangeList):
@@ -82,8 +82,18 @@ class DemoModelFieldAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     )
 
 
-class CountryModelAdmin(DebugMixin, ModelAdmin):
+class CountryModelAdmin(AdminAutoCompleteSearchMixin, DebugMixin, ModelAdmin):
     list_display = [f.name for f in Country._meta.fields]
+    search_fields = ("name",)
+
+
+class RegionModelAdmin(AdminAutoCompleteSearchMixin, DebugMixin, ModelAdmin):
+    list_display = [f.name for f in Region._meta.fields]
+    search_fields = ("name",)
+
+
+class CityModelAdmin(AdminAutoCompleteSearchMixin, DebugMixin, ModelAdmin):
+    list_display = [f.name for f in City._meta.fields]
     search_fields = ("name",)
 
 
@@ -98,6 +108,12 @@ class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     list_filter = (
         DepotManager,
         ("country", AutoCompleteFilter),
+        ('favourite_city__region__country',
+         LinkedAutoCompleteFilter.factory(title='Favourite Country')),
+        ("favourite_city__region",
+         LinkedAutoCompleteFilter.factory(title="Favourite Region", parent='favourite_city__region__country')),
+        ("favourite_city",
+         LinkedAutoCompleteFilter.factory(title="Favourite City", parent='favourite_city__region')),
         ("year_of_birth", NumberFilter),
         ("bands__name", MultiValueFilter),
         QueryStringFilter,

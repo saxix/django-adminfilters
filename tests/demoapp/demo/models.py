@@ -54,6 +54,30 @@ class Country(models.Model):
         ordering = ("name",)
 
 
+class Region(models.Model):
+    name = models.CharField(max_length=255)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        app_label = "demo"
+        ordering = ("name",)
+
+
+class City(models.Model):
+    name = models.CharField(max_length=255)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        app_label = "demo"
+        ordering = ("name",)
+
+
 class Band(models.Model):
     name = models.CharField(max_length=255)
     genre = models.IntegerField(
@@ -76,6 +100,7 @@ class Artist(JSONMixin, models.Model):
     full_name = models.CharField(max_length=255)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     year_of_birth = models.IntegerField()
+    favourite_city = models.ForeignKey(City, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     bands = models.ManyToManyField(Band, related_name="bands", verbose_name="Bands")
 
@@ -85,7 +110,6 @@ class Artist(JSONMixin, models.Model):
 
     def __str__(self):
         return self.name
-
 
 #
 # class DemoModel2(models.Model):

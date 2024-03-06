@@ -85,6 +85,24 @@ class CountryFactory(ModelFactory):
         django_get_or_create = ("name",)
 
 
+class RegionFactory(ModelFactory):
+    name = factory.fuzzy.FuzzyChoice(['North', 'South', 'East', 'West'])
+    country = factory.SubFactory(CountryFactory)
+
+    class Meta:
+        model = models.Region
+        django_get_or_create = ("name", "country")
+
+
+class CityFactory(ModelFactory):
+    name = factory.Faker("city")
+    region = factory.SubFactory(RegionFactory)
+
+    class Meta:
+        model = models.City
+        django_get_or_create = ("name", "region")
+
+
 class BandFactory(ModelFactory):
     name = factory.Faker("name")
     genre = factory.fuzzy.FuzzyChoice([1, 2, 3, 4])
@@ -98,6 +116,7 @@ class ArtistFactory(ModelFactory):
     name = factory.Faker("first_name")
     last_name = factory.Sequence(lambda n: f'Dummy{faker.Faker().unique.last_name()}{n}')
     full_name = factory.LazyAttribute(lambda o: f"{o.last_name}, {o.name}")
+    favourite_city = factory.SubFactory(CityFactory)
 
     country = factory.SubFactory(CountryFactory)
     year_of_birth = factory.Faker("year")
