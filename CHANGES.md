@@ -1,3 +1,9 @@
+Release 2.4.2
+=============
+* Autocomplete filter losing the value after the selection
+* With LinkedAutocomplete and Autocomplete in same filter list the latter would not work
+
+
 Release 2.4.1
 =============
 * Fixes bug in AutiCompleteFilter

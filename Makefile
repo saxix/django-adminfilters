@@ -54,6 +54,16 @@ docs: .mkbuilddir
 	@mkdir -p ${BUILDDIR}/docs
 	sphinx-build -aE docs ${BUILDDIR}/docs
 
+bump:   ## Bumps version
+	@while :; do \
+		read -r -p "bumpversion [major/minor/release]: " PART; \
+		case "$$PART" in \
+			major|minor|release) break ;; \
+  		esac \
+	done ; \
+	bumpversion --no-commit --allow-dirty $$PART
+	@grep "^VERSION " src/adminfilters/__init__.py
+
 
 heroku:
 	@git checkout heroku
