@@ -133,3 +133,15 @@ def admin_site(live_server, selenium, data):
     errors = [err for err in site.get_errors() if err and 'favicon' not in err['message']]
     assert len(errors) == 0, "\n".join(["{message}".format(**err) for err in errors])
     return site
+
+
+@pytest.fixture
+def admin_factory(live_server, selenium, data):
+    def fx(name):
+        site = AdminSite(live_server, selenium)
+        site.open("/")
+        site.wait_for(By.LINK_TEXT, name).click()
+        errors = [err for err in site.get_errors() if err and 'favicon' not in err['message']]
+        assert len(errors) == 0, "\n".join(["{message}".format(**err) for err in errors])
+        return site
+    return fx
