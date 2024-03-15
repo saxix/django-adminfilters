@@ -33,6 +33,7 @@ def sample_data():
 
     acdc = BandFactory(name="AC/DC", active=True)
     geordie = BandFactory(name="Geordie", active=False)
+    abba = BandFactory(name="Abba", active=True)
 
     ArtistFactory(
         name="Angus",
@@ -89,7 +90,7 @@ def sample_data():
         year_of_birth=1946,
         favourite_city=milano,
         active=False,
-        bands=[acdc],
+        bands=[abba],
         country=uk,
         flags={"full_name": "Bon Scott"},
     )
