@@ -20,7 +20,7 @@ def get_elements(selenium):
     "query,negated,check",
     [
         ("name=Angus", False, lambda cl: len(cl.rows) == 1),
-        ("bands__name=AC/DC", False, lambda cl: len(cl.rows) == 5),
+        ("bands__name=AC/DC", False, lambda cl: len(cl.rows) == 4),
         (
             "bands__name=AC/DC",
             True,

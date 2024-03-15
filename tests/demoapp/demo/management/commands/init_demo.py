@@ -1,5 +1,6 @@
 from urllib.parse import urlencode
 
+from demo.factories import CityFactory, RegionFactory
 from django.core.management import BaseCommand, call_command
 from django.db import IntegrityError
 
@@ -14,10 +15,25 @@ def sample_data():
     user = UserFactory(username="user")
 
     uk = CountryFactory(name="United Kingdom")
+    north_yorkshire = RegionFactory(name="North Yorkshire", country=uk)
+    CityFactory(name="Harrogate", region=north_yorkshire)
+
     australia = CountryFactory(name="Australia")
+    act = RegionFactory(name="Australian Capital Territory", country=australia)
+    camberra = CityFactory(name="Camberra", region=act)
+
+    ita = CountryFactory(name="Italy")
+    lombardia = RegionFactory(name="Lombardia", country=ita)
+    lazio = RegionFactory(name="Lazio", country=ita)
+    campania = RegionFactory(name="Campania", country=ita)
+    milano = CityFactory(name="Milano", region=lombardia)
+    roma = CityFactory(name="Roma", region=lazio)
+    napoli = CityFactory(name="Napoli", region=campania)
+    caserta = CityFactory(name="Caserta", region=campania)
 
     acdc = BandFactory(name="AC/DC", active=True)
     geordie = BandFactory(name="Geordie", active=False)
+    abba = BandFactory(name="Abba", active=True)
 
     ArtistFactory(
         name="Angus",
@@ -25,6 +41,7 @@ def sample_data():
         full_name="Young, Angus",
         active=True,
         year_of_birth=1955,
+        favourite_city=napoli,
         bands=[acdc],
         country=uk,
         flags={"v": 1},
@@ -35,6 +52,7 @@ def sample_data():
         last_name="Young",
         full_name="Young, Malcom",
         year_of_birth=1953,
+        favourite_city=roma,
         active=True,
         bands=[acdc],
         country=uk,
@@ -46,6 +64,7 @@ def sample_data():
         last_name="Rudd",
         full_name="Rudd, Phil",
         year_of_birth=1954,
+        favourite_city=caserta,
         bands=[acdc],
         active=True,
         country=australia,
@@ -57,6 +76,7 @@ def sample_data():
         last_name="Johnson",
         full_name="Johnson, Brian",
         year_of_birth=1947,
+        favourite_city=camberra,
         active=True,
         bands=[acdc, geordie],
         country=uk,
@@ -68,11 +88,13 @@ def sample_data():
         last_name="Scott",
         full_name="Scott, Bon",
         year_of_birth=1946,
+        favourite_city=milano,
         active=False,
-        bands=[acdc],
+        bands=[abba],
         country=uk,
         flags={"full_name": "Bon Scott"},
     )
+
     ct = ContentType.objects.get_for_model(Artist)
     StoredFilter.objects.update_or_create(
         name="AC/DC",

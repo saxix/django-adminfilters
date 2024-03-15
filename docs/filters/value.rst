@@ -18,7 +18,7 @@ Usage
 -----
 ::
 
-    class MyModelAdmin(models.ModelAdmin):
+    class MyModelAdmin(AdminFiltersMixin, models.ModelAdmin):
         list_filter = (
             ('name', ValueFilter),
             ('country__name', ValueFilter),  # to foreign key
@@ -51,7 +51,7 @@ Configuration
 
 The filter can be configured either using subclassing or `.factory()` method::
 
-    class MyModelAdmin(models.ModelAdmin):
+    class MyModelAdmin(AdminFiltersMixin, models.ModelAdmin):
         list_filter = (
             ('name', ValueFilter.factory(can_negate=False, options=True,
                                               title=_("Person full name"))),

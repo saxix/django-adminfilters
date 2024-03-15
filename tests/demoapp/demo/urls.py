@@ -33,6 +33,8 @@ public_site.register(
     admin.DemoModelAdmin_IntersectionFieldListFilter,
 )
 public_site.register(models.Country, admin.CountryModelAdmin)
+public_site.register(models.Region, admin.RegionModelAdmin)
+public_site.register(models.City, admin.CityModelAdmin)
 public_site.register(models.Band, admin.BandModelAdmin)
 public_site.register(models.Artist, admin.ArtistModelAdmin)
 public_site.register(models.DemoModelField, admin.DemoModelFieldAdmin)

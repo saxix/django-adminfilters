@@ -18,7 +18,7 @@ Usage
 -----
 ::
 
-    class MyModelAdmin(models.ModelAdmin):
+    class MyModelAdmin(AdminFiltersMixin, models.ModelAdmin):
         list_filter = (
             QueryStringFilter,
             ...
@@ -48,7 +48,7 @@ Configuration
 
 The filter can be configured either using subclassing or `.factory()` method::
 
-    class MyModelAdmin(models.ModelAdmin):
+    class MyModelAdmin(AdminFiltersMixin, models.ModelAdmin):
         list_filter = (
             QueryStringFilter.factory(title=_("Generic field filter")),
             ...

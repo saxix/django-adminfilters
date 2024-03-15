@@ -9,7 +9,10 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.lookup_kwarg = "%s_filter" % field_path
         self.filter_statement = "%s" % field_path
-        self.lookup_val = params.pop(self.lookup_kwarg, None)
+
+        self._params = params
+        self.lookup_val = self.get_parameters(self.lookup_kwarg, pop=True)
+
         self.lookup_choices = field.get_choices(include_blank=False)
         super().__init__(field, request, params, model, model_admin, field_path)
         self.used_parameters[self.lookup_kwarg] = prepare_lookup_value(
@@ -92,12 +95,17 @@ class UnionFieldListFilter(MultipleSelectFieldListFilter):
     contains one of the selected filters.
     """
 
+    # def __init__(self, *args, **kwargs):
+    #     self._params = params
+    #     self.lookup_val = self.get_parameters(self.lookup_kwarg, pop=True)
+    #     super().__init__(*args, **kwargs)
+
     def get_field(self):
         try:
             field = super().get_field()
         except AttributeError:  # pragma: no cover
             if hasattr(self.field, "choices") and self.field.choices:
-                field = self.field  # It's a *Field with choises
+                field = self.field  # It's a *Field with choices
             else:
                 raise AttributeError(
                     "Multiselect field must be a FK or any type with choices"

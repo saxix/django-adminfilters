@@ -24,7 +24,7 @@ python::
     class MyCountry(models.ModelAdmin):
         search_fields = ('name', )
 
-    class MyModelAdmin(models.ModelAdmin):
+    class MyModelAdmin(AdminFiltersMixin, models.ModelAdmin):
         list_filter = (
             ('country', AutoCompleteFilter),
             ...
@@ -52,24 +52,24 @@ Usage
 
 python::
 
-    class Country(models.ModelAdmin):
+    class Country(models.Model):
         ...
 
-    class Region(models.ModelAdmin):
+    class Region(models.Model):
         country = models.ForeignKey(Country, ...)
 
-    class MyModel(models.ModelAdmin):
+    class MyModel(models.Model):
         region = models.ForeignKey(Region, ...)
 
-    class MyCountry(models.ModelAdmin):
+    class MyCountry(AdminAutoCompleteSearchMixin, models.ModelAdmin):
         search_fields = ('name', )
 
-    class MyRegion(models.ModelAdmin):
+    class MyRegion(AdminAutoCompleteSearchMixin, models.ModelAdmin):
         search_fields = ('name', )
 
-    class MyModelAdmin(models.ModelAdmin):
+    class MyModelAdmin(AdminFiltersMixin, models.ModelAdmin):
         list_filter = (
-            ('region__country', LinkedAutoCompleteFilter.factory(None),
-            ('region', LinkedAutoCompleteFilter.factory("region__country"),
+            ('region__country', LinkedAutoCompleteFilter.factory(parent=None)),
+            ('region', LinkedAutoCompleteFilter.factory(parent="region__country")),
             ...
             )
