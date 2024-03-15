@@ -1,3 +1,8 @@
+Release 2.4.3
+=============
+* Fixes bug in UnionListFilter
+
+
 Release 2.4.2
 =============
 * Added compatibility with Django 5
@@ -7,7 +12,7 @@ Release 2.4.2
 
 Release 2.4.1
 =============
-* Fixes bug in AutiCompleteFilter
+* Fixes bug in AutoCompleteFilter
 
 
 Release 2.4

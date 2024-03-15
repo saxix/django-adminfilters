@@ -47,7 +47,7 @@ def test_RelatedFieldCheckBoxFilte_multi(fixtures, rf):
     result = f.queryset(None, Artist.objects.all())
 
     value = sorted(list(result.values_list("name", flat=True)))
-    assert value == ["Angus", "Bon", "Brian", "Malcom", "Phil"]
+    assert value == ["Angus", "Brian", "Malcom", "Phil"]
 
 
 def test_RelatedFieldCheckBoxFilte_isnull(fixtures, rf):
@@ -77,5 +77,5 @@ def test_RelatedFieldCheckBoxFilte_choices(fixtures, rf):
         "bands",
     )
     choices = list(f.choices(Mock()))
-    assert len(choices) == 4
-    assert [c["display"] for c in choices] == ["All", "None", "AC/DC", "Geordie"]
+    assert len(choices) == 5
+    assert [c["display"] for c in choices] == ["All", "None", "AC/DC", "Geordie", "Abba"]
