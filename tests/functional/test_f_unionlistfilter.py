@@ -4,20 +4,6 @@ from selenium.webdriver.common.by import By
 pytestmark = pytest.mark.selenium
 
 
-
-#
-# def get_linked_ac(driver):
-#     elements = [
-#         get_elements(driver, cssid=cssid)
-#         for cssid in [
-#             'favourite_city__region__country__exact_favourite_city__region__country__isnull',
-#             'favourite_city__region__exact_favourite_city__region__isnull',
-#             'favourite_city__exact_favourite_city__isnull',
-#         ]
-#     ]
-#     return elements
-
-
 @pytest.mark.selenium
 def test_unionlist_filter(admin_factory):
     site = admin_factory('UnionFieldListFilters')

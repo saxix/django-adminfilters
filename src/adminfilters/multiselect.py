@@ -10,9 +10,6 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
         self.lookup_kwarg = "%s_filter" % field_path
         self.filter_statement = "%s" % field_path
 
-
-        # self.lookup_val = params.pop(self.lookup_kwarg, None)
-
         self._params = params
         self.lookup_val = self.get_parameters(self.lookup_kwarg, pop=True)
 
