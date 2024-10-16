@@ -1,8 +1,10 @@
 .*
 ~*
+*.lock
 build
 __pycache__
 *.egg-info
+!docs/**/.pages
 !.gitignore
 !.github
 !.bumpversion.cfg

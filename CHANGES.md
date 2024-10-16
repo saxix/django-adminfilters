@@ -1,3 +1,9 @@
+Release 2.5
+===========
+* PEP 621 support (pyproject.toml)
+* Added partial Proxy Models support to AutoCompleteFilter
+
+
 Release 2.4.3
 =============
 * Fixes bug in UnionListFilter
@@ -12,7 +18,7 @@ Release 2.4.2
 
 Release 2.4.1
 =============
-* Fixes bug in AutoCompleteFilter
+* Fixes bug in AutiCompleteFilter
 
 
 Release 2.4

@@ -69,9 +69,9 @@ class RelatedFieldCheckBoxFilter(
                     [self.lookup_kwarg_isnull],
                 ),
                 "display": val,
-                "uncheck_to_remove": "{}={}".format(self.lookup_kwarg, pk_val)
-                if pk_val
-                else "",
+                "uncheck_to_remove": (
+                    "{}={}".format(self.lookup_kwarg, pk_val) if pk_val else ""
+                ),
             }
         if (
             isinstance(self.field, ForeignObjectRel)

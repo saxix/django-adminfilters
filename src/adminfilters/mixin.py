@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.admin import FieldListFilter, ListFilter
 from django.contrib.admin.options import ModelAdmin
 from django.core import checks
+from django.core.exceptions import FieldDoesNotExist
 
 from adminfilters.compat import DJANGO_MAJOR
 
@@ -26,7 +27,9 @@ class WrappperMixin:
                 f"{self.model_admin.__class__.__name__} must inherit from AdminFiltersMixin"
             )
 
-    def get_parameters(self, param_name, default="", multi=False, pop=False, separator=","):
+    def get_parameters(
+        self, param_name, default="", multi=False, pop=False, separator=","
+    ):
         if pop:
             val = self._params.pop(param_name, default)
         else:
@@ -93,19 +96,44 @@ class AdminFiltersMixin(ModelAdmin):
                 parts = entry[1].parent.split("__")
                 m = self.model
                 for part in parts:
-                    m = m._meta.get_field(part).remote_field.model
-                    ma: ModelAdmin = self.admin_site._registry[m]
-                    if ma not in seen and not isinstance(
-                        ma, AdminAutoCompleteSearchMixin
-                    ):
+                    try:
+                        m = m._meta.get_field(part).remote_field.model
+                    except FieldDoesNotExist as e:
                         errs.append(
                             checks.Error(
-                                f"{ma}` must inherits from AdminAutoCompleteSearchMixin",
-                                obj=ma.__class__,
-                                id="admin.E041",
+                                f"{m}` {e}",
+                                obj=self,
+                                id="adminfilters.E001",
                             )
                         )
-                        seen.append(ma)
+                    else:
+                        try:
+                            ma: ModelAdmin = self.admin_site._registry[m]
+                        except KeyError:
+                            for proxy in m.__subclasses__():
+                                if proxy in self.admin_site._registry:
+                                    ma = self.admin_site._registry[proxy]
+                                    break
+                            else:
+                                errs.append(
+                                    checks.Error(
+                                        f"{m}` is not registered in {self.admin_site}",
+                                        obj=self,
+                                        id="adminfilters.E002",
+                                    )
+                                )
+                        else:
+                            if ma not in seen and not isinstance(
+                                ma, AdminAutoCompleteSearchMixin
+                            ):
+                                errs.append(
+                                    checks.Error(
+                                        f"{ma}` must inherits from AdminAutoCompleteSearchMixin",
+                                        obj=ma.__class__,
+                                        id="adminfilters.E003",
+                                    )
+                                )
+                                seen.append(ma)
 
         return errs
 
