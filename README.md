@@ -59,39 +59,41 @@ When you use `FilterDepotManager` to save a filter, the call is *idempotent* but
 Usage examples
 ==============
 
+```python
+class MyModel(models.Model):
+    index = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    age = models.IntegerField()
+    flag = models.CharField(default="1", choices=(("0", "Flag 1"), ("1", "Flag 2"))
+    household = models.ForeignKey("Household")
+    custom = JSONField(default=dict, blank=True)
 
-    class MyModel(models.Model):
-        index = models.CharField(max_length=255)
-        name = models.CharField(max_length=255)
-        age = models.IntegerField()
-        flag = models.CharField(default="1", choices=(("0", "Flag 1"), ("1", "Flag 2"))
-        household = models.ForeignKey('Household')
-        custom = JSONField(default=dict, blank=True)
 
-    class MyModelAdmin(ModelAdmin):
-        list_filter = (
-            FilterDepotManager,  # needs `adminfilters.depot` app
-            QueryStringFilter,
-            DjangoLookupFilter,
-            ("custom", JsonFieldFilter.factory(can_negate=False, options=True)),
-            ("flag", ChoicesFieldComboFilter),
-            ('household', AutoCompleteFilter)
-            ('name', ValueFilter.factory(lookup='istartswith'),
-            ("age", NumberFilter),
-        )
-
+class MyModelAdmin(ModelAdmin):
+    list_filter = (
+        FilterDepotManager,  # needs `adminfilters.depot` app
+        QueryStringFilter,
+        DjangoLookupFilter,
+        ("custom", JsonFieldFilter.factory(can_negate=False, options=True)),
+        ("flag", ChoicesFieldComboFilter),
+        ("household", AutoCompleteFilter)
+        ("name", ValueFilter.factory(lookup="istartswith"),
+        ("age", NumberFilter),
+    )
+```
 
 
 Run demo app
 ============
 
-    $ git clone https://github.com/saxix/django-adminfilters.git
-    $ cd django-adminfilters
-    $ python3 -m venv .venv
-    $ source .venv/bin/activate
-    $ make develop
-    $ make demo
-
+```sh
+git clone https://github.com/saxix/django-adminfilters.git
+cd django-adminfilters
+python3 -m venv .venv
+source .venv/bin/activate
+make develop
+make demo
+```
 
 Project links
 -------------
