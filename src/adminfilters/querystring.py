@@ -28,7 +28,9 @@ class QueryStringFilter(MediaDefinitionFilter, SmartListFilter):
         self.parameter_name_negated = "%s__negate" % self.parameter_name
         self._params = params
         self.lookup_field_val = self.get_parameters(self.parameter_name, pop=True)
-        self.lookup_negated_val = self.get_parameters(self.parameter_name_negated, "false", pop=True)
+        self.lookup_negated_val = self.get_parameters(
+            self.parameter_name_negated, "false", pop=True
+        )
         self.query_string = None
         self.error_message = None
         self.exception = None
