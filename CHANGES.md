@@ -1,3 +1,10 @@
+Release 2.5.1
+=============
+* limit select2.css customisation be applied only to filters
+* Enabling better AutocompleteFilter customisation
+
+
+* PEP 621 support (pyproject.toml)
 Release 2.5
 ===========
 * PEP 621 support (pyproject.toml)

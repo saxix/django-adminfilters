@@ -5,7 +5,7 @@ Collection of extra filters for the Django admin site
 
 Demo can be found at https://django-adminfilters.herokuapp.com/demo/artist/
 
-[![Pypi](https://badge.fury.io/py/django-adminfilters.svg)](https://badge.fury.io/py/django-adminfilters)
+[![Pypi](https://badge.fury.io/py/django-adminfilters.svg)](https://pypi.org/project/django-adminfilters/)
 [![coverage](https://codecov.io/github/saxix/django-adminfilters/coverage.svg?branch=develop)](https://codecov.io/github/saxix/django-adminfilters?branch=develop)
 [![Test](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml/badge.svg)](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml)
 [![ReadTheDocs](https://readthedocs.org/projects/django-adminfilters/badge/?version=latest)](https://django-adminfilters.readthedocs.io/en/latest/)
