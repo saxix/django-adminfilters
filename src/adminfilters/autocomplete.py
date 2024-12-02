@@ -22,6 +22,7 @@ class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
     filter_title = None
     parent = None
     parent_lookup_kwarg = None
+    ajax_url = None
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.dependants = []
@@ -35,22 +36,20 @@ class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
         self.query_string = ""
         self.target_field = get_real_field(model, field_path)
         self.target_model = self.target_field.related_model
-
         self.target_opts = self.target_field.model._meta
-
-        # if not hasattr(field, "get_limit_choices_to"):
-        #     raise Exception(
-        #         f"Filter '{field_path}' of {model_admin} is not supported by AutoCompleteFilter."
-        #         f" Check your {model_admin}.list_filter value"
-        #     )
-
-        self.url = self.get_url()
 
     def expected_parameters(self):
         return [self.lookup_kwarg, self.lookup_kwarg_isnull]
 
+    @property
+    def url(self):
+        return self.get_url()
+
     def get_url(self):
-        return reverse("%s:autocomplete" % self.admin_site.name)
+        if self.ajax_url is None:
+            return reverse("%s:autocomplete" % self.admin_site.name)
+        else:
+            return reverse(self.ajax_url)
 
     def choices(self, changelist):
         self.query_string = changelist.get_query_string(
@@ -81,7 +80,7 @@ class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
             ),
             css={
                 "screen": (
-                    "admin/css/vendor/select2/select2%s.css" % extra,
+                    # "admin/css/vendor/select2/select2%s.css" % extra,
                     "adminfilters/adminfilters.css",
                 ),
             },
