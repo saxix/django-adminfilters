@@ -1,3 +1,9 @@
+Release 2.5.2
+=============
+* restored wrongly removed css
+* enable css file customisation
+
+
 Release 2.5.1
 =============
 * limit select2.css customisation be applied only to filters
