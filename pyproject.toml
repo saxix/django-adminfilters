@@ -1,6 +1,6 @@
 [project]
 name = "django-adminfilters"
-version = "2.5.0"
+version = "2.5.2"
 description = "Django mixin to easily add buttons to any ModelAdmin"
 readme = "README.md"
 requires-python = ">=3.11"
