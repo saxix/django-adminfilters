@@ -23,38 +23,6 @@ See Django autocomplete_ documentation for the ajax service options.
             ...
             )
 
-#### Extend AutocompleteFilter
-
-It is possible to customise AutoComplete filter to be used with custom urls. 
-Using django-admin-extra-buttons it is quite straightforward
-
-    @admin.register(MyModel)
-    class MyModelAdmin(ExtraButtonsMixin, models.ModelAdmin)
-
-        @view()
-        def staff_only_autocomplete(self, request):
-            filters = {"is_staff": True}
-            if term := request.GET.get("term"):
-                filters["username__icontains"] = term
-            results = []
-            for user in User.objects.filter(**filters).distinct():
-                results.append({"id": user.id, "text": user.username})
-            res = {"results": results, "pagination": {"more": False}}
-            return JsonResponse(res)
- 
-    
-    class UserAutoCompleteFilter(AutoCompleteFilter):
-        ajax_url = "admin:app_mymodel_autocomplete"
-
-        def queryset(self, request, queryset):
-            try:
-                q_object = build_q_object_from_lookup_parameters(self.used_parameters)
-                return queryset.filter(q_object)
-            except (ValueError, ValidationError) as e:
-                # Fields may raise a ValueError or ValidationError when converting
-                # the parameters to the correct type.
-                raise IncorrectLookupParameters(e)
-
 
 
 
