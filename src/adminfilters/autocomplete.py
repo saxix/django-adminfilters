@@ -23,6 +23,7 @@ class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
     parent = None
     parent_lookup_kwarg = None
     ajax_url = None
+    css = "adminfilters/adminfilters.css",
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         self.dependants = []
@@ -80,8 +81,8 @@ class AutoCompleteFilter(SmartFieldListFilter, MediaDefinitionFilter):
             ),
             css={
                 "screen": (
-                    # "admin/css/vendor/select2/select2%s.css" % extra,
-                    "adminfilters/adminfilters.css",
+                    "admin/css/vendor/select2/select2%s.css" % extra,
+                    "adminfilters/adminfilters%s.css" % extra,
                 ),
             },
         )

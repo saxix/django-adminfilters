@@ -2,18 +2,14 @@ select.filter-autocomplete {
   width: 20em;
 }
 
-.adminfilters {
   .select2 {
     border: 1px solid var(--border-color);
-    //border-radius: 4px;
-    //padding: 5px 6px;
-    //margin-top: 0;
     color: var(--body-fg);
     background-color: var(--body-bg);
   }
 
   .select2-dropdown, .select2-search__field {
-    //border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     //padding: 5px 6px;
     //margin-top: 0;
@@ -283,7 +279,7 @@ select.filter-autocomplete {
     display: block;
     padding: 6px;
   }
-}
+
 
 #changelist-filter li a.adminfilters.button {
   border: 1px solid #b8b8b8;
@@ -354,7 +350,7 @@ select.filter-autocomplete {
 }
 
 @media (prefers-color-scheme: dark) {
-  .adminfilters {
+
     .select2 {
       //border: 1px solid var(--border-color);
       //border-radius: 4px;
@@ -373,5 +369,5 @@ select.filter-autocomplete {
       //  cursor: text;
       //}
     }
-  }
+
 }
