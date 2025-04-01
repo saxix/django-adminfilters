@@ -32,12 +32,8 @@ class DemoModelField(JSONMixin, models.Model):
     unique = models.CharField(max_length=255, unique=True)
     nullable = models.CharField(max_length=255, null=True)
     blank = models.CharField(max_length=255, blank=True, null=True)
-    not_editable = models.CharField(
-        max_length=255, editable=False, blank=True, null=True
-    )
-    choices = models.IntegerField(
-        choices=((1, "Choice 1"), (2, "Choice 2"), (3, "Choice 3"))
-    )
+    not_editable = models.CharField(max_length=255, editable=False, blank=True, null=True)
+    choices = models.IntegerField(choices=((1, "Choice 1"), (2, "Choice 2"), (3, "Choice 3")))
 
     class Meta:
         app_label = "demo"
@@ -110,6 +106,7 @@ class Artist(JSONMixin, models.Model):
 
     def __str__(self):
         return self.name
+
 
 #
 # class DemoModel2(models.Model):

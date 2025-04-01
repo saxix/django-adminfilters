@@ -144,9 +144,7 @@ class WebElementWrapper:
 class CellWrapper(WebElementWrapper):
     @cached_property
     def text(self):
-        return self.element.get_attribute("innerText") or strip_tags(
-            self.element.get_attribute("innerHTML")
-        )
+        return self.element.get_attribute("innerText") or strip_tags(self.element.get_attribute("innerHTML"))
 
 
 class RowWrapper(WebElementWrapper):
@@ -181,9 +179,7 @@ class ChangeListWrapper(EmptyChangeListWrapper):
     @classmethod
     def find_in_page(cls, driver):
         try:
-            return ChangeListWrapper(
-                driver.find_element(By.CSS_SELECTOR, "#changelist-form #result_list")
-            )
+            return ChangeListWrapper(driver.find_element(By.CSS_SELECTOR, "#changelist-form #result_list"))
         except NoSuchElementException:
             return EmptyChangeListWrapper(None)
 
@@ -193,10 +189,7 @@ class ChangeListWrapper(EmptyChangeListWrapper):
 
     @cached_property
     def rows(self) -> [RowWrapper]:
-        return [
-            RowWrapper(e)
-            for e in self.element.find_elements(By.CSS_SELECTOR, "tbody tr")
-        ]
+        return [RowWrapper(e) for e in self.element.find_elements(By.CSS_SELECTOR, "tbody tr")]
 
     def get_row(self, num):
         return list(self.rows)[num]

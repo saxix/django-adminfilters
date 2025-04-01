@@ -18,18 +18,14 @@ def test_GenericLookupFieldFilter(db):
         param = "change"
     else:
         param = ["change"]
-    qs = f(None, {"perm": param}, None, None).queryset(
-        None, Permission.objects.all()
-    )
+    qs = f(None, {"perm": param}, None, None).queryset(None, Permission.objects.all())
     assert qs.first().codename.startswith("change_")
 
     if DJANGO_MAJOR < 5:
         param = "delete"
     else:
         param = ["delete"]
-    qs = f(None, {"perm": param}, None, None).queryset(
-        None, Permission.objects.all()
-    )
+    qs = f(None, {"perm": param}, None, None).queryset(None, Permission.objects.all())
     assert qs.first().codename.startswith("delete_")
 
     qs = f(None, {}, None, None).queryset(None, Permission.objects.all())

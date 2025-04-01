@@ -17,25 +17,21 @@ class AutoRegisterFactoryMetaClass(FactoryMetaClass):
         return new_class
 
 
-class ModelFactory(
-    factory.django.DjangoModelFactory, metaclass=AutoRegisterFactoryMetaClass
-):
+class ModelFactory(factory.django.DjangoModelFactory, metaclass=AutoRegisterFactoryMetaClass):
     pass
 
 
 def get_flags():
     # Convert to plain ascii text
-    f = lambda: random.choice(
-        [
-            ("int", random.randint(1, 100)),
-            ("chr", chr(random.randrange(65, 90))),
-            ("int", "__"),
-            ("chr", ""),
-            ("chr", None),
-            ("int", None),
-            ("chr", "__"),
-        ]
-    )
+    f = lambda: random.choice([
+        ("int", random.randint(1, 100)),
+        ("chr", chr(random.randrange(65, 90))),
+        ("int", "__"),
+        ("chr", ""),
+        ("chr", None),
+        ("int", None),
+        ("chr", "__"),
+    ])
     value = f()
     if value[1] == "__":
         base = {}
@@ -86,7 +82,7 @@ class CountryFactory(ModelFactory):
 
 
 class RegionFactory(ModelFactory):
-    name = factory.fuzzy.FuzzyChoice(['North', 'South', 'East', 'West'])
+    name = factory.fuzzy.FuzzyChoice(["North", "South", "East", "West"])
     country = factory.SubFactory(CountryFactory)
 
     class Meta:
@@ -114,7 +110,7 @@ class BandFactory(ModelFactory):
 
 class ArtistFactory(ModelFactory):
     name = factory.Faker("first_name")
-    last_name = factory.Sequence(lambda n: f'Dummy{faker.Faker().unique.last_name()}{n}')
+    last_name = factory.Sequence(lambda n: f"Dummy{faker.Faker().unique.last_name()}{n}")
     full_name = factory.LazyAttribute(lambda o: f"{o.last_name}, {o.name}")
     favourite_city = factory.SubFactory(CityFactory)
 

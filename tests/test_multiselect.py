@@ -72,13 +72,9 @@ def test_intersection(fixtures, value, expected):
 
 def test_choices(fixtures):
     params = {"bands_filter": "1,2"}
-    f = IntersectionFieldListFilter(
-        Artist._meta.get_field("bands"), None, params, None, None, "bands"
-    )
+    f = IntersectionFieldListFilter(Artist._meta.get_field("bands"), None, params, None, None, "bands")
     # result = f.queryset(None, Artist.objects.order_by('name'))
-    cl = Mock(
-        get_query_string=partial(get_query_string, Mock(GET=params)), params=params
-    )
+    cl = Mock(get_query_string=partial(get_query_string, Mock(GET=params)), params=params)
     choices = list(f.choices(cl))
     assert len(choices) == 4
     assert choices[0] == {"display": "All", "query_string": "?", "selected": False}

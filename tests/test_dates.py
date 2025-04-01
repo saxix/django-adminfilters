@@ -33,9 +33,7 @@ def fixtures(db):
     ],
 )
 def test_NumberFilter(fixtures, field, op, expected):
-    f = DateRangeFilter(
-        DemoModelField._meta.get_field(field), None, {field: op}, None, None, field
-    )
+    f = DateRangeFilter(DemoModelField._meta.get_field(field), None, {field: op}, None, None, field)
     assert f.value() == [op]
     result = f.queryset(None, DemoModelField.objects.all())
     value = [x.strftime("%Y-%m-%d") for x in result.values_list(field, flat=True)]

@@ -48,9 +48,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255)),
                 (
                     "genre",
-                    models.IntegerField(
-                        choices=[(1, "Rock"), (2, "Blues"), (3, "Soul"), (4, "Other")]
-                    ),
+                    models.IntegerField(choices=[(1, "Rock"), (2, "Blues"), (3, "Soul"), (4, "Other")]),
                 ),
                 ("active", models.BooleanField(default=True)),
             ],
@@ -124,15 +122,11 @@ class Migration(migrations.Migration):
                 ("blank", models.CharField(blank=True, max_length=255, null=True)),
                 (
                     "not_editable",
-                    models.CharField(
-                        blank=True, editable=False, max_length=255, null=True
-                    ),
+                    models.CharField(blank=True, editable=False, max_length=255, null=True),
                 ),
                 (
                     "choices",
-                    models.IntegerField(
-                        choices=[(1, "Choice 1"), (2, "Choice 2"), (3, "Choice 3")]
-                    ),
+                    models.IntegerField(choices=[(1, "Choice 1"), (2, "Choice 2"), (3, "Choice 3")]),
                 ),
             ],
         ),
@@ -183,23 +177,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="artist",
             name="bands",
-            field=models.ManyToManyField(
-                related_name="bands", to="demo.band", verbose_name="Bands"
-            ),
+            field=models.ManyToManyField(related_name="bands", to="demo.band", verbose_name="Bands"),
         ),
         migrations.AddField(
             model_name="artist",
             name="favourite_city",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="demo.city"
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="demo.city"),
         ),
         migrations.AddField(
             model_name="artist",
             name="country",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="demo.country"
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="demo.country"),
         ),
         migrations.CreateModel(
             name="Region",
@@ -216,9 +204,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255)),
                 (
                     "country",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="demo.country"
-                    ),
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="demo.country"),
                 ),
             ],
             options={
@@ -228,8 +214,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="city",
             name="region",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="demo.region"
-            ),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="demo.region"),
         ),
     ]

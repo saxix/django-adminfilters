@@ -48,6 +48,4 @@ def test_QueryStringFilter(fixtures, op, expected, error, caplog):
 
 
 def test_media():
-    assert QueryStringFilter.factory(title="Title")(
-        None, {}, DemoModelField, None
-    ).media
+    assert QueryStringFilter.factory(title="Title")(None, {}, DemoModelField, None).media

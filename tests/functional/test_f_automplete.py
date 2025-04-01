@@ -24,9 +24,9 @@ def get_linked_ac(driver):
     elements = [
         get_elements(driver, cssid=cssid)
         for cssid in [
-            'favourite_city__region__country__exact_favourite_city__region__country__isnull',
-            'favourite_city__region__exact_favourite_city__region__isnull',
-            'favourite_city__exact_favourite_city__isnull',
+            "favourite_city__region__country__exact_favourite_city__region__country__isnull",
+            "favourite_city__region__exact_favourite_city__region__isnull",
+            "favourite_city__exact_favourite_city__isnull",
         ]
     ]
     return elements
@@ -42,7 +42,7 @@ def test_autocomplete(admin_site):
     *__, cl = get_elements(admin_site.driver)
     assert set(cl.get_values(None, 5)) == {"United Kingdom"}
     el = admin_site.driver.find_elements(By.ID, "select2-ac_country-container")
-    assert 'United Kingdom' in el[0].text
+    assert "United Kingdom" in el[0].text
 
 
 @pytest.mark.selenium
@@ -55,7 +55,7 @@ def test_linked_autocomplete(admin_site):
     *__, cl = get_elements(admin_site.driver)
     assert set(cl.get_values(None, 5)) == {"United Kingdom"}
     el = admin_site.driver.find_elements(By.ID, "select2-ac_country-container")
-    assert 'United Kingdom' in el[0].text
+    assert "United Kingdom" in el[0].text
 
     country, region, city = get_linked_ac(admin_site.driver)
     assert country and not (region or city), "Others should be disabled"

@@ -6,9 +6,7 @@ pytestmark = pytest.mark.selenium
 
 
 def get_elements(selenium):
-    container = selenium.find_element(
-        By.ID, "last_name__istartswith_last_name__istartswith__negate"
-    )
+    container = selenium.find_element(By.ID, "last_name__istartswith_last_name__istartswith__negate")
     return [
         container.find_element(By.CSS_SELECTOR, "input[type=text]"),
         Checkbox(container.find_element(By.CSS_SELECTOR, "input[type=checkbox]")),

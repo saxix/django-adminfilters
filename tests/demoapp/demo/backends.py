@@ -7,18 +7,10 @@ class AnonymousAccessUserBackend(ModelBackend):
     supports_anonymous_user = True
 
     def get_all_permissions(self, user_obj, obj=None):
-        return (
-            Permission.objects.all()
-            .values_list("content_type__app_label", "codename")
-            .order_by()
-        )
+        return Permission.objects.all().values_list("content_type__app_label", "codename").order_by()
 
     def get_group_permissions(self, user_obj, obj=None):
-        return (
-            Permission.objects.all()
-            .values_list("content_type__app_label", "codename")
-            .order_by()
-        )
+        return Permission.objects.all().values_list("content_type__app_label", "codename").order_by()
 
     def has_perm(self, user_obj, perm, obj=None):
         return True

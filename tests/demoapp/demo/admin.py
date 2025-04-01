@@ -6,9 +6,13 @@ from adminfilters.autocomplete import AutoCompleteFilter, LinkedAutoCompleteFilt
 from adminfilters.combo import ChoicesFieldComboFilter
 from adminfilters.depot.widget import DepotManager
 from adminfilters.filters import (
+    AdminAutoCompleteSearchMixin,
+    AdminFiltersMixin,
     BooleanRadioFilter,
     DjangoLookupFilter,
     IntersectionFieldListFilter,
+    JsonFieldFilter,
+    MultiValueFilter,
     NumberFilter,
     QueryStringFilter,
     RelatedFieldCheckBoxFilter,
@@ -16,10 +20,9 @@ from adminfilters.filters import (
     UnionFieldListFilter,
     ValueFilter,
 )
-from adminfilters.filters import JsonFieldFilter, AdminAutoCompleteSearchMixin, AdminFiltersMixin, MultiValueFilter
+
 # from adminfilters.mixin import AdminAutoCompleteSearchMixin, AdminFiltersMixin
 # from adminfilters.value import MultiValueFilter
-
 from .models import Artist, Band, City, Country, Region
 
 
@@ -100,7 +103,10 @@ class CityModelAdmin(AdminAutoCompleteSearchMixin, DebugMixin, ModelAdmin):
 class BandModelAdmin(DebugMixin, ModelAdmin):
     list_display = [f.name for f in Band._meta.fields]
     search_fields = ("name",)
-    list_filter = ("genre", ChoicesFieldComboFilter), ("active", BooleanRadioFilter),
+    list_filter = (
+        ("genre", ChoicesFieldComboFilter),
+        ("active", BooleanRadioFilter),
+    )
 
 
 class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
@@ -108,12 +114,12 @@ class ArtistModelAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
     list_filter = (
         DepotManager,
         ("country", AutoCompleteFilter),
-        ('favourite_city__region__country',
-         LinkedAutoCompleteFilter.factory(title='Favourite Country')),
-        ("favourite_city__region",
-         LinkedAutoCompleteFilter.factory(title="Favourite Region", parent='favourite_city__region__country')),
-        ("favourite_city",
-         LinkedAutoCompleteFilter.factory(title="Favourite City", parent='favourite_city__region')),
+        ("favourite_city__region__country", LinkedAutoCompleteFilter.factory(title="Favourite Country")),
+        (
+            "favourite_city__region",
+            LinkedAutoCompleteFilter.factory(title="Favourite Region", parent="favourite_city__region__country"),
+        ),
+        ("favourite_city", LinkedAutoCompleteFilter.factory(title="Favourite City", parent="favourite_city__region")),
         ("year_of_birth", NumberFilter),
         ("bands__name", MultiValueFilter),
         QueryStringFilter,

@@ -16,9 +16,7 @@ def fixtures(db):
 
 
 def test_media():
-    assert ValueFilter.factory(title="Title")(
-        None, None, {}, None, None, "unique"
-    ).media
+    assert ValueFilter.factory(title="Title")(None, None, {}, None, None, "unique").media
 
 
 @pytest.mark.parametrize(

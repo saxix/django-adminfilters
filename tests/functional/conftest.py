@@ -65,9 +65,7 @@ def get_errors(driver):
         browser_logs = driver.get_log("browser")
     except (ValueError, WebDriverException) as e:
         # Some browsers does not support getting logs
-        logging.debug(
-            "Could not get browser logs for driver %s due to exception: %s", driver, e
-        )
+        logging.debug("Could not get browser logs for driver %s due to exception: %s", driver, e)
         return []
 
     errors = [entry for entry in browser_logs if entry["level"] == "SEVERE"]
@@ -130,7 +128,7 @@ def admin_site(live_server, selenium, data):
     site = AdminSite(live_server, selenium)
     site.open("/")
     site.wait_for(By.LINK_TEXT, "Artists").click()
-    errors = [err for err in site.get_errors() if err and 'favicon' not in err['message']]
+    errors = [err for err in site.get_errors() if err and "favicon" not in err["message"]]
     assert len(errors) == 0, "\n".join(["{message}".format(**err) for err in errors])
     return site
 
@@ -141,7 +139,8 @@ def admin_factory(live_server, selenium, data):
         site = AdminSite(live_server, selenium)
         site.open("/")
         site.wait_for(By.LINK_TEXT, name).click()
-        errors = [err for err in site.get_errors() if err and 'favicon' not in err['message']]
+        errors = [err for err in site.get_errors() if err and "favicon" not in err["message"]]
         assert len(errors) == 0, "\n".join(["{message}".format(**err) for err in errors])
         return site
+
     return fx

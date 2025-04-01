@@ -33,12 +33,8 @@ def pytest_configure(config):
     if not config.option.enable_selenium:
         setattr(config.option, "markexpr", "not selenium")
 
-    config.addinivalue_line(
-        "markers", "skip_if_ci: this mark skips the tests on GitlabCI"
-    )
-    config.addinivalue_line(
-        "markers", "skip_test_if_env(env): this mark skips the tests for the given env"
-    )
+    config.addinivalue_line("markers", "skip_if_ci: this mark skips the tests on GitlabCI")
+    config.addinivalue_line("markers", "skip_test_if_env(env): this mark skips the tests for the given env")
 
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "demoapp"))
     os.environ["DJANGO_SETTINGS_MODULE"] = "demo.settings"

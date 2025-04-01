@@ -3,7 +3,7 @@ import django.views.static
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.urls import re_path, path
+from django.urls import path, re_path
 
 from adminfilters.depot.admin import StoredFilterAdmin
 from adminfilters.depot.models import StoredFilter
@@ -23,12 +23,8 @@ public_site.register(
     models.Artist_RelatedFieldCheckBoxFilter,
     admin.DemoModelAdmin_RelatedFieldCheckBoxFilter,
 )
-public_site.register(
-    models.Artist_RelatedFieldRadioFilter, admin.DemoModelAdmin_RelatedFieldRadioFilter
-)
-public_site.register(
-    models.Artist_UnionFieldListFilter, admin.DemoModelAdmin_UnionFieldListFilter
-)
+public_site.register(models.Artist_RelatedFieldRadioFilter, admin.DemoModelAdmin_RelatedFieldRadioFilter)
+public_site.register(models.Artist_UnionFieldListFilter, admin.DemoModelAdmin_UnionFieldListFilter)
 public_site.register(
     models.Artist_IntersectionFieldListFilter,
     admin.DemoModelAdmin_IntersectionFieldListFilter,

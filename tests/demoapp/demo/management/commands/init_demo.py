@@ -1,16 +1,17 @@
 from urllib.parse import urlencode
 
-from demo.factories import CityFactory, RegionFactory
 from django.core.management import BaseCommand, call_command
 from django.db import IntegrityError
 
 from adminfilters.depot.models import StoredFilter
+from demo.factories import CityFactory, RegionFactory
 
 
 def sample_data():
+    from django.contrib.contenttypes.models import ContentType
+
     from demo.factories import ArtistFactory, BandFactory, CountryFactory, UserFactory
     from demo.models import Artist
-    from django.contrib.contenttypes.models import ContentType
 
     user = UserFactory(username="user")
 
@@ -110,24 +111,20 @@ def sample_data():
         owner=user,
         defaults=dict(
             query_string="?%s"
-            % urlencode(
-                {
-                    "qs": """country__name__istartswith=australia
+            % urlencode({
+                "qs": """country__name__istartswith=australia
 name=Phil
 year_of_birth__gt=1950
 Aactive=true""",
-                    "qs__negate": "false",
-                }
-            ),
+                "qs__negate": "false",
+            }),
             content_type=ct,
         ),
     )
     StoredFilter.objects.update_or_create(
         name="Active Artists",
         owner=user,
-        defaults=dict(
-            query_string="?%s" % urlencode({"qs": "active=true"}), content_type=ct
-        ),
+        defaults=dict(query_string="?%s" % urlencode({"qs": "active=true"}), content_type=ct),
     )
 
     return [acdc, geordie]

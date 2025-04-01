@@ -1,10 +1,9 @@
 from unittest.mock import Mock
 
 import pytest
-from pyquery import PyQuery
-
 from demo.factories import ArtistFactory
 from demo.models import Artist
+from pyquery import PyQuery
 
 from adminfilters.filters import JsonFieldFilter
 
@@ -157,11 +156,16 @@ def test_JsonFieldFilter(fixtures):
         None,
     ]
 
+
 def test_querystring(fixtures, django_app):
-    res = django_app.get("/demo/artist/?&flags__key=v&flags__value=1&flags__type=any&flags__options=e&flags__negate=false")
+    res = django_app.get(
+        "/demo/artist/?&flags__key=v&flags__value=1&flags__type=any&flags__options=e&flags__negate=false"
+    )
     pq = PyQuery(res.content)
-    jt1 = pq('input[type=text][name=key][data-group=flags]')
+    jt1 = pq("input[type=text][name=key][data-group=flags]")
     assert jt1.val() == "v"
-    jt2 = pq('input[type=text][name=value][data-group=flags]')
+    jt2 = pq("input[type=text][name=value][data-group=flags]")
     assert jt2.val() == "1"
+
+
 #     http://127.0.0.1:8000/demo/artist/?&flags__key=v&flags__value=1&flags__type=any&flags__options=e&flags__negate=false

@@ -44,6 +44,9 @@ def test_media():
 
 
 def test_url():
-    assert AutoCompleteFilter.factory(title="Title")(
-        None, None, {}, Artist, ArtistModelAdmin(Artist, public_site), "last_name"
-    ).get_url() == '/autocomplete/'
+    assert (
+        AutoCompleteFilter.factory(title="Title")(
+            None, None, {}, Artist, ArtistModelAdmin(Artist, public_site), "last_name"
+        ).get_url()
+        == "/autocomplete/"
+    )
