@@ -56,6 +56,9 @@ jobs:
           architecture: 'x64'
       - uses: yezz123/setup-uv@v4
 
+      - name: Install deps
+        run: uv sync --all-groups
+
       - name: lint
         if: needs.changes.outputs.lint
         run: tox -e lint

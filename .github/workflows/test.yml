@@ -85,7 +85,7 @@ jobs:
 
       - uses: yezz123/setup-uv@v4
         with:
-          python:  ${{ matrix.python-version }}
+          python: ${{ matrix.python-version }}
 
       - name: Test
 #        if: needs.changes.outputs.run_tests

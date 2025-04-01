@@ -3,8 +3,6 @@ django-adminfilters
 
 Collection of extra filters for the Django admin site
 
-Demo can be found at https://django-adminfilters.herokuapp.com/demo/artist/
-
 [![Pypi](https://badge.fury.io/py/django-adminfilters.svg)](https://pypi.org/project/django-adminfilters/)
 [![coverage](https://codecov.io/github/saxix/django-adminfilters/coverage.svg?branch=develop)](https://codecov.io/github/saxix/django-adminfilters?branch=develop)
 [![Test](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml/badge.svg)](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml)
@@ -96,10 +94,3 @@ source .venv/bin/activate
 make develop
 make demo
 ```
-
-Project links
--------------
-
-* Project home page: https://github.com/saxix/django-adminfilters
-* Download: http://pypi.python.org/pypi/django-adminfilters/
-* Documentation: https://django-adminfilters.readthedocs.io/en/latest/
