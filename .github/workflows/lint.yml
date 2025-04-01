@@ -61,8 +61,8 @@ jobs:
 
       - name: lint
         if: needs.changes.outputs.lint
-        run: tox -e lint
+        run: uv run tox -e lint
 
       - name: pkg_meta
         if: needs.changes.outputs.lint
-        run: tox -e pkg_meta
+        run: uv run tox -e pkg_meta
