@@ -59,8 +59,13 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        python-version: [ "3.11", "3.12" ]
-        django-version: [ "4.2", "5.1" ]
+        python-version: [ "3.13", "3.10", "3.9" ]
+        django-version: [ "5.1",  "4.2", "3.2"]
+        exclude:
+          - django-version: 3.2
+            python-version: 3.13
+          - django-version: 5.1
+            python-version: 3.9
       fail-fast: true
 #    if: needs.changes.outputs.run_tests || needs.changes.outputs.lint
     env:
