@@ -37,7 +37,7 @@ dependencies = [
 ]
 
 urls.Documentation = "https://github.com/saxix/django-adminfilters"
-urls.Homepage = "https://github.com/saxix/django-adminfilterst"
+urls.Homepage = "https://github.com/saxix/django-adminfilters"
 
 [dependency-groups]
 dev = [
