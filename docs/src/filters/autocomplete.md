@@ -25,7 +25,7 @@ See Django autocomplete_ documentation for the ajax service options.
 
 #### Extend AutocompleteFilter
 
-It is possible to customise AutoComplete filter to be used with custom urls. 
+It is possible to customise AutoComplete filter to be used with custom urls.
 Using django-admin-extra-buttons it is quite straightforward
 
     @admin.register(MyModel)
@@ -41,8 +41,8 @@ Using django-admin-extra-buttons it is quite straightforward
                 results.append({"id": user.id, "text": user.username})
             res = {"results": results, "pagination": {"more": False}}
             return JsonResponse(res)
- 
-    
+
+
     class UserAutoCompleteFilter(AutoCompleteFilter):
         ajax_url = "admin:app_mymodel_autocomplete"
 

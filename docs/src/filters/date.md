@@ -1,4 +1,4 @@
-## Date Filters 
+## Date Filters
 
 ## DateRangeFilter
 
@@ -6,7 +6,7 @@ Filter dates. It allows complex filter like:
 
 
 
-| value                            | resulting filter                   | 
+| value                            | resulting filter                   |
 |----------------------------------|------------------------------------|
 | 2000-01-01                       | equals 2000-01-01                  |
 | =2000-01-01                      | equals 2000-01-01                  |

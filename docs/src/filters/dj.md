@@ -20,7 +20,7 @@ This filter allow you to use any lookups allowed in Django queries, can work on 
 ## Options
 
 - DjangoLookupFilter.can_negate
-    
+
     Control ability to work as `exclude` filter. Set to `False` hides the Exclude checkbox
 
 - DjangoLookupFilter.placeholder

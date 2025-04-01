@@ -7,7 +7,7 @@ Filter numbers. It allows complex filter like:
 
 
 
-| value       | resulting filter                 | 
+| value       | resulting filter                 |
 |-------------|----------------------------------|
 | 100         | equals 100                       |
 | =100        | equals 100                       |

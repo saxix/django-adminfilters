@@ -2,7 +2,8 @@ import django.contrib.admin.sites
 import django.views.static
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.urls import re_path
+from django.http import HttpResponse
+from django.urls import re_path, path
 
 from adminfilters.depot.admin import StoredFilterAdmin
 from adminfilters.depot.models import StoredFilter
@@ -41,7 +42,13 @@ public_site.register(models.DemoModelField, admin.DemoModelFieldAdmin)
 public_site.register(User, admin.IUserAdmin)
 public_site.register(StoredFilter, StoredFilterAdmin)
 
+
+def favicon(request):
+    return HttpResponse("")
+
+
 urlpatterns = (
+    path("favicon.ico", favicon),
     re_path(
         r"^(?P<path>favicon.ico)$",
         django.views.static.serve,

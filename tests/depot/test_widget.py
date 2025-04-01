@@ -47,5 +47,5 @@ def test_choices(admin_user, rf):
     f = DepotManager(request, {"a": "1"}, None, public_site._registry[Artist])
     choices = list(f.choices(Mock()))
     assert len(choices) == 2
-    assert choices[0] == {"name": "Filter1", "query_string": "?a=1", "selected": True}
-    assert choices[1] == {"name": "Filter2", "query_string": "?a=2", "selected": False}
+    assert choices[0] == {"display": "Filter1", "query_string": "?a=1", "selected": True}
+    assert choices[1] == {"display": "Filter2", "query_string": "?a=2", "selected": False}

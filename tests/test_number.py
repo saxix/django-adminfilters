@@ -1,7 +1,7 @@
 import pytest
 from demo.models import DemoModelField
 
-from adminfilters.numbers import NumberFilter
+from adminfilters.num import NumberFilter
 
 
 @pytest.fixture

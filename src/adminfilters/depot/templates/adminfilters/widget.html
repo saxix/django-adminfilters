@@ -15,7 +15,7 @@
                 {% for c in choices %}
                     <option
                             data-qs="{{ c.query_string }}"
-                            value="{{ c.pk }}" {% if c.selected %}selected="selected"{% endif %}>{{ c.name }}</option>
+                            value="{{ c.pk }}" {% if c.selected %}selected="selected"{% endif %}>{{ c.display }}</option>
                 {% endfor %}</select>
         </li>
         {% if spec.can_add_filter and spec.selected %}

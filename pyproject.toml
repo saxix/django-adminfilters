@@ -1,58 +1,247 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+  "hatch-vcs>=0.4",
+  "hatchling>=1.25",
+]
+
 [project]
 name = "django-adminfilters"
 version = "2.5.2"
 description = "Django mixin to easily add buttons to any ModelAdmin"
 readme = "README.md"
-requires-python = ">=3.11"
-classifiers=[
-        'Environment :: Web Environment',
-        'Operating System :: OS Independent',
-        'Framework :: Django',
-        'Framework :: Django :: 4.2',
-        'Framework :: Django :: 5.0',
-        'Framework :: Django :: 5.1',
-        'License :: OSI Approved :: BSD License',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Topic :: Software Development :: Libraries :: Application Frameworks',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        'Intended Audience :: Developers'
-    ]
+requires-python = ">=3.9"
+classifiers = [
+  "Environment :: Web Environment",
+  "Framework :: Django",
+  "Framework :: Django :: 3.2",
+  "Framework :: Django :: 4.2",
+  "Framework :: Django :: 5.0",
+  "Framework :: Django :: 5.1",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries :: Application Frameworks",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
 
 dependencies = [
+  "django-stubs>=5.1.3",
+  "django-stubs-ext>=5.1.3",
 ]
 
-[project.urls]
-Homepage = "https://github.com/saxix/django-adminfilterst"
-Documentation = "https://github.com/saxix/django-adminfilters"
+urls.Documentation = "https://github.com/saxix/django-adminfilters"
+urls.Homepage = "https://github.com/saxix/django-adminfilterst"
 
-[project.optional-dependencies]
+[dependency-groups]
+dev = [
+  "django-environ",
+  "django-factory-boy",
+  "django-webtest>=1.9.12",
+  "pre-commit",
+  "psycopg2-binary",
+  "pyproject-fmt>=2.5.1",
+  "pyquery>=2.0.1",
+  "pytest",
+  "pytest-cov",
+  "pytest-django",
+  "pytest-echo",
+  "pytest-selenium",
+  "ruff>=0.9.9",
+  "tox",
+]
+
 docs = [
-    "mkdocs>=1.6.1",
-    "markdown-include",
-    "mkdocs-material>=9.5.36",
-    "mkdocs-awesome-pages-plugin>=2.9.3",
-    "mkdocstrings-python",
-    "mdx-gh-links>=0.4",
+  "markdown-include>=0.8.1",
+  "mdx-gh-links>=0.4",
+  "mkdocs>=1.6.1",
+  "mkdocs-autolinks-plugin>=0.7.1",
+  "mkdocs-autorefs>=1.3.1",
+  "mkdocs-awesome-pages-plugin>=2.10.1",
+  "mkdocs-ezlinks-plugin>=0.1.14",
+  "mkdocs-glightbox>=0.4",
+  "mkdocs-include-markdown-plugin>=6.2.2",
+  "mkdocs-macros-plugin>=1.3.7",
+  "mkdocs-markdownextradata-plugin>=0.2.6",
+  "mkdocs-material>=9.6.5",
+  "mkdocs-material-extensions>=1.3.1",
+  "mkdocstrings>=0.28.1",
+  "mkdocstrings-python>=1.16.1",
 ]
+dj = [
+  "django",
+]
+type-check = [
+  "mypy",
+]
+
+[tool.hatch]
+build.hooks.vcs.version-file = "src/adminfilters/version.py"
+version.source = "vcs"
+raw-options = { root = "../.." }
+
+[tool.hatch.build.targets.sdist]
+ignore-vcs = true
+include = [
+  "src/adminfilters/**/*.*",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [ "src/adminfilters" ]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 120
+exclude = [
+  "docs",
+  "manage.py",
+  "tests",
+]
+format.preview = true
+format.docstring-code-line-length = 120
+format.docstring-code-format = true
+lint.select = [
+  "ALL",
+]
+lint.ignore = [
+  "ANN401", #  Dynamically typed expressions
+  "COM812",
+  "CPY",    # Missing copyright notice
+  "D",      # docstring
+  "DOC",    # docstring
+  "E731",   #  Do not assign a `lambda` expression,
+  "EM101",  #  Exception must not use a string literal, assign to variable first
+  "EM102",  #  Exception must not use a f-string literal, assign to variable first
+  "FBT001", #  Boolean-typed positional argument in function definition
+  "FBT002", #  Boolean default positional argument in function definition
+  "N806",   # Variable `...` in function should be lowercase
+  "S308",   # Use of `mark_safe` may expose cross-site scripting vulnerabilities
+  "SLF001", #  Private member accessed: `...`
+  "TRY003", # Avoid specifying long messages outside the exception class
+  "TRY301", # Abstract `raise` to an inner function
+  "TRY401", #  Redundant exception object included in `logging.exception` call
+  "UP037",  #
+]
+lint.per-file-ignores."docs/conf.py" = [
+  "A001",   #
+  "D100",   #
+  "ERA001", #
+  "INP001", #
+]
+lint.per-file-ignores."src/admin_sync/version.py" = [
+  "UP006",
+  "UP035",
+]
+lint.per-file-ignores."src/adminfilters/depot/migrations/*" = [
+  "ALL",
+]
+lint.per-file-ignores."src/adminfilters/version.py" = [
+  "ALL",
+]
+lint.per-file-ignores."tests/**/*.py" = [
+  "A",
+  "ANN",
+  "ARG",
+  "B",
+  "BLE",
+  "D",
+  "DJ",
+  "DTZ",
+  "ERA",
+  "F",
+  "FBT",
+  "FURB",
+  "INP",
+  "N",
+  "PGH",
+  "PLC",
+  "PLR",
+  "PLW",
+  "PT",
+  "PTH",
+  "PYI",
+  "RUF",
+  "S",
+  "SIM",
+  "TC",
+  "UP",
+]
+lint.isort = { known-first-party = [ "adminfilters" ] }
+lint.pylint.max-args = 7
+lint.pylint.max-branches = 14
+lint.pylint.max-nested-blocks = 8
+lint.preview = true
+
+[tool.check-wheel-contents]
+ignore = "W004"
+
+[tool.pyproject-fmt]
+max_supported_python = "3.13"
+
+[tool.pytest.ini_options]
+django_find_project = false
+pythonpath = [ "./tests/demoapp/", "./src" ]
+DJANGO_SETTINGS_MODULE = "demo.settings"
+norecursedirs = [ "demo", ".tox" ]
+addopts = [
+  "--selenium",
+  "--tb=short",
+  "--capture=no",
+  "--echo-version=django",
+  "--echo-attr=django.conf.settings.DATABASES.default.ENGINE",
+  "--cov=adminfilters",
+  "--cov-report=html",
+  "--cov-report=xml",
+  "--cov-config=tests/.coveragerc",
+]
+python_files = "tests/test_*.py tests/**/test_*.py src/*.py"
+markers = [
+  "functional: mark a test as functional",
+  "selenium: selenium test",
+  "skip: skip test",
+]
+
+[tool.coverage]
+run.source = [
+  "adminfilters",
+]
+run.dynamic_context = "test_function"
+run.branch = true
+run.parallel = true
+run.plugins = [
+  "covdefaults",
+]
+report.fail_under = 80
+report.show_missing = true
+report.exclude_lines = [
+  "pragma: no cover",
+]
+html.show_contexts = true
+html.skip_covered = false
+paths.source = [
+  "src",
+  ".tox*/*/lib/python*/site-packages",
+  ".tox*/pypy*/site-packages",
+  ".tox*\\*\\Lib\\site-packages",
+  "*/src",
+  "*\\src",
+]
+
+[tool.mypy]
+plugins = "mypy_django_plugin.main"
+mypy_path = "tests/demoapp"
+[[tool.mypy.overrides]]
+module = "environ.*"
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "demo.settings"
 
 [tool.uv]
-dev-dependencies = [
-    "bump2version>=1.0.1",
-    "check-manifest>=0.50",
-    "django-environ>=0.11.2",
-    "factory-boy>=3.3.1",
-    "flake8>=7.1.1",
-    "isort>=5.13.2",
-    "mkdocs-autolinks-plugin>=0.7.1",
-    "pdbpp>=0.10.3",
-    "prettytable>=3.9.0",
-    "psycopg2-binary>=2.9.9",
-    "pytest-cov>=5.0.0",
-    "pytest-django>=4.5.2",
-    "pytest-echo>=1.7.3",
-    "pytest-selenium",
-    "pytest",
-    "selenium",
-    "tox>=4.21.2",
-]
+package = true

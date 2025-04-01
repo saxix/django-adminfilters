@@ -1,8 +1,12 @@
+from unittest.mock import Mock
+
 import pytest
+from pyquery import PyQuery
+
 from demo.factories import ArtistFactory
 from demo.models import Artist
 
-from adminfilters.json import JsonFieldFilter
+from adminfilters.filters import JsonFieldFilter
 
 
 @pytest.fixture
@@ -47,7 +51,7 @@ def test_JsonFieldFilter(fixtures):
         None,
         "flags",
     )
-    result = f.queryset(None, Artist.objects.all())
+    result = f.queryset(Mock(), Artist.objects.all())
     assert list(result.order_by("flags__v").values_list("flags__v", flat=True)) == [
         1,
         1,
@@ -152,3 +156,12 @@ def test_JsonFieldFilter(fixtures):
         "2",
         None,
     ]
+
+def test_querystring(fixtures, django_app):
+    res = django_app.get("/demo/artist/?&flags__key=v&flags__value=1&flags__type=any&flags__options=e&flags__negate=false")
+    pq = PyQuery(res.content)
+    jt1 = pq('input[type=text][name=key][data-group=flags]')
+    assert jt1.val() == "v"
+    jt2 = pq('input[type=text][name=value][data-group=flags]')
+    assert jt2.val() == "1"
+#     http://127.0.0.1:8000/demo/artist/?&flags__key=v&flags__value=1&flags__type=any&flags__options=e&flags__negate=false

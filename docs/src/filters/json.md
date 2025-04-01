@@ -3,7 +3,7 @@
 ![autocomplete](../static/images/json.gif){width=200}
 
 
-Specialized filter for [JSONField](https://docs.djangoproject.com/it/4.0/ref/models/fields/#django.db.models.JSONField). 
+Specialized filter for [JSONField](https://docs.djangoproject.com/it/4.0/ref/models/fields/#django.db.models.JSONField).
 I allows to filter nested json structure and handle different data types.
 
 

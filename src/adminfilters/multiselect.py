@@ -1,31 +1,49 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, NoReturn
+
 from django.contrib.admin.utils import prepare_lookup_value
-from django.db.models.fields import AutoField, BigAutoField, IntegerField
+from django.db.models.fields import AutoField, BigAutoField, Field, IntegerField
 from django.utils.translation import gettext_lazy as _
 
 from adminfilters.mixin import SmartFieldListFilter
 
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
+    from django.contrib.admin import ModelAdmin
+    from django.contrib.admin.views.main import ChangeList
+    from django.db.models import Model, QuerySet
+    from django.http import HttpRequest
+
 
 class MultipleSelectFieldListFilter(SmartFieldListFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        self.lookup_kwarg = "%s_filter" % field_path
-        self.filter_statement = "%s" % field_path
+    def __init__(
+        self,
+        field: Field,
+        request: HttpRequest,
+        params: dict[str, str],
+        model: Model,
+        model_admin: ModelAdmin,
+        field_path: str,
+    ) -> None:
+        self.lookup_kwarg = f"{field_path}_filter"
+        self.filter_statement = f"{field_path}"
 
         self._params = params
         self.lookup_val = self.get_parameters(self.lookup_kwarg, pop=True)
 
         self.lookup_choices = field.get_choices(include_blank=False)
         super().__init__(field, request, params, model, model_admin, field_path)
-        self.used_parameters[self.lookup_kwarg] = prepare_lookup_value(
-            self.lookup_kwarg, self.lookup_val
-        )
+        self.used_parameters[self.lookup_kwarg] = prepare_lookup_value(self.lookup_kwarg, self.lookup_val)
 
-    def expected_parameters(self):
+    def expected_parameters(self) -> list[str | None]:
         return [self.lookup_kwarg]
 
-    def get_field(self):
+    def get_field(self) -> Field:
         return self.field.remote_field.model._meta.pk
 
-    def values(self):
+    def values(self) -> list[str]:
         """
         Returns a list of values to filter on.
         """
@@ -36,15 +54,14 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
 
         field = self.get_field()
         # convert to integers if IntegerField
-        if type(field) in [IntegerField, AutoField, BigAutoField]:
+        if type(field) in {IntegerField, AutoField, BigAutoField}:
             values = [int(x) for x in values]
         return values
 
-    def queryset(self, request, queryset):
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> NoReturn:
         raise NotImplementedError
 
-    def choices(self, cl):
-        # from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+    def choices(self, cl: ChangeList) -> Generator[dict[str, str | bool], None, None]:
         yield {
             "selected": self.lookup_val is None,
             "query_string": cl.get_query_string({}, [self.lookup_kwarg]),
@@ -59,11 +76,9 @@ class MultipleSelectFieldListFilter(SmartFieldListFilter):
                 pk_list.add(pk_val)
             queryset_value = ",".join([str(x) for x in pk_list])
             if pk_list:
-                query_string = cl.get_query_string(
-                    {
-                        self.lookup_kwarg: queryset_value,
-                    }
-                )
+                query_string = cl.get_query_string({
+                    self.lookup_kwarg: queryset_value,
+                })
             else:
                 query_string = cl.get_query_string({}, [self.lookup_kwarg])
             yield {
@@ -80,7 +95,7 @@ class IntersectionFieldListFilter(MultipleSelectFieldListFilter):
     returned whose m2m contains all the selected filters.
     """
 
-    def queryset(self, request, queryset):
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:  # noqa: ARG002
         for value in self.values():
             filter_dct = {self.filter_statement: value}
             queryset = queryset.filter(**filter_dct)
@@ -95,27 +110,20 @@ class UnionFieldListFilter(MultipleSelectFieldListFilter):
     contains one of the selected filters.
     """
 
-    # def __init__(self, *args, **kwargs):
-    #     self._params = params
-    #     self.lookup_val = self.get_parameters(self.lookup_kwarg, pop=True)
-    #     super().__init__(*args, **kwargs)
-
-    def get_field(self):
+    def get_field(self) -> Field:
         try:
             field = super().get_field()
-        except AttributeError:  # pragma: no cover
+        except AttributeError as e:  # pragma: no cover
             if hasattr(self.field, "choices") and self.field.choices:
                 field = self.field  # It's a *Field with choices
             else:
-                raise AttributeError(
-                    "Multiselect field must be a FK or any type with choices"
-                )
+                raise AttributeError("Multiselect field must be a FK or any type with choices") from e
         return field
 
-    def queryset(self, request, queryset):
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet:  # noqa: ARG002
         filter_values = self.values()
         if filter_values:
-            filter_statement = "%s__in" % self.filter_statement
+            filter_statement = f"{self.filter_statement}__in"
             filter_dct = {filter_statement: filter_values}
             queryset = queryset.filter(**filter_dct).distinct()
         return queryset

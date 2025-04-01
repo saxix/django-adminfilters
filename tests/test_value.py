@@ -55,7 +55,7 @@ def test_factory(fixtures):
         "name",
     )
 
-    assert f.value() == ["a1", False]
+    assert f.value() == ("a1", False)
     result = f.queryset(None, Artist.objects.all())
     value = list(result.values_list("name", flat=True))
     assert value == ["a1"]

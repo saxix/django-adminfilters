@@ -1,15 +1,15 @@
 from django.contrib.admin.filters import AllValuesFieldListFilter, ChoicesFieldListFilter, RelatedFieldListFilter
 
-from .mixin import WrappperMixin
+from .mixin import WrapperMixin
 
 
-class AllValuesComboFilter(WrappperMixin, AllValuesFieldListFilter):
+class AllValuesComboFilter(WrapperMixin, AllValuesFieldListFilter):
     template = "adminfilters/combobox.html"
 
 
-class RelatedFieldComboFilter(WrappperMixin, RelatedFieldListFilter):
+class RelatedFieldComboFilter(WrapperMixin, RelatedFieldListFilter):
     template = "adminfilters/combobox.html"
 
 
-class ChoicesFieldComboFilter(WrappperMixin, ChoicesFieldListFilter):
+class ChoicesFieldComboFilter(WrapperMixin, ChoicesFieldListFilter):
     template = "adminfilters/combobox.html"

@@ -1,9 +1,11 @@
 import re
 
-from django.contrib.admin.options import IncorrectLookupParameters
-from django.db.models import DateField, DateTimeField
+from django.contrib.admin.options import IncorrectLookupParameters, ModelAdmin
+from django.db.models import DateField, DateTimeField, Model, QuerySet
+from django.db.models.fields import Field
+from django.http import HttpRequest
 
-from adminfilters.numbers import NumberFilter
+from .num import NumberFilter
 
 
 class DateRangeFilter(NumberFilter):
@@ -12,14 +14,22 @@ class DateRangeFilter(NumberFilter):
     re_list = re.compile(r"(\d{4}-\d{2}-\d{2}),?")
     re_unlike = re.compile(r"^(<>)(?P<date>\d{4}-\d{2}-\d{2})$")
 
-    def __init__(self, field, request, params, model, model_admin, field_path):
+    def __init__(
+        self,
+        field: Field,
+        request: HttpRequest,
+        params: dict[str, str],
+        model: Model,
+        model_admin: ModelAdmin,
+        field_path: str,
+    ) -> None:
         super().__init__(field, request, params, model, model_admin, field_path)
         if isinstance(field, DateTimeField):
             self.extra_lookup = "__date"
         elif isinstance(field, DateField):
             self.extra_lookup = ""
 
-    def queryset(self, request, queryset):
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet[Model]:  # noqa: ARG002
         if self.value() and self.value()[0]:
             raw_value = self.value()[0]
             m1 = self.rex1.match(raw_value)
@@ -44,10 +54,10 @@ class DateRangeFilter(NumberFilter):
                     match = f"{lk}__in"
                     self.filters = {match: value}
                 else:  # pragma: no cover
-                    raise IncorrectLookupParameters()
+                    raise IncorrectLookupParameters
 
                 try:
                     queryset = queryset.filter(**self.filters)
-                except Exception:
-                    raise IncorrectLookupParameters(self.value())
+                except Exception as e:
+                    raise IncorrectLookupParameters(self.value()) from e
         return queryset

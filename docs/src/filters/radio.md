@@ -1,4 +1,4 @@
-# Radio 
+# Radio
 
 ![boolean_radio](../static/images/boolean_radio.gif){width=300}
 

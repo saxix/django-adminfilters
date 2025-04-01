@@ -1,48 +1,44 @@
+from typing import Any
+
 from django import forms
-from django.contrib.admin import FieldListFilter, ListFilter
+from django.contrib.admin import AdminSite, FieldListFilter, ListFilter
 from django.contrib.admin.options import ModelAdmin
+from django.contrib.admin.views.main import ChangeList
 from django.core import checks
 from django.core.exceptions import FieldDoesNotExist
+from django.db.models import Field, Model, QuerySet
+from django.http import HttpRequest
 
-from adminfilters.compat import DJANGO_MAJOR
+from adminfilters.compat import DJANGO_5
 
 
-class WrappperMixin:
-    negated = False
-    can_negate = False
-    title = None
-    negated_title = None
-    placeholder = ""
+class WrapperMixin:
+    negated: bool = False
+    can_negate: bool = False
+    title: str = ""
+    negated_title: str = ""
+    placeholder: str = ""
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.error = None
         self.error_message = None
         super().__init__(*args, **kwargs)
-        if (
-            hasattr(self, "media")
-            and self.model_admin
-            and not isinstance(self.model_admin, AdminFiltersMixin)
-        ):
-            raise Exception(
-                f"{self.model_admin.__class__.__name__} must inherit from AdminFiltersMixin"
-            )
+        if hasattr(self, "media") and self.model_admin and not isinstance(self.model_admin, AdminFiltersMixin):
+            raise AttributeError(f"{self.model_admin.__class__.__name__} must inherit from AdminFiltersMixin")
 
     def get_parameters(
-        self, param_name, default="", multi=False, pop=False, separator=","
-    ):
-        if pop:
-            val = self._params.pop(param_name, default)
-        else:
-            val = self._params.get(param_name, default)
+        self, param_name: str, default: str = "", multi: bool = False, pop: bool = False, separator: str = ","
+    ) -> str:
+        val = self._params.pop(param_name, default) if pop else self._params.get(param_name, default)
         if val:
-            if DJANGO_MAJOR >= 5:
+            if DJANGO_5:
                 if isinstance(val, list) and not multi:
                     val = val[-1]
             elif multi:
                 val = val.split(separator)
         return val
 
-    def html_attrs(self):
+    def html_attrs(self) -> dict[str, str]:
         classes = f"adminfilters box {self.__class__.__name__.lower()}"
         if self.error_message:
             classes += " error"
@@ -52,26 +48,33 @@ class WrappperMixin:
             "id": "_".join(self.expected_parameters()),
         }
 
-    def get_title(self):
+    def get_title(self) -> str:
         if not self.can_negate and self.negated:
             if self.negated_title:
                 return self.negated_title
-            else:
-                return f"not {self.title}"
+            return f"not {self.title}"
         return self.title
 
 
-class SmartListFilter(WrappperMixin, ListFilter):
-    def __init__(self, request, params, model, model_admin):
+class SmartListFilter(WrapperMixin, ListFilter):
+    def __init__(self, request: HttpRequest, params: dict[str, str], model: Model, model_admin: ModelAdmin) -> None:
         self.model_admin = model_admin
         self._params = params
         super().__init__(request, params, model, model_admin)
 
 
-class SmartFieldListFilter(WrappperMixin, FieldListFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path):
+class SmartFieldListFilter(WrapperMixin, FieldListFilter):
+    def __init__(
+        self,
+        field: Field,
+        request: HttpRequest,
+        params: dict[str, str],
+        model: Model,
+        model_admin: ModelAdmin,
+        field_path: str,
+    ) -> None:
         self.model_admin = model_admin
-        self._params = params
+        self._params = params.copy()
         super().__init__(field, request, params, model, model_admin, field_path)
 
 
@@ -80,25 +83,22 @@ class MediaDefinitionFilter:
 
 
 class AdminFiltersMixin(ModelAdmin):
-    def _check_linked_fields_modeladmin(self):
-        from .autocomplete import LinkedAutoCompleteFilter
+    def _check_linked_fields_modeladmin(self) -> list[checks.Error]:  # noqa: C901
+        from .autocomplete import LinkedAutoCompleteFilter  # noqa: PLC0415
 
         linked_filters = [
-            e
-            for e in self.list_filter
-            if isinstance(e, (list, tuple))
-            and issubclass(e[1], LinkedAutoCompleteFilter)
+            e for e in self.list_filter if isinstance(e, (list, tuple)) and issubclass(e[1], LinkedAutoCompleteFilter)
         ]
         errs = []
         seen = []
-        for pos, entry in enumerate(linked_filters):
+        for entry in linked_filters:
             if entry[1] and entry[1].parent:
                 parts = entry[1].parent.split("__")
                 m = self.model
                 for part in parts:
                     try:
                         m = m._meta.get_field(part).remote_field.model
-                    except FieldDoesNotExist as e:
+                    except FieldDoesNotExist as e:  # noqa: PERF203
                         errs.append(
                             checks.Error(
                                 f"{m}` {e}",
@@ -123,9 +123,7 @@ class AdminFiltersMixin(ModelAdmin):
                                     )
                                 )
                         else:
-                            if ma not in seen and not isinstance(
-                                ma, AdminAutoCompleteSearchMixin
-                            ):
+                            if ma not in seen and not isinstance(ma, AdminAutoCompleteSearchMixin):
                                 errs.append(
                                     checks.Error(
                                         f"{ma}` must inherits from AdminAutoCompleteSearchMixin",
@@ -137,18 +135,15 @@ class AdminFiltersMixin(ModelAdmin):
 
         return errs
 
-    def _check_linked_fields_order(self):
-        from .autocomplete import LinkedAutoCompleteFilter
+    def _check_linked_fields_order(self) -> list[checks.Error]:
+        from .autocomplete import LinkedAutoCompleteFilter  # noqa: PLC0415
 
         linked_filters = [
-            e
-            for e in self.list_filter
-            if isinstance(e, (list, tuple))
-            and issubclass(e[1], LinkedAutoCompleteFilter)
+            e for e in self.list_filter if isinstance(e, (list, tuple)) and issubclass(e[1], LinkedAutoCompleteFilter)
         ]
         errs = []
         seen = []
-        for pos, entry in enumerate(linked_filters):
+        for entry in linked_filters:
             if entry[1] and entry[1].parent and entry[1].parent not in seen:
                 errs.append(
                     checks.Error(
@@ -160,26 +155,26 @@ class AdminFiltersMixin(ModelAdmin):
             seen.append(entry[0])
         return errs
 
-    def check(self, **kwargs):
+    def check(self, **kwargs: Any) -> list[checks.Error]:
         return [
             *super().check(**kwargs),
             *self._check_linked_fields_order(),
             *self._check_linked_fields_modeladmin(),
         ]
 
-    def get_changelist_instance(self, request):
+    def get_changelist_instance(self, request: HttpRequest) -> ChangeList:
         cl = super().get_changelist_instance(request)
         for flt in cl.filter_specs:
             if hasattr(flt, "media"):
                 self.admin_filters_media += flt.media
         return cl
 
-    def __init__(self, model, admin_site):
+    def __init__(self, model: Model, admin_site: AdminSite) -> None:
         self.admin_filters_media = forms.Media()
         super().__init__(model, admin_site)
 
     @property
-    def media(self):
+    def media(self) -> forms.Media:
         original = super().media
         if hasattr(self, "admin_filters_media"):
             original += self.admin_filters_media
@@ -187,11 +182,9 @@ class AdminFiltersMixin(ModelAdmin):
 
 
 class AdminAutoCompleteSearchMixin(ModelAdmin):
-    def get_search_results(self, request, queryset, search_term):
+    def get_search_results(self, request: HttpRequest, queryset: QuerySet, search_term: str) -> tuple[QuerySet, bool]:
         field_names = [f.name for f in self.model._meta.get_fields()]
         filters = {k: v for k, v in request.GET.items() if k in field_names}
         queryset = queryset.filter(**filters)
-        queryset, may_have_duplicates = super().get_search_results(
-            request, queryset, search_term
-        )
+        queryset, may_have_duplicates = super().get_search_results(request, queryset, search_term)
         return queryset, may_have_duplicates

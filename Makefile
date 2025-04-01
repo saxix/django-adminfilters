@@ -26,10 +26,6 @@ lint:  ## code lint
 	tox -e lint
 	#pre-commit run --all-files
 
-develop:  ## setup development env
-	python3 -m venv ./.venv
-	./.venv/bin/pip install -r src/requirements/testing.pip
-	./.venv/bin/pip install -r src/requirements/develop.pip
 
 demo:  ## run demo app
 	cd tests/demoapp && python manage.py makemigrations demo
@@ -48,33 +44,3 @@ fullclean:  ## clean development directory
 
 test:  ## run test
 	 py.test src tests -vv --capture=no --doctest-modules --cov=adminfilters --cov-report=html --cov-config=tests/.coveragerc
-
-docs: .mkbuilddir
-	@sh docs/to_gif.sh docs/images
-	@mkdir -p ${BUILDDIR}/docs
-	sphinx-build -aE docs ${BUILDDIR}/docs
-
-bump:   ## Bumps version
-	@while :; do \
-		read -r -p "bumpversion [major/minor/release]: " PART; \
-		case "$$PART" in \
-			major|minor|release) break ;; \
-  		esac \
-	done ; \
-	bumpversion --no-commit --allow-dirty $$PART
-	@grep "^VERSION " src/adminfilters/__init__.py
-
-
-heroku:
-	@git checkout heroku
-	@git merge develop -m "merge develop"
-	@git push heroku heroku:master
-	@git checkout develop
-	@echo "check demo at https://django-adminfilters.herokuapp.com/"
-
-heroku-reset: heroku
-	heroku pg:reset --confirm django-adminfilters
-	heroku config:set DEBUG=true
-	heroku run python tests/demoapp/manage.py migrate
-	heroku run python tests/demoapp/manage.py init_demo
-	heroku run python tests/demoapp/manage.py collectstatic --noinput

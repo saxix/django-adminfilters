@@ -16,9 +16,9 @@ from adminfilters.filters import (
     UnionFieldListFilter,
     ValueFilter,
 )
-from adminfilters.json import JsonFieldFilter
-from adminfilters.mixin import AdminAutoCompleteSearchMixin, AdminFiltersMixin
-from adminfilters.value import MultiValueFilter
+from adminfilters.filters import JsonFieldFilter, AdminAutoCompleteSearchMixin, AdminFiltersMixin, MultiValueFilter
+# from adminfilters.mixin import AdminAutoCompleteSearchMixin, AdminFiltersMixin
+# from adminfilters.value import MultiValueFilter
 
 from .models import Artist, Band, City, Country, Region
 

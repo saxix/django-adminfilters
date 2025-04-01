@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.admin import register
 
-from ..combo import RelatedFieldComboFilter
+from adminfilters.combo import RelatedFieldComboFilter
+
 from .models import StoredFilter
 
 
