@@ -55,8 +55,11 @@ jobs:
           python-version: 3.12
           architecture: 'x64'
       - uses: yezz123/setup-uv@v4
+
       - name: lint
         if: needs.changes.outputs.lint
-        run: |
-          uv run isort src/ --check-only
-          uv run flake8 src/
+        run: tox -e lint
+
+      - name: pkg_meta
+        if: needs.changes.outputs.lint
+        run: tox -e pkg_meta
