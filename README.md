@@ -6,9 +6,9 @@ Collection of extra filters for the Django admin site
 [![Pypi](https://badge.fury.io/py/django-adminfilters.svg)](https://pypi.org/project/django-adminfilters/)
 [![coverage](https://codecov.io/github/saxix/django-adminfilters/coverage.svg?branch=develop)](https://codecov.io/github/saxix/django-adminfilters?branch=develop)
 [![Test](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml/badge.svg)](https://github.com/saxix/django-adminfilters/actions/workflows/test.yml)
+[![Documentation](https://github.com/saxix/django-adminfilters/actions/workflows/docs.yml/badge.svg)](https://saxix.github.io/django-adminfilters/)
 [![Django](https://img.shields.io/pypi/frameworkversions/django/django-adminfilters)](https://pypi.org/project/django-adminfilters/)
-
-[//]: # ([![Supported Python versions]&#40;https://img.shields.io/pypi/pyversions/pdf-cli.svg&#41;]&#40;https://pypi.org/project/pdf-cli/&#41;)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/django-adminfilters.svg)](https://pypi.org/project/django-adminfilters/)
 
 
 https://user-images.githubusercontent.com/27282/153727131-d875f946-a8a8-4d89-be83-1d8cb5c9391a.mp4
