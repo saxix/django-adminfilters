@@ -1,6 +1,7 @@
-# Release 2.5.2
-* restored wrongly removed css
-* enable css file customisation
+# Release 2.6
+* fixes #43
+* new packaging
+* new documetation
 
 
 # Release 2.5.2
