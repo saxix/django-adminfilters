@@ -18,8 +18,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      docs: ${{steps.changes.outputs.docs }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.7
+      - id: changes
+        name: Check for file changes
+        uses: dorny/paths-filter@v3.0.2
+        with:
+          base: ${{ github.ref }}
+          token: ${{ github.token }}
+          filters: .github/file-filters.yml
+
   generate:
     name: Generate
+    needs: [ changes ]
+    if: needs.changes.outputs.docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -5,9 +5,6 @@ on:
     branches:
       - '**'        # matches every branch
 
-concurrency:
-  group: "${{ github.workflow }}-${{ github.ref }}-test"
-  cancel-in-progress: true
 
 defaults:
   run:
@@ -41,6 +38,7 @@ jobs:
 
   ci:
     needs: [ changes ]
+    if: needs.changes.outputs.run_tests
     runs-on: ubuntu-latest
     name: Test py${{ matrix.python-version }}/dj${{matrix.django-version}}
     defaults:
@@ -67,7 +65,6 @@ jobs:
           - django-version: 5.1
             python-version: 3.9
       fail-fast: true
-#    if: needs.changes.outputs.run_tests || needs.changes.outputs.lint
     env:
       DOCKER_DEFAULT_PLATFORM: linux/amd64
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/adminfilters

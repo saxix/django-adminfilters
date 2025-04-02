@@ -11,6 +11,12 @@ changelog:
   - added|modified: 'changes/**'
   - 'CHANGELOG.md'
 
+docs:
+  - mkdocs.yml
+  - added|modified: 'docs/**'
+  - '.github/workflows/docs.yml'
+
+
 mypy:
   - *python
   - 'mypy.ini'
@@ -18,13 +24,11 @@ mypy:
 run_tests:
   - *python
   - *dependencies
-  - 'pytest.ini'
   - '.github/workflows/test.yml'
   - '.github/file-filters.yml'
 
 lint:
   -  *python
-  - '.flake8'
   - 'pyproject.toml'
   - '.github/file-filters.yml'
   - '.github/workflows/lint.yml'
