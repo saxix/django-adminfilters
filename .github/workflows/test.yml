@@ -57,13 +57,13 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        python-version: [ "3.13", "3.10", "3.9" ]
-        django-version: [ "5.1",  "4.2", "3.2"]
+        python: [ "3.13", "3.10", "3.9" ]
+        django: [ "52",  "42", "32"]
         exclude:
-          - django-version: 3.2
-            python-version: 3.13
-          - django-version: 5.1
-            python-version: 3.9
+          - django: 32
+            python: 3.13
+          - django: 52
+            python: 3.9
       fail-fast: true
     env:
       DOCKER_DEFAULT_PLATFORM: linux/amd64
@@ -71,10 +71,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.7
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python: ${{ matrix.python-version }}
           architecture: 'x64'
       - name: Restore cached venv
         id: cache-venv-restore
@@ -85,19 +85,20 @@ jobs:
             .venv/
           key: ${{ matrix.python-version }}-${{matrix.django-version}}-${{ hashFiles('pyproject.toml') }}-venv
 
-      - uses: yezz123/setup-uv@v4
-        with:
-          python: ${{ matrix.python-version }}
 
-      - name: Test
-#        if: needs.changes.outputs.run_tests
-        run: |
-              uv export -q --no-hashes  -o requirements.txt
-              pip install -r requirements.txt
-              pip install "django==${{ matrix.django-version }}.*"
-              python -m pytest tests/ \
-                --junit-xml junit-${{ matrix.python-version }}-${{matrix.django-version}}.xml \
-                --cov --cov-report xml
+      - name: Install tox
+        run: uv tool install --python-preference only-managed --python 3.13 tox --with tox-uv --with tox-gh-actions
+
+      - name: Install Python
+        if: matrix.python != '3.13'
+        run: uv python install --python-preference only-managed ${{ matrix.python }}
+
+      - name: Setup test suite
+        run: tox run -vv --notest --skip-missing-interpreters false -e d${{ matrix.django }}-py$(echo ${{ matrix.python }} | sed 's/\.//')
+
+      - name: Run test suite d${{ matrix.django }}-py${{ matrix.python }}
+        run: tox -e d${{ matrix.django }}-py$(echo ${{ matrix.python }} | sed 's/\.//')
+
       - name: Cache venv
         if: steps.cache-venv-restore.outputs.cache-hit != 'true'
         id: cache-venv-save

@@ -44,7 +44,7 @@ urls.Homepage = "https://github.com/saxix/django-adminfilters"
 dev = [
   "django-environ",
   "django-factory-boy",
-  "django-webtest>=1.9.12",
+  "django-webtest>=1.9.13",
   "pre-commit",
   "psycopg2-binary",
   "pyproject-fmt>=2.5.1",
@@ -146,32 +146,7 @@ lint.per-file-ignores."src/adminfilters/version.py" = [
   "ALL",
 ]
 lint.per-file-ignores."tests/**/*.py" = [
-  "A",
-  "ANN",
-  "ARG",
-  "B",
-  "BLE",
-  "D",
-  "DJ",
-  "DTZ",
-  "ERA",
-  "F",
-  "FBT",
-  "FURB",
-  "INP",
-  "N",
-  "PGH",
-  "PLC",
-  "PLR",
-  "PLW",
-  "PT",
-  "PTH",
-  "PYI",
-  "RUF",
-  "S",
-  "SIM",
-  "TC",
-  "UP",
+  "ALL",
 ]
 lint.isort = { known-first-party = [ "adminfilters" ] }
 lint.pylint.max-args = 7
