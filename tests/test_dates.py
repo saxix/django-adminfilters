@@ -66,6 +66,8 @@ def test_factory_invalid(fixtures):
         ("2000-01-10", "true", 4),
         ("2000-02-10", "true", 4),
         ("2000-02-21", "true", 5),
+        ("ABC", "true", 5),
+        ("ABC", "false", 5),
     ],
 )
 def test_DateInDateRangeFilter(fixtures, value, negated, expected):

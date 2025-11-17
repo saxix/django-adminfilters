@@ -50,7 +50,7 @@ class DateFilter(NumberFilter):
         elif isinstance(field, DateField):
             self.extra_lookup = ""
 
-    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet[Model]:  # noqa: ARG002
+    def queryset(self, request: HttpRequest, queryset: QuerySet) -> QuerySet[Model]:
         if self.value() and self.value()[0]:
             raw_value = self.value()[0]
             m1 = self.rex1.match(raw_value)
@@ -79,6 +79,7 @@ class DateFilter(NumberFilter):
 
                 try:
                     queryset = queryset.filter(**self.filters)
-                except Exception as e:
-                    raise IncorrectLookupParameters(self.value()) from e
+                except Exception:  # noqa: BLE001
+                    msg = _("%s filter ignored due to an error") % self.title
+                    self.model_admin.message_user(request, msg, messages.ERROR)
         return queryset
