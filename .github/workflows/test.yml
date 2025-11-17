@@ -55,7 +55,7 @@ jobs:
     env:
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_ALWAYS_EAGER: true
-      DATABASE_URL: postgres:postgres//postgres:@127.0.0.1:5432/adminfilters
+      DATABASE_URL: postgres:postgres:postgres@127.0.0.1:5432/adminfilters
     steps:
       - uses: actions/checkout@v5
         with:
