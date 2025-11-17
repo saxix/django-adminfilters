@@ -1,8 +1,10 @@
 import random
+from datetime import datetime
 
 import factory.fuzzy
 import faker
 from django.contrib.auth.models import User
+from django.db.backends.postgresql.psycopg_any import DateRange
 from factory.base import FactoryMetaClass
 
 from . import models
@@ -58,6 +60,7 @@ class DemoModelFieldFactory(ModelFactory):
     unique = factory.Sequence(lambda a: a)
     email = factory.Faker("email")
     json = {"char": "string", "integer": 100, "float": 2.0}
+    validity = factory.LazyFunction(lambda: DateRange(datetime(2000, 1, 1).date(), datetime(2000, 1, 31).date()))
 
     class Meta:
         model = models.DemoModelField

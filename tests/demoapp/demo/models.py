@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import DateRangeField
 from django.db import models
 
 try:
@@ -34,6 +35,8 @@ class DemoModelField(JSONMixin, models.Model):
     blank = models.CharField(max_length=255, blank=True, null=True)
     not_editable = models.CharField(max_length=255, editable=False, blank=True, null=True)
     choices = models.IntegerField(choices=((1, "Choice 1"), (2, "Choice 2"), (3, "Choice 3")))
+
+    validity = DateRangeField(verbose_name="Validity range")
 
     class Meta:
         app_label = "demo"

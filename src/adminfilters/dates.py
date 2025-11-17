@@ -12,7 +12,7 @@ from .num import NumberFilter
 from .value import ValueFilter
 
 
-class DateInDateRange(ValueFilter):
+class DateInDateRangeFilter(ValueFilter):
     lookup_name = "contains"
     input_type = "date"
 
@@ -20,7 +20,7 @@ class DateInDateRange(ValueFilter):
         target, exclude = self.value()
         if target:
             try:
-                d = datetime.strptime(target, "%Y-%m-%d 00:00:00").replace(tzinfo=UTC).date()
+                d = datetime.strptime(target, "%Y-%m-%d").replace(tzinfo=UTC).date()
                 self.filters = {self.lookup_kwarg: d}
                 queryset = queryset.exclude(**self.filters) if exclude else queryset.filter(**self.filters)
             except Exception as e:  # noqa: BLE001
@@ -29,7 +29,7 @@ class DateInDateRange(ValueFilter):
         return queryset
 
 
-class DateRangeFilter(NumberFilter):
+class DateFilter(NumberFilter):
     rex1 = re.compile(r"^(>=|<=|>|<|=)?(\d{4}-\d{2}-\d{2})$")
     re_range = re.compile(r"^(\d{4}-\d{2}-\d{2})..(\d{4}-\d{2}-\d{2})$")
     re_list = re.compile(r"(\d{4}-\d{2}-\d{2}),?")

@@ -43,6 +43,7 @@ dev = [
   "django-factory-boy",
   "django-webtest>=1.9.13",
   "djlint>=1.36.4",
+  "pdbpp>=0.11.7",
   "pre-commit",
   "psycopg2-binary",
   "pyproject-fmt>=2.5.1",

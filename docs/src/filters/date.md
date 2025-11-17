@@ -1,6 +1,6 @@
 ## Date Filters
 
-## DateRangeFilter
+## DateFilter
 
 Filter dates. It allows complex filter like:
 

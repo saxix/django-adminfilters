@@ -1,6 +1,7 @@
 from .autocomplete import AutoCompleteFilter, LinkedAutoCompleteFilter
 from .checkbox import RelatedFieldCheckBoxFilter
 from .combo import AllValuesComboFilter, ChoicesFieldComboFilter, RelatedFieldComboFilter
+from .dates import DateFilter, DateInDateRangeFilter
 from .dj import DjangoLookupFilter
 from .extra import PermissionPrefixFilter
 from .json_filter import JsonFieldFilter
@@ -25,6 +26,8 @@ __all__ = (
     "BooleanRadioFilter",
     "ChoicesFieldComboFilter",
     "ChoicesFieldRadioFilter",
+    "DateFilter",
+    "DateInDateRangeFilter",
     "DjangoLookupFilter",
     "IntersectionFieldListFilter",
     "JsonFieldFilter",

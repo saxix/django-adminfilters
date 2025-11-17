@@ -9,6 +9,7 @@ from adminfilters.filters import (
     AdminAutoCompleteSearchMixin,
     AdminFiltersMixin,
     BooleanRadioFilter,
+    DateInDateRangeFilter,
     DjangoLookupFilter,
     IntersectionFieldListFilter,
     JsonFieldFilter,
@@ -21,8 +22,6 @@ from adminfilters.filters import (
     ValueFilter,
 )
 
-# from adminfilters.mixin import AdminAutoCompleteSearchMixin, AdminFiltersMixin
-# from adminfilters.value import MultiValueFilter
 from .models import Artist, Band, City, Country, Region
 
 
@@ -82,6 +81,7 @@ class DemoModelFieldAdmin(DebugMixin, AdminFiltersMixin, ModelAdmin):
         QueryStringFilter,
         ("choices", ChoicesFieldComboFilter),
         ("integer", NumberFilter),
+        ("valididty", DateInDateRangeFilter),
     )
 
 
