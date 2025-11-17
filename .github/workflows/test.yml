@@ -40,8 +40,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        django: [ "52", "42"]
-        python: [ "3.13", "3.11" ]
+        django: [ "42", "52"]
+        python: [ "3.11", "3.12", "3.13" ]
 
     env:
       CELERY_BROKER_URL: redis://redis:6379/0
