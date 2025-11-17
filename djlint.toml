@@ -1,0 +1,11 @@
+profile = "django"
+include = "**/src/**/templates/*.html"
+extend_exclude = "docker/**,"
+ignore = "H006,H030"
+indent = 4
+max_line_length = 120
+max_attribute_length = 120
+close_void_tags=true
+line_break_after_multiline_tag=true
+
+[tool.djlint.per-file-ignores]

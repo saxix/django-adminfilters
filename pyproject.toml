@@ -9,18 +9,16 @@ requires = [
 name = "django-adminfilters"
 description = "Collection of Django Admin filters"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
   "Environment :: Web Environment",
   "Framework :: Django",
-  "Framework :: Django :: 3.2",
   "Framework :: Django :: 4.2",
   "Framework :: Django :: 5.2",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: BSD License",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -44,6 +42,7 @@ dev = [
   "django-environ",
   "django-factory-boy",
   "django-webtest>=1.9.13",
+  "djlint>=1.36.4",
   "pre-commit",
   "psycopg2-binary",
   "pyproject-fmt>=2.5.1",
@@ -95,128 +94,70 @@ include = [
 [tool.hatch.build.targets.wheel]
 packages = [ "src/adminfilters" ]
 
-[tool.ruff]
-target-version = "py39"
-line-length = 120
-exclude = [
-  "docs",
-  "manage.py",
-  "tests",
-]
-format.preview = true
-format.docstring-code-line-length = 120
-format.docstring-code-format = true
-lint.select = [
-  "ALL",
-]
-lint.ignore = [
-  "ANN401", #  Dynamically typed expressions
-  "COM812",
-  "CPY",    # Missing copyright notice
-  "D",      # docstring
-  "DOC",    # docstring
-  "E731",   #  Do not assign a `lambda` expression,
-  "EM101",  #  Exception must not use a string literal, assign to variable first
-  "EM102",  #  Exception must not use a f-string literal, assign to variable first
-  "FBT001", #  Boolean-typed positional argument in function definition
-  "FBT002", #  Boolean default positional argument in function definition
-  "N806",   # Variable `...` in function should be lowercase
-  "S308",   # Use of `mark_safe` may expose cross-site scripting vulnerabilities
-  "SLF001", #  Private member accessed: `...`
-  "TRY003", # Avoid specifying long messages outside the exception class
-  "TRY301", # Abstract `raise` to an inner function
-  "TRY401", #  Redundant exception object included in `logging.exception` call
-  "UP037",  #
-]
-lint.per-file-ignores."docs/conf.py" = [
-  "A001",   #
-  "D100",   #
-  "ERA001", #
-  "INP001", #
-]
-lint.per-file-ignores."src/admin_sync/version.py" = [
-  "UP006",
-  "UP035",
-]
-lint.per-file-ignores."src/adminfilters/depot/migrations/*" = [
-  "ALL",
-]
-lint.per-file-ignores."src/adminfilters/version.py" = [
-  "ALL",
-]
-lint.per-file-ignores."tests/**/*.py" = [
-  "ALL",
-]
-lint.isort = { known-first-party = [ "adminfilters" ] }
-lint.pylint.max-args = 7
-lint.pylint.max-branches = 14
-lint.pylint.max-nested-blocks = 8
-lint.preview = true
-
-[tool.check-wheel-contents]
-ignore = "W004"
-
-[tool.pyproject-fmt]
-max_supported_python = "3.13"
-
-[tool.pytest.ini_options]
-django_find_project = false
-pythonpath = [ "./tests/demoapp/", "./src" ]
-DJANGO_SETTINGS_MODULE = "demo.settings"
-norecursedirs = [ "demo", ".tox" ]
-addopts = [
-  "--selenium",
-  "--tb=short",
-  "--capture=no",
-  "--echo-version=django",
-  "--echo-attr=django.conf.settings.DATABASES.default.ENGINE",
-  "--cov=adminfilters",
-  "--cov-report=html",
-  "--cov-report=xml",
-  "--cov-config=tests/.coveragerc",
-]
-python_files = "tests/test_*.py tests/**/test_*.py src/*.py"
-markers = [
-  "functional: mark a test as functional",
-  "selenium: selenium test",
-  "skip: skip test",
-]
-
-[tool.coverage]
-run.source = [
-  "adminfilters",
-]
-run.dynamic_context = "test_function"
-run.branch = true
-run.parallel = true
-run.plugins = [
-  "covdefaults",
-]
-report.fail_under = 80
-report.show_missing = true
-report.exclude_lines = [
-  "pragma: no cover",
-]
-html.show_contexts = true
-html.skip_covered = false
-paths.source = [
-  "src",
-  ".tox*/*/lib/python*/site-packages",
-  ".tox*/pypy*/site-packages",
-  ".tox*\\*\\Lib\\site-packages",
-  "*/src",
-  "*\\src",
-]
-
-[tool.mypy]
-plugins = "mypy_django_plugin.main"
-mypy_path = "tests/demoapp"
-[[tool.mypy.overrides]]
-module = "environ.*"
-ignore_missing_imports = true
-
-[tool.django-stubs]
-django_settings_module = "demo.settings"
-
-[tool.uv]
-package = true
+#[tool.check-wheel-contents]
+#ignore = "W004"
+#
+#[tool.pyproject-fmt]
+#max_supported_python = "3.13"
+#
+#[tool.pytest.ini_options]
+#django_find_project = false
+#pythonpath = [ "./tests/demoapp/", "./src" ]
+#DJANGO_SETTINGS_MODULE = "demo.settings"
+#norecursedirs = [ "demo", ".tox" ]
+#addopts = [
+#  "--selenium",
+#  "--tb=short",
+#  "--capture=no",
+#  "--echo-version=django",
+#  "--echo-attr=django.conf.settings.DATABASES.default.ENGINE",
+#  "--cov=adminfilters",
+#  "--cov-report=html",
+#  "--cov-report=xml",
+#  "--cov-config=tests/.coveragerc",
+#]
+#python_files = "tests/test_*.py tests/**/test_*.py src/*.py"
+#markers = [
+#  "functional: mark a test as functional",
+#  "selenium: selenium test",
+#  "skip: skip test",
+#]
+#
+#[tool.coverage]
+#run.source = [
+#  "adminfilters",
+#]
+#run.dynamic_context = "test_function"
+#run.branch = true
+#run.parallel = true
+#run.plugins = [
+#  "covdefaults",
+#]
+#report.fail_under = 80
+#report.show_missing = true
+#report.exclude_lines = [
+#  "pragma: no cover",
+#]
+#html.show_contexts = true
+#html.skip_covered = false
+#paths.source = [
+#  "src",
+#  ".tox*/*/lib/python*/site-packages",
+#  ".tox*/pypy*/site-packages",
+#  ".tox*\\*\\Lib\\site-packages",
+#  "*/src",
+#  "*\\src",
+#]
+#
+#[tool.mypy]
+#plugins = "mypy_django_plugin.main"
+#mypy_path = "tests/demoapp"
+#[[tool.mypy.overrides]]
+#module = "environ.*"
+#ignore_missing_imports = true
+#
+#[tool.django-stubs]
+#django_settings_module = "demo.settings"
+#
+#[tool.uv]
+#package = true

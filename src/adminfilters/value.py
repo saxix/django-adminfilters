@@ -52,7 +52,10 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
 
     def expected_parameters(self) -> list[str | None]:
         self.lookup_kwarg = f"{self.field_path}__{self.lookup_name}"
-        self.lookup_kwarg_negated = f"{self.lookup_kwarg}__negate"
+        if self.can_negate:
+            self.lookup_kwarg_negated = f"{self.lookup_kwarg}__negate"
+        else:
+            self.lookup_kwarg_negated = ""
         return [self.lookup_kwarg, self.lookup_kwarg_negated]
 
     def value(self) -> tuple[str, bool]:
@@ -83,12 +86,6 @@ class ValueFilter(MediaDefinitionFilter, SmartFieldListFilter):
             try:
                 self.filters = {self.lookup_kwarg: target}
                 queryset = queryset.exclude(**self.filters) if exclude else queryset.filter(**self.filters)
-                """
-                if exclude:
-                    queryset = queryset.exclude(**self.filters)
-                else:
-                    queryset = queryset.filter(**self.filters)
-                """
             except Exception as e:  # noqa: BLE001
                 msg = _("%s filter ignored due to an error %s") % (self.title, e)
                 self.model_admin.message_user(request, msg, messages.ERROR)

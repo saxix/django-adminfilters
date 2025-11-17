@@ -5,8 +5,8 @@ var ValueFilterHandler = function (element, options) {
     var $container = $wrapper.find(".filter-content ul.adminfilter");
     var $button = $container.find("a.button");
     var $negate = $container.find("input[type=checkbox]").first();
-    var $value = $container.find("[type=text],textarea");
-    var $targets = $container.find("input[type=text],textarea");
+    var $value = $container.find("[type=text],textarea,[type=date]");
+    var $targets = $container.find("input[type=text],textarea,[type=date]");
     var qs = $container.data("qs");
     var timer = null;
     var isChanged = function () {
@@ -27,6 +27,13 @@ var ValueFilterHandler = function (element, options) {
         }
         return url;
     };
+    $container.find("[type=date]").on("blur", function (){
+        updateStatus();
+    }).on("focus", function (){
+        updateStatus();
+    }).on("change", function (){
+        updateStatus();
+    })
     var updateStatus = function () {
         var newAction;
         console.log("DEBUG", "$value", "changed=", $value.val() != $value.data("original"), "current=", $value.val(), "original=", $value.data("original"));

@@ -1,11 +1,32 @@
 import re
+from datetime import UTC, datetime
 
+from django.contrib import messages
 from django.contrib.admin.options import IncorrectLookupParameters, ModelAdmin
 from django.db.models import DateField, DateTimeField, Model, QuerySet
 from django.db.models.fields import Field
 from django.http import HttpRequest
+from django.utils.translation import gettext as _
 
 from .num import NumberFilter
+from .value import ValueFilter
+
+
+class DateRangeDateFilter(ValueFilter):
+    lookup_name = "contains"
+    input_type = "date"
+
+    def queryset(self, request: HttpRequest, queryset: QuerySet[Model]) -> QuerySet[Model]:
+        target, exclude = self.value()
+        if target:
+            try:
+                d = datetime.strptime(target, "%Y-%m-%d 00:00:00").replace(tzinfo=UTC).date()
+                self.filters = {self.lookup_kwarg: d}
+                queryset = queryset.exclude(**self.filters) if exclude else queryset.filter(**self.filters)
+            except Exception as e:  # noqa: BLE001
+                msg = _("%s filter ignored due to an error %s") % (self.title, e)
+                self.model_admin.message_user(request, msg, messages.ERROR)
+        return queryset
 
 
 class DateRangeFilter(NumberFilter):

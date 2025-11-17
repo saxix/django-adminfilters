@@ -1,17 +1,21 @@
 {% load i18n %}
-<h3>{% blocktrans with title as filter_title %} By {{ filter_title }}{% endblocktrans %}</h3>
+<h3>
+    {% blocktrans with title as filter_title %} By {{ filter_title }}{% endblocktrans %}
+</h3>
 <div id="field-{{ spec.field.name }}">
     <ul>
-    {% for choice in choices %}
-        <li>
-            <label>
-                <input type="checkbox"{% if choice.selected %} checked="checked"{% endif %}
-                data-uncheck-to-remove="{{ choice.uncheck_to_remove }}"
-                data-check-to-remove="{{ choice.check_to_remove }}"
-                value="{{ choice.query_string }}"/> {{ choice.display }}
-            </label>
-        </li>
-    {% endfor %}
+        {% for choice in choices %}
+            <li>
+                <label>
+                    <input type="checkbox"
+                           {% if choice.selected %} checked="checked"{% endif %}
+                           data-uncheck-to-remove="{{ choice.uncheck_to_remove }}"
+                           data-check-to-remove="{{ choice.check_to_remove }}"
+                           value="{{ choice.query_string }}" />
+                    {{ choice.display }}
+                </label>
+            </li>
+        {% endfor %}
     </ul>
 </div>
 <script type="text/javascript">

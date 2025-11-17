@@ -1,15 +1,19 @@
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 from django import forms
 from django.contrib.admin import AdminSite, FieldListFilter, ListFilter
 from django.contrib.admin.options import ModelAdmin
-from django.contrib.admin.views.main import ChangeList
 from django.core import checks
 from django.core.exceptions import FieldDoesNotExist
-from django.db.models import Field, Model, QuerySet
-from django.http import HttpRequest
 
 from adminfilters.compat import DJANGO_5
+
+if TYPE_CHECKING:
+    from django.contrib.admin.views.main import ChangeList
+    from django.db.models import Field, Model, QuerySet
+    from django.http import HttpRequest
 
 
 class WrapperMixin:
@@ -18,6 +22,7 @@ class WrapperMixin:
     title: str = ""
     negated_title: str = ""
     placeholder: str = ""
+    model_admin: ModelAdmin | None = None
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.error = None
@@ -64,6 +69,8 @@ class SmartListFilter(WrapperMixin, ListFilter):
 
 
 class SmartFieldListFilter(WrapperMixin, FieldListFilter):
+    input_type = "text"
+
     def __init__(
         self,
         field: Field,
@@ -86,6 +93,7 @@ class AdminFiltersMixin(ModelAdmin):
     def _check_linked_fields_modeladmin(self) -> list[checks.Error]:  # noqa: C901
         from .autocomplete import LinkedAutoCompleteFilter  # noqa: PLC0415
 
+        linked_filters: list[tuple[str, type[LinkedAutoCompleteFilter]] | Any]
         linked_filters = [
             e for e in self.list_filter if isinstance(e, (list, tuple)) and issubclass(e[1], LinkedAutoCompleteFilter)
         ]
@@ -138,6 +146,8 @@ class AdminFiltersMixin(ModelAdmin):
     def _check_linked_fields_order(self) -> list[checks.Error]:
         from .autocomplete import LinkedAutoCompleteFilter  # noqa: PLC0415
 
+        linked_filters: list[tuple[str, type[LinkedAutoCompleteFilter]] | Any]
+
         linked_filters = [
             e for e in self.list_filter if isinstance(e, (list, tuple)) and issubclass(e[1], LinkedAutoCompleteFilter)
         ]
@@ -155,7 +165,7 @@ class AdminFiltersMixin(ModelAdmin):
             seen.append(entry[0])
         return errs
 
-    def check(self, **kwargs: Any) -> list[checks.Error]:
+    def check(self, **kwargs: Any) -> list[checks.CheckMessage]:
         return [
             *super().check(**kwargs),
             *self._check_linked_fields_order(),
@@ -169,7 +179,7 @@ class AdminFiltersMixin(ModelAdmin):
                 self.admin_filters_media += flt.media
         return cl
 
-    def __init__(self, model: Model, admin_site: AdminSite) -> None:
+    def __init__(self, model: type[Model], admin_site: AdminSite) -> None:
         self.admin_filters_media = forms.Media()
         super().__init__(model, admin_site)
 

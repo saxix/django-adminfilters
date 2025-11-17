@@ -1,10 +1,13 @@
-{% extends "adminfilters/_wrapper.html" %}{% load i18n %}
+{% extends "adminfilters/_wrapper.html" %}
+{% load i18n %}
 {% block content %}
     <ul class="adminfilter"
         data-action="{% if spec.value.0 %}clear{% else %}filter{% endif %}"
         data-op="{{ spec.operator }}"
         data-qs="{{ spec.query_string }}">
-        {% if spec.error_message %} {{ spec.error_message }} {% endif %}
+        {% if spec.error_message %}
+            {{ spec.error_message }}
+        {% endif %}
         <li>
             {% if spec.can_negate %}
                 <input type="checkbox"
@@ -12,7 +15,7 @@
                        data-lk="{{ spec.lookup_kwarg_negated }}"
                        data-original="{{ spec.lookup_negated_val|lower }}"
                        class="filter-adam negate {{ spec.parameter_name }}"
-                       {% if spec.lookup_negated_val == "true" %}checked="checked"{% endif %}>
+                       {% if spec.lookup_negated_val == "true" %}checked="checked"{% endif %} />
                 {% trans "Exclude" %}
             {% endif %}
         </li>
@@ -25,27 +28,31 @@
                    placeholder="{{ spec.field_placeholder }}"
                    class="filter-adam {{ spec.parameter_name }}"
                    value="{{ spec.lookup_field_val }}"
-                   style="width: 90%">
-
+                   style="width: 90%" />
             <span style="display: inline">
-            <input type="text"
-                   name="value"
-                   data-group="{{ spec.parameter_name }}"
-                   data-lk="{{ spec.lookup_kwarg_value }}"
-                   placeholder="{{ spec.placeholder }}"
-                   class="filter-adam {{ spec.parameter_name }}"
-                   value="{{ spec.lookup_value_val }}"
-                   data-original="{{ spec.lookup_value_val }}"
-                   style="width: 90%">
-        </span>
+                <input type="text"
+                       name="value"
+                       data-group="{{ spec.parameter_name }}"
+                       data-lk="{{ spec.lookup_kwarg_value }}"
+                       placeholder="{{ spec.placeholder }}"
+                       class="filter-adam {{ spec.parameter_name }}"
+                       value="{{ spec.lookup_value_val }}"
+                       data-original="{{ spec.lookup_value_val }}"
+                       style="width: 90%" />
+            </span>
         </li>
         {% if spec.button %}
             <li>
-            <a class="filter-adam adminfilters button {{ spec.parameter_name }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"
-               href="#">{% if spec.value.0 %}{% trans "clear" %}{% else %}{% trans "activate" %}{% endif %}</a>
+                <a class="filter-adam adminfilters button {{ spec.parameter_name }} {% if spec.value.0 %}clear{% else %}filter{% endif %}"
+                   href="#">
+                    {% if spec.value.0 %}
+                        {% trans "clear" %}
+                    {% else %}
+                        {% trans "activate" %}
+                    {% endif %}
+                </a>
             </li>
         {% endif %}
-
     </ul>
 {% endblock %}
 {% block script %}

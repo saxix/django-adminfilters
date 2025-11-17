@@ -1,30 +1,36 @@
-{% extends "adminfilters/_wrapper.html" %}{% load i18n %}
+{% extends "adminfilters/_wrapper.html" %}
+{% load i18n %}
 {% block content %}
-<ul>
-    <li><select style="max-width: 95%" id="ac_{{ spec.field_path }}"
-                data-ajax--cache="true"
-                data-ajax--delay="250"
-                data-ajax--qs="{{ spec.query_string }}"
-                data-ajax--param="{{ spec.lookup_kwarg }}"
-                data-ajax--type="GET"
-                data-ajax--url="{{ spec.url }}"
-                data-theme="filter-autocomplete"
-                data-app-label="{{ spec.target_opts.app_label }}"
-                data-model-name="{{ spec.target_opts.model_name }}"
-                data-field-name="{{ spec.target_field.name }}"
-                data-allow-clear="true"
-                data-placeholder=""
-                class="filter-autocomplete ">
-        {% for c in choices %}
-            <option selected="selected">{{ c }}</option>{% endfor %}
-    </select>
-    </li>
-</ul>
-{% endblock  %}
+    <ul>
+        <li>
+            <select style="max-width: 95%"
+                    id="ac_{{ spec.field_path }}"
+                    data-ajax--cache="true"
+                    data-ajax--delay="250"
+                    data-ajax--qs="{{ spec.query_string }}"
+                    data-ajax--param="{{ spec.lookup_kwarg }}"
+                    data-ajax--type="GET"
+                    data-ajax--url="{{ spec.url }}"
+                    data-theme="filter-autocomplete"
+                    data-app-label="{{ spec.target_opts.app_label }}"
+                    data-model-name="{{ spec.target_opts.model_name }}"
+                    data-field-name="{{ spec.target_field.name }}"
+                    data-allow-clear="true"
+                    data-placeholder=""
+                    class="filter-autocomplete ">
+                {% for c in choices %}
+                    <option selected="selected">
+                        {{ c }}
+                    </option>
+                {% endfor %}
+            </select>
+        </li>
+    </ul>
+{% endblock %}
 {% block script %}
-<script>
+    <script>
     ;(function ($) {
         $('#ac_{{ spec.field_path }}').djangoAdminSelect2();
     })(django.jQuery);
-</script>
+    </script>
 {% endblock %}
