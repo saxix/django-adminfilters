@@ -35,6 +35,15 @@ jobs:
     services:
       redis:
         image: redis
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: adminfilters
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     runs-on: ubuntu-latest
     strategy:
@@ -46,6 +55,7 @@ jobs:
     env:
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_ALWAYS_EAGER: true
+      DATABASE_URL: postgres:postgres//postgres:@127.0.0.1:5432/adminfilters
     steps:
       - uses: actions/checkout@v5
         with:
@@ -77,7 +87,7 @@ jobs:
         run: tox -e d${{ matrix.django }}-py$(echo ${{ matrix.python }} | sed 's/\.//')
 
       - name: Upload pytest test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pytest-results-${{ matrix.python }}-${{matrix.django}}
           path: junit-${{ matrix.python }}-${{matrix.django}}.xml
@@ -90,7 +100,7 @@ jobs:
         with:
           env_vars: OS,PYTHON
           fail_ci_if_error: true
-          slug: saxix/django-smart-admin
+          slug: saxix/django-adminfilters
           flags: unittests
           files: ./coverage.xml
           verbose: false
