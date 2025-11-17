@@ -12,7 +12,7 @@ from .num import NumberFilter
 from .value import ValueFilter
 
 
-class DateRangeDateFilter(ValueFilter):
+class DateInDateRange(ValueFilter):
     lookup_name = "contains"
     input_type = "date"
 

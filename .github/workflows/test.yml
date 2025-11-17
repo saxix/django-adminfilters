@@ -57,8 +57,8 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        python: [ "3.13", "3.10", "3.9" ]
-        django: [ "52",  "42", "32"]
+        python: [ "3.13", "3.11"]
+        django: [ "52",  "42"]
         exclude:
           - django: 32
             python: 3.13
