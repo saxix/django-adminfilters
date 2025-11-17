@@ -74,7 +74,7 @@ jobs:
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
         with:
-          python: ${{ matrix.python-version }}
+          python: ${{ matrix.python }}
           architecture: 'x64'
       - name: Restore cached venv
         id: cache-venv-restore
@@ -83,7 +83,7 @@ jobs:
           path: |
             .cache-uv/
             .venv/
-          key: ${{ matrix.python-version }}-${{matrix.django-version}}-${{ hashFiles('pyproject.toml') }}-venv
+          key: ${{ matrix.python }}-${{matrix.django}}-${{ hashFiles('pyproject.toml') }}-venv
 
 
       - name: Install tox
