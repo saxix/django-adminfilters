@@ -39,7 +39,7 @@ def test_NumberFilter(fixtures, op, expected):
         "unique",
     )
     assert f.value() == [op]
-    result = f.queryset(None, DemoModelField.objects.all())
+    result = f.queryset(None, DemoModelField.objects.order_by("unique"))
     value = list(result.values_list("unique", flat=True))
     assert value == expected.split(","), f.error_message
 

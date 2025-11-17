@@ -58,16 +58,14 @@ def get_query_string(
 
 
 def get_field_by_name(
-    model: Model, name: str
+    model: type[Model] | Model, name: str
 ) -> tuple[Field | ForeignObjectRel | GenericForeignKey, type[Model], bool, bool]:
     field = model._meta.get_field(name)
     direct = not field.auto_created or field.concrete
     return field, field.model, direct, field.many_to_many
 
 
-def get_all_field_names(model: Model) -> list[str]:
-    if not model:
-        raise ValueError("'model' must be a Model instance")
+def get_all_field_names(model: type[Model]) -> list[str]:
     return list(
         set(
             chain.from_iterable(
@@ -79,7 +77,7 @@ def get_all_field_names(model: Model) -> list[str]:
     )
 
 
-def get_field_by_path(model: Model, field_path: str) -> Field:
+def get_field_by_path(model: type[Model] | Model, field_path: str) -> Field:
     """
     get a Model class or instance and a path to a attribute, returns the field object
 
