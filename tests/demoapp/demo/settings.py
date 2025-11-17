@@ -44,7 +44,7 @@ MIDDLEWARE = (
     "django.contrib.messages.middleware.MessageMiddleware",
 )
 
-DATABASES = {"default": env.db()}
+DATABASES = {"default": env.db_url("DATABASE_URL")}
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 ROOT_URLCONF = "demo.urls"
