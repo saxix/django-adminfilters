@@ -1,19 +1,13 @@
 name: Test
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - '**'        # matches every branch
-
-
-defaults:
-  run:
-    shell: bash
-
-permissions:
-  id-token: write
-  attestations: write
-
+    branches: [ "develop" ]
+    tags-ignore: [ "**" ]
+  pull_request:
+  schedule:
+    - cron: "0 8 * * *"
 
 jobs:
   changes:
@@ -23,68 +17,51 @@ jobs:
       run:
         shell: bash
     outputs:
-      run_tests: ${{steps.changes.outputs.run_tests }}
-      lint: ${{steps.changes.outputs.lint }}
+      run_tests: ${{ steps.changes.outputs.run_tests }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4
       - id: changes
         name: Check for file changes
-        uses: dorny/paths-filter@v3.0.2
+        uses: dorny/paths-filter@0bc4621a3135347011ad047f9ecf449bf72ce2bd # v3.0.0
         with:
           base: ${{ github.ref }}
           token: ${{ github.token }}
           filters: .github/file-filters.yml
 
-  ci:
+  test:
     needs: [ changes ]
-    if: needs.changes.outputs.run_tests
-    runs-on: ubuntu-latest
-    name: Test py${{ matrix.python-version }}/dj${{matrix.django-version}}
-    defaults:
-      run:
-        shell: bash
+    if: needs.changes.outputs.run_tests == 'true'
     services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: adminfilters
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    strategy:
-      max-parallel: 1
-      matrix:
-        python: [ "3.13", "3.11"]
-        django: [ "52",  "42"]
-        exclude:
-          - django: 32
-            python: 3.13
-          - django: 52
-            python: 3.9
-      fail-fast: true
-    env:
-      DOCKER_DEFAULT_PLATFORM: linux/amd64
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/adminfilters
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.1.7
-      - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v5
-        with:
-          python: ${{ matrix.python }}
-          architecture: 'x64'
-      - name: Restore cached venv
-        id: cache-venv-restore
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            .cache-uv/
-            .venv/
-          key: ${{ matrix.python }}-${{matrix.django}}-${{ hashFiles('pyproject.toml') }}-venv
+      redis:
+        image: redis
 
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        django: [ "52", "42"]
+        python: [ "3.13", "3.11" ]
+
+    env:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_ALWAYS_EAGER: true
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+          enable-cache: true
+          cache-dependency-glob: |
+            pyproject.toml
+            uv.lock
+          cache-suffix: ${{ matrix.python }}-${{ matrix.django }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          python-version: ${{ matrix.python }}
 
       - name: Install tox
         run: uv tool install --python-preference only-managed --python 3.13 tox --with tox-uv --with tox-gh-actions
@@ -99,30 +76,21 @@ jobs:
       - name: Run test suite d${{ matrix.django }}-py${{ matrix.python }}
         run: tox -e d${{ matrix.django }}-py$(echo ${{ matrix.python }} | sed 's/\.//')
 
-      - name: Cache venv
-        if: steps.cache-venv-restore.outputs.cache-hit != 'true'
-        id: cache-venv-save
-        uses: actions/cache/save@v4
-        with:
-          path: |
-            .cache-uv/
-            .venv/
-          key: ${{ matrix.python-version }}-${{matrix.django-version}}-${{ hashFiles('pyproject.toml') }}-venv
-
       - name: Upload pytest test results
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-results-${{ matrix.python-version }}-${{matrix.django-version}}
-          path: junit-${{ matrix.python-version }}-${{matrix.django-version}}.xml
+          name: pytest-results-${{ matrix.python }}-${{matrix.django}}
+          path: junit-${{ matrix.python }}-${{matrix.django}}.xml
         if: ${{ always() }}
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        if: matrix.python-version == 3.12
+        uses: codecov/codecov-action@v5
+        if: matrix.python == 3.12
         continue-on-error: true
         with:
           env_vars: OS,PYTHON
           fail_ci_if_error: true
+          slug: saxix/django-smart-admin
           flags: unittests
           files: ./coverage.xml
           verbose: false
