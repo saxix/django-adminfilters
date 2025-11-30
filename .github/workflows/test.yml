@@ -6,8 +6,7 @@ on:
     branches: [ "develop" ]
     tags-ignore: [ "**" ]
   pull_request:
-  schedule:
-    - cron: "0 8 * * *"
+
 
 jobs:
   changes:
